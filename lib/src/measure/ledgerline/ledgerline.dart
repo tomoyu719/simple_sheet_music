@@ -6,7 +6,7 @@ import 'ledgerline_helper.dart';
 /// The `LedgerLine` class represents a ledger line in a musical staff. It is responsible for rendering the ledger line on a canvas.
 class LedgerLineRenderer with LineDrawer {
   static const _ledgerLineThickness = 0.16;
-  static const _ledgerLineWidthMultiplier = 1.2;
+  static const _ledgerLineWidthMultiplier = 1.5;
   static const _staffLineCenterToAboveLedgerLineHeight =
       StaffLineRenderer.staffLineSpaceHeight * 3;
   static const _staffLineCenterToBelowLedgerLineHeight =
