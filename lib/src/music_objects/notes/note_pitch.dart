@@ -58,6 +58,8 @@ enum Pitch {
 
   Pitch get up => upN(1);
   Pitch get down => downN(1);
+  Pitch get upOctave => upN(7);
+  Pitch get downOctave => downN(7);
 
   Pitch upN(int n) {
     final current = position + n;

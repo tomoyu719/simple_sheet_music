@@ -68,4 +68,24 @@ void main() {
     // Assert
     expect(downPitch, pitch);
   });
+  test('Pitch.upOctave should return a pitch an octave upper', () {
+    // Arrange
+    const pitch = Pitch.a4;
+
+    // Act
+    final upOctavePitch = pitch.upOctave;
+
+    // Assert
+    expect(upOctavePitch, Pitch.a5);
+  });
+  test('Pitch.downOctave should return a pitch an octave lower', () {
+    // Arrange
+    const pitch = Pitch.a4;
+
+    // Act
+    final downOctavePitch = pitch.downOctave;
+
+    // Assert
+    expect(downOctavePitch, Pitch.a3);
+  });
 }
