@@ -23,6 +23,7 @@ Currently supported music symbols are
 
 
 ## Usage
+To make the image above, do the following
 ```dart
 musicObjects = [
     Clef(ClefType.treble),
