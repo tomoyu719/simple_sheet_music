@@ -11,16 +11,18 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-A Flutter plugin for rendering simple sheet music on canvas.
+A Flutter plugin for rendering sheet music on canvas.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+This Plugin is a beta version.<br>
+Currently supported music symbols<br>
+<li>Clefs 
+<li>Note, Accidentals, Fingerings.
 
-## Getting started
+<br>
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+<img src="Screenshot_1710140425.png" width="50%" style="display: block; margin: auto;">
 
 ## Usage
 
@@ -28,8 +30,27 @@ TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder. 
 
 ```dart
-const like = 'sample';
+musicObjects = [
+    Clef(ClefType.treble),
+    Note(pitch: Pitch.c4, noteDuration: NoteDuration.eighth),
+    Note(pitch: Pitch.e4, noteDuration: NoteDuration.eighth),
+    Note(pitch: Pitch.g4, noteDuration: NoteDuration.eighth),
+    Note(pitch: Pitch.c5, noteDuration: NoteDuration.eighth)
+];
+measure = Measure(musicObjects);
+staff = Staff([measure]);
+SimpleSheetMusic(
+    initialClefType: ClefType.treble,
+    staffs: [staff],
+)
 ```
+
+## Future plans
+Time signatures<br>
+Enrich gestures<br>
+import from MIDI, MusicXML<br>
+various fonts<br>
+
 
 ## Additional information
 
