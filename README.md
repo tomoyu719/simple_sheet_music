@@ -24,21 +24,26 @@ to `/example` folder.
 
 ```dart
 musicObjects = [
-      const Clef(ClefType.treble),
-      const Note(
-          pitch: Pitch.c4,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.sharp),
-      const Note(pitch: Pitch.e4, noteDuration: NoteDuration.eighth),
-      const Note(
-          pitch: Pitch.g4,
-          noteDuration: NoteDuration.eighth,
-          fingering: Fingering.three),
-      const Note(
-          pitch: Pitch.c5,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.doubleFlat),
-    ];
+    const Clef(ClefType.treble),
+    const Note(
+        pitch: Pitch.c4,
+        noteDuration: NoteDuration.eighth,
+        accidental: Accidental.sharp,
+        fingering: Fingering.one),
+    const Note(
+        pitch: Pitch.e4,
+        noteDuration: NoteDuration.eighth,
+        fingering: Fingering.two),
+    const Note(
+        pitch: Pitch.g4,
+        noteDuration: NoteDuration.eighth,
+        fingering: Fingering.three),
+    const Note(
+        pitch: Pitch.c5,
+        noteDuration: NoteDuration.eighth,
+        accidental: Accidental.flat,
+        fingering: Fingering.four),
+];
 measure = Measure(musicObjects);
 staff = Staff([measure]);
 SimpleSheetMusic(
