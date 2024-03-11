@@ -12,33 +12,34 @@ and the Flutter guide for
 -->
 
 A Flutter plugin for rendering sheet music on canvas.
-
+<img src="Screenshot_1710153630.png" width="50%" style="display: block; margin: auto;">
 ## Features
 
-<img src="Screenshot_1710153630.png" width="50%" style="display: block; margin: auto;">
+Can express sheet musics declaratively. Support for multiple single staffs.<br>
+Currently supported music symbols are
+<li>clefs
+<li>notes(accidentals and fingerings)
+<li>barlines<br>
+
 
 ## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
 musicObjects = [
-    const Clef(ClefType.treble),
-    const Note(
+    Clef(ClefType.treble),
+    Note(
         pitch: Pitch.c4,
         noteDuration: NoteDuration.eighth,
         accidental: Accidental.sharp,
         fingering: Fingering.one),
-    const Note(
+    Note(
         pitch: Pitch.e4,
         noteDuration: NoteDuration.eighth,
         fingering: Fingering.two),
-    const Note(
+    Note(
         pitch: Pitch.g4,
         noteDuration: NoteDuration.eighth,
         fingering: Fingering.three),
-    const Note(
+    Note(
         pitch: Pitch.c5,
         noteDuration: NoteDuration.eighth,
         accidental: Accidental.flat,
