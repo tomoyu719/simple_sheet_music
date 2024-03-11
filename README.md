@@ -15,14 +15,7 @@ A Flutter plugin for rendering sheet music on canvas.
 
 ## Features
 
-This Plugin is a beta version.<br>
-Currently supported music symbols<br>
-<li>Clefs 
-<li>Note, Accidentals, Fingerings.
-
-<br>
-
-<img src="Screenshot_1710140425.png" width="50%" style="display: block; margin: auto;">
+<img src="Screenshot_1710153630.png" width="50%" style="display: block; margin: auto;">
 
 ## Usage
 
@@ -31,12 +24,21 @@ to `/example` folder.
 
 ```dart
 musicObjects = [
-    Clef(ClefType.treble),
-    Note(pitch: Pitch.c4, noteDuration: NoteDuration.eighth),
-    Note(pitch: Pitch.e4, noteDuration: NoteDuration.eighth),
-    Note(pitch: Pitch.g4, noteDuration: NoteDuration.eighth),
-    Note(pitch: Pitch.c5, noteDuration: NoteDuration.eighth)
-];
+      const Clef(ClefType.treble),
+      const Note(
+          pitch: Pitch.c4,
+          noteDuration: NoteDuration.eighth,
+          accidental: Accidental.sharp),
+      const Note(pitch: Pitch.e4, noteDuration: NoteDuration.eighth),
+      const Note(
+          pitch: Pitch.g4,
+          noteDuration: NoteDuration.eighth,
+          fingering: Fingering.three),
+      const Note(
+          pitch: Pitch.c5,
+          noteDuration: NoteDuration.eighth,
+          accidental: Accidental.doubleFlat),
+    ];
 measure = Measure(musicObjects);
 staff = Staff([measure]);
 SimpleSheetMusic(
@@ -46,14 +48,12 @@ SimpleSheetMusic(
 ```
 
 ## Future plans
-Time signatures<br>
-Enrich gestures<br>
-import from MIDI, MusicXML<br>
-various fonts<br>
+Currently planned additions are as follows.
 
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+<li>Time signatures<br>
+<li>Rests<br>
+<li>Various fonts<br>
+<li>Enrich gestures<br>
+<li>import from MIDI, MusicXML<br>
+<li>Grand staff<br>
+...
