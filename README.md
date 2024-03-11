@@ -12,7 +12,7 @@ and the Flutter guide for
 -->
 
 A Flutter plugin for rendering sheet music on canvas.
-<img src="Screenshot_1710153630.png" width="50%" style="display: block; margin: auto;">
+<img src="Screenshot_1710153630.png" width="50%">
 
 ## Features
 
