@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import '../mixins/debug_paint_mixin.dart';
 import '../mixins/draw_line_mixin.dart';
-import '../music_objects/music_object_on_canvas.dart';
-import '../music_objects/notes/note.dart';
+import '../music_objects/interface/music_object_on_canvas.dart';
+import '../music_objects/note/note.dart';
 import 'barline/barline_renderer.dart';
 import 'ledgerline/ledgerline.dart';
 import 'staffline.dart';

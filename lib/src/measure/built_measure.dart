@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import '../music_objects/interface/built_object.dart';
-import '../music_objects/music_object_on_canvas.dart';
+import '../music_objects/interface/music_object_on_canvas.dart';
 import 'barline/barline.dart';
 import 'ledgerline/ledgerline.dart';
 import 'measure_on_canvas.dart';

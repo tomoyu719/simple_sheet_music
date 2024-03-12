@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../measure/measure_on_canvas.dart';
 import '../mixins/debug_paint_mixin.dart';
-import '../music_objects/music_object_on_canvas.dart';
+import '../music_objects/interface/music_object_on_canvas.dart';
 
 /// Represents a staff on a canvas.
 ///

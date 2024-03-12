@@ -1,5 +1,5 @@
 import '../clef/clef_type.dart';
-import '../music_object_on_canvas.dart';
+import 'music_object_on_canvas.dart';
 
 abstract class BuiltObject {
   final ClefType clefType;

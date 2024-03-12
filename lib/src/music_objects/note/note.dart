@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:simple_sheet_music/src/music_objects/notes/note_duration.dart';
-import 'package:simple_sheet_music/src/music_objects/notes/note_pitch.dart';
+import 'package:simple_sheet_music/src/music_objects/note/note_duration.dart';
+import 'package:simple_sheet_music/src/music_objects/note/note_pitch.dart';
 
 import '../clef/clef_type.dart';
 import '../interface/built_object.dart';
+import '../interface/music_object_on_canvas.dart';
+import '../interface/music_object_on_canvas_helper.dart';
 import '../interface/music_object_style.dart';
-import '../music_object_on_canvas.dart';
-import '../music_object_on_canvas_helper.dart';
 import 'accidentals/accidental_renderer.dart';
 import 'accidentals/accidental.dart';
 import 'parts/fingering.dart';

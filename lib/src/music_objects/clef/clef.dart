@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../mixins/text_paint_mixin.dart';
 import '../interface/built_object.dart';
+import '../interface/music_object_on_canvas.dart';
+import '../interface/music_object_on_canvas_helper.dart';
 import '../interface/music_object_style.dart';
-import '../music_object_on_canvas.dart';
-import '../music_object_on_canvas_helper.dart';
 import 'clef_type.dart';
 
 class Clef implements MusicObjectStyle, BuiltObject {
@@ -74,7 +74,6 @@ class ClefPainter with TextPaint implements ObjectOnCanvas {
   void render(Canvas canvas, Size size, String fontFamily) {
     textPaint(canvas, size, glyph, helper.renderOffset, musicObjectStyle.color,
         fontFamily);
-    // boxPaint(canvas, size, helper.renderArea);
   }
 
   @override

@@ -1,14 +1,13 @@
 import 'package:flutter/rendering.dart';
 
-import 'interface/music_object_style.dart';
 import 'music_object_on_canvas_helper.dart';
+import 'music_object_style.dart';
 
 abstract class ObjectOnCanvas {
   final MusicObjectStyle musicObjectStyle;
   final ObjectOnCanvasHelper helper;
   const ObjectOnCanvas(this.helper, this.musicObjectStyle);
 
-  // Offset get renderOffset;
   Rect get renderArea;
 
   bool isHit(Offset position);
