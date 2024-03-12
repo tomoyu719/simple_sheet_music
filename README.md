@@ -14,7 +14,8 @@ and the Flutter guide for
 A Flutter package for rendering sheet music on canvas.<br>
 
 <div align="center">
-<img src=https://github.com/tomoyu719/simple_sheet_music/blob/main/Screenshot_1710153630.png width=50%>
+<img src=https://github.com/tomoyu719/simple_sheet_music/blob/main/Screenshot_1710153630.png?raw=true width=50%>
+
 </div>
 ## Features
 
