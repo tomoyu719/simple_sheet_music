@@ -1,5 +1,5 @@
 name: simple_sheet_music
-description: A new Flutter package project.
+description: A Flutter package for rendering sheet music on canvas.
 version: 0.0.1
 homepage: https://github.com/tomoyu719/simple_sheet_music
 
