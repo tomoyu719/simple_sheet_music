@@ -23,7 +23,7 @@ class StavePosition {
   ///
   /// Returns the local position of the note.
   int localPosition(ClefType clefType) =>
-      globalPosition - clefType.globalPositionOnCenter;
+      globalPosition - clefType.positionOnCenter;
 
   @override
   String toString() {
