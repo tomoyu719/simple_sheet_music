@@ -12,7 +12,6 @@ class BuiltMeasure {
   final List<BuiltObject> builtObjects;
   final Color lineColor;
   final Barline barline;
-
   final double upperHeight;
   final double lowerHeight;
   final double objectsWidth;
@@ -37,7 +36,7 @@ class BuiltMeasure {
     final objectsOnCanvas = <ObjectOnCanvas>[];
     for (final object in builtObjects) {
       final placedObject = object.placeOnCanvas(
-          staveCenterY: staffLineCenterY,
+          staffLineCenterY: staffLineCenterY,
           previousObjectsWidthSum: currentObjectX);
       objectsOnCanvas.add(placedObject);
       currentObjectX += object.width;

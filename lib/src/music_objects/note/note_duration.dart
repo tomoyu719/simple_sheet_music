@@ -1,5 +1,5 @@
-import 'package:simple_sheet_music/src/music_objects/notes/parts/noteflag_type.dart';
-import 'package:simple_sheet_music/src/music_objects/notes/parts/notehead_type.dart';
+import 'package:simple_sheet_music/src/music_objects/note/parts/noteflag_type.dart';
+import 'package:simple_sheet_music/src/music_objects/note/parts/notehead_type.dart';
 
 enum NoteDuration {
   whole(128),

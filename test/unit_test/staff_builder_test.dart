@@ -79,8 +79,14 @@ void main() {
     );
 
     // Assert
-    expect(builtStaff.measures[0].builtObjects.first.clefType, ClefType.treble);
-    expect(builtStaff.measures[1].builtObjects.first.clefType, ClefType.treble);
-    expect(builtStaff.measures[2].builtObjects.first.clefType, ClefType.alto);
+    expect(
+        (builtStaff.measures[0].builtObjects.first as MockBuiltObject).clefType,
+        ClefType.treble);
+    expect(
+        (builtStaff.measures[1].builtObjects.first as MockBuiltObject).clefType,
+        ClefType.treble);
+    expect(
+        (builtStaff.measures[2].builtObjects.first as MockBuiltObject).clefType,
+        ClefType.alto);
   });
 }

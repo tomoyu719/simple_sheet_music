@@ -8,17 +8,16 @@ import '../interface/music_object_style.dart';
 import 'clef_type.dart';
 
 class Clef implements MusicObjectStyle, BuiltObject {
-  @override
   final ClefType clefType;
   @override
   final Color color;
   @override
   final EdgeInsets? specifiedMargin;
-  EdgeInsets get margin => specifiedMargin ?? _defaultMargin(clefType);
+  EdgeInsets get margin => specifiedMargin ?? _defaultMargin;
 
   const Clef(this.clefType, {this.specifiedMargin, this.color = Colors.black});
 
-  EdgeInsets _defaultMargin(ClefType clefType) =>
+  EdgeInsets get _defaultMargin =>
       EdgeInsets.symmetric(horizontal: clefType.width / 4);
 
   @override
@@ -39,9 +38,10 @@ class Clef implements MusicObjectStyle, BuiltObject {
 
   @override
   ObjectOnCanvas placeOnCanvas(
-      {required double staveCenterY, required double previousObjectsWidthSum}) {
+      {required double staffLineCenterY,
+      required double previousObjectsWidthSum}) {
     final objectX = previousObjectsWidthSum + clefType.offsetX;
-    final objectY = staveCenterY + clefType.offsetHeight;
+    final objectY = staffLineCenterY + clefType.offsetHeight;
     final renderOffset = Offset(objectX, objectY);
     final helper = ObjectOnCanvasHelper(bboxWithNoMargin, renderOffset, margin);
     return ClefPainter(clefType.glyph, helper, this);

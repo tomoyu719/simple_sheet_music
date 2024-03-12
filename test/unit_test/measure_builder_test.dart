@@ -53,8 +53,10 @@ void main() {
     );
 
     // Assert
-    expect(builtMeasure.builtObjects[0].clefType, ClefType.treble);
-    expect(builtMeasure.builtObjects[2].clefType, middleClef.clefType);
+    expect((builtMeasure.builtObjects[0] as MockBuiltObject).clefType,
+        ClefType.treble);
+    expect((builtMeasure.builtObjects[0] as MockBuiltObject).clefType,
+        middleClef.clefType);
   });
 
   test('MeasureBuilder should build a measure with correctly barline', () {

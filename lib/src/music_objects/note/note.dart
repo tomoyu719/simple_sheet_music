@@ -79,7 +79,7 @@ class BuiltNote implements BuiltObject {
   final NoteHeadType noteHeadType;
   final NoteFlagType? noteFlagType;
   final Fingering? fingering;
-  @override
+
   final ClefType clefType;
 
   final StavePosition stavePosition;
@@ -155,11 +155,11 @@ class BuiltNote implements BuiltObject {
   @override
   ObjectOnCanvas placeOnCanvas({
     required double previousObjectsWidthSum,
-    required double staveCenterY,
+    required double staffLineCenterY,
   }) {
     final helper = ObjectOnCanvasHelper(
       _bboxWithNoMargin,
-      Offset(previousObjectsWidthSum, staveCenterY),
+      Offset(previousObjectsWidthSum, staffLineCenterY),
       _margin,
     );
 

@@ -18,7 +18,6 @@ class MockMusicObjectStyle extends Fake implements MusicObjectStyle {
 }
 
 class MockBuiltObject extends Fake implements BuiltObject {
-  @override
   final ClefType clefType;
   @override
   final double lowerHeight;
