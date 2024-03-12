@@ -11,7 +11,7 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-A Flutter plugin for rendering sheet music on canvas.<br>
+A Flutter package for rendering sheet music on canvas.<br>
 <p align="center">
   <img src="Screenshot_1710153630.png" width="50%">
 </p>

@@ -12,7 +12,6 @@ import 'staff/staff_on_canvas.dart';
 /// The [canvasScale] parameter determines the scale at which the sheet music is rendered on the canvas.
 /// The [fontFamily] parameter specifies the font family to be used for rendering text.
 class SheetMusicRenderer extends CustomPainter with LineDrawer, TextPaint {
-
   final List<StaffOnCanvas> staffsOnCanvas;
 
   final double canvasScale;
@@ -23,7 +22,6 @@ class SheetMusicRenderer extends CustomPainter with LineDrawer, TextPaint {
 
   @override
   void paint(Canvas canvas, Size size) {
-    
     canvas.scale(canvasScale);
     for (final staff in staffsOnCanvas) {
       staff.render(canvas, size, fontFamily);

@@ -24,13 +24,13 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-  assets:
-      - assets/
+  # assets:
+  #     - assets/
 
-  # fonts:
-  #     - family: Bravura
-  #       fonts:
-  #           - asset: fonts/Bravura.otf
+  fonts:
+      - family: Bravura
+        fonts:
+            - asset: assets/Bravura.otf
             
 
   # To add assets to your package, add an assets section, like this:

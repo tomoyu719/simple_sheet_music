@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 import '../measure/measure_on_canvas.dart';
 import '../mixins/debug_paint_mixin.dart';
@@ -30,7 +30,6 @@ class StaffOnCanvas with DebugPaint {
 
   /// Renders the staff on the given canvas with the specified size and font family.
   void render(Canvas canvas, Size size, String fontFamily) {
-    // boxPaint(canvas, size, bbox, color: Colors.red);
     for (final measure in measureOnCanvas) {
       measure.render(canvas, size, fontFamily);
     }

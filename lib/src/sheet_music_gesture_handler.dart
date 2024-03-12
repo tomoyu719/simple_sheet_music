@@ -40,7 +40,6 @@ class SheetMusicGestureHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Slider(value: value, onChanged: onChanged)
     return GestureDetector(
         onTapUp: _onTap,
         child: SizedBox(
