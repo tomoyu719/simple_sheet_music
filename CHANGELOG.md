@@ -2,7 +2,7 @@
 * initial release.
 
 ## 0.0.2
-* fix README.md
+* fix README.md.
 
 ## 0.0.3
-* fix README.md
+* add Rests.
