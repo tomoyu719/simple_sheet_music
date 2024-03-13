@@ -11,7 +11,8 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-A Flutter package for rendering sheet music on canvas.<br>
+The `simple_sheet_music` library provides a simple way to display sheet music in a Flutter application.
+It includes classes for rendering staffs, measures, clefs, notes, and other music objects.
 
 <div align="center">
 <img src=https://github.com/tomoyu719/simple_sheet_music/blob/main/Screenshot_1710153630.png?raw=true width=50%>
@@ -21,10 +22,10 @@ A Flutter package for rendering sheet music on canvas.<br>
 
 Can express sheet musics declaratively. Support for multiple single staffs.<br>
 Currently supported music symbols are
-<li>clefs
-<li>notes(accidentals and fingerings)
-<li>barlines<br>
-
+<li>Clefs
+<li>Notes (accidentals and fingerings)
+<li>Barlines<br>
+<li>Rests<br>
 
 ## Usage
 To make the image above, do the following
@@ -52,6 +53,7 @@ musicObjects = [
 ];
 measure = Measure(musicObjects);
 staff = Staff([measure]);
+
 SimpleSheetMusic(
     initialClefType: ClefType.treble,
     staffs: [staff],
