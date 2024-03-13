@@ -4,5 +4,5 @@
 ## 0.0.2
 * fix README.md
 
-## 0.0.1-dev.1
+## 0.0.3
 * fix README.md
