@@ -40,8 +40,6 @@ class SimpleSheetMusicDemoState extends State {
     initialClefType = ClefType.treble;
     musicObjects = [
       const Clef(ClefType.treble),
-      const KeySignature(KeySignatureType.aSharpMinor),
-      const KeySignature(KeySignatureType.cFlatMajor),
       const Note(
           pitch: Pitch.c4,
           noteDuration: NoteDuration.eighth,
