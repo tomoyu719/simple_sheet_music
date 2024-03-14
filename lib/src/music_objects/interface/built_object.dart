@@ -1,7 +1,6 @@
 import 'music_object_on_canvas.dart';
 
 abstract class BuiltObject {
-  // final ClefType clefType;
   /// height from measure's centerline to the top of the object
   final double upperHeight;
 

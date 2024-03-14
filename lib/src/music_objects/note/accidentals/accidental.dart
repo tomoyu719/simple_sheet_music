@@ -4,7 +4,7 @@ enum Accidental {
   natural(_naturalGlyph, _naturalBbox),
   sharp(_sharpGlyph, _sharpBbox),
   doublesharp(_doubleSharpGlyph, _doubleSharpBbox),
-  flat(_flatpGlyph, _flatBbox),
+  flat(_flatGlyph, _flatBbox),
   doubleFlat(_doubleFlatpGlyph, _doubleFlatBbox);
 
   const Accidental(this.glyph, this.bbox);
@@ -22,6 +22,6 @@ enum Accidental {
   static const _naturalGlyph = '♮';
   static const _sharpGlyph = '♯';
   static const _doubleSharpGlyph = '𝄪';
-  static const _flatpGlyph = '♭';
+  static const _flatGlyph = '♭';
   static const _doubleFlatpGlyph = '𝄫';
 }

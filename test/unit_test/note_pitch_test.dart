@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_sheet_music/src/music_objects/notes/note_pitch.dart';
+import 'package:simple_sheet_music/src/music_objects/note/note_pitch.dart';
 
 void main() {
   test('Pitch.up should return the next pitch', () {

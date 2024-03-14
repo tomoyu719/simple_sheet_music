@@ -28,25 +28,26 @@ class Note implements MusicObjectStyle {
   final NoteDuration noteDuration;
   final Accidental? accidental;
 
-  const Note(
-      {required this.pitch,
-      required this.noteDuration,
-      this.accidental,
-      this.fingering,
-      this.specifiedMargin,
-      this.color = Colors.black});
+  const Note({
+    required this.pitch,
+    required this.noteDuration,
+    this.accidental,
+    this.fingering,
+    this.specifiedMargin,
+    this.color = Colors.black,
+  });
 
   @override
   BuiltObject build(ClefType clefType) {
     final noteHeadType = noteDuration.noteHeadType;
     final noteFlagType = noteDuration.noteFlagType;
-    final stavePosition = StavePosition(pitch.position);
+    final stavePosition = StavePosition(pitch.position, clefType);
 
     return BuiltNote(
       this,
       noteHeadType,
-      clefType,
       stavePosition,
+      specifiedMargin,
       noteFlagType: noteFlagType,
       accidentalType: accidental,
       fingering: fingering,
@@ -62,32 +63,29 @@ class Note implements MusicObjectStyle {
           Color? newColor,
           EdgeInsets? newSpecifiedMargin}) =>
       Note(
-          pitch: newPitch ?? pitch,
-          noteDuration: newNoteDuration ?? noteDuration,
-          accidental: newAccidental ?? accidental,
-          fingering: newFingering ?? fingering,
-          specifiedMargin: newSpecifiedMargin ?? specifiedMargin,
-          color: newColor ?? color);
+        pitch: newPitch ?? pitch,
+        noteDuration: newNoteDuration ?? noteDuration,
+        accidental: newAccidental ?? accidental,
+        fingering: newFingering ?? fingering,
+        specifiedMargin: newSpecifiedMargin ?? specifiedMargin,
+        color: newColor ?? color,
+      );
 }
 
 class BuiltNote implements BuiltObject {
   static const minStemLength = 3.5;
   static const halfPositionHeight = 0.5;
 
-  // final ClefType clefType;
   final Accidental? accidentalType;
   final NoteHeadType noteHeadType;
   final NoteFlagType? noteFlagType;
   final Fingering? fingering;
-
-  final ClefType clefType;
-
   final StavePosition stavePosition;
-
   final Note noteStyle;
+  final EdgeInsets? specifiedMargin;
 
-  const BuiltNote(
-      this.noteStyle, this.noteHeadType, this.clefType, this.stavePosition,
+  const BuiltNote(this.noteStyle, this.noteHeadType, this.stavePosition,
+      this.specifiedMargin,
       {this.noteFlagType, this.accidentalType, this.fingering});
 
   FingeringRenderer? get _fingeringOnMeasure => fingering != null
@@ -96,7 +94,8 @@ class BuiltNote implements BuiltObject {
           noteHeadCenterX: _noteHead.noteHeadCenterX)
       : null;
 
-  EdgeInsets get _defaultMargin => EdgeInsets.all(_objectWidth / 4);
+  EdgeInsets get _defaultMargin =>
+      specifiedMargin ?? EdgeInsets.all(_objectWidth / 4);
   EdgeInsets get _margin => noteStyle.specifiedMargin ?? _defaultMargin;
 
   bool get _hasAccidental => accidentalType != null;
@@ -109,7 +108,7 @@ class BuiltNote implements BuiltObject {
 
   double get _accidentalSpacing => _accidentalWidth / 5;
 
-  int get _localPosition => stavePosition.localPosition(clefType);
+  int get _localPosition => stavePosition.localPosition;
   bool get _isStemUp => _localPosition < 0;
 
   bool get _hasStem => noteHeadType.hasStem;

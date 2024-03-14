@@ -12,9 +12,10 @@ class StavePosition {
   static const maxPosition = Pitch.c8;
 
   final int globalPosition;
+  final ClefType clefType;
 
   /// Creates a [StavePosition] with the given global position.
-  const StavePosition(this.globalPosition);
+  const StavePosition(this.globalPosition, this.clefType);
 
   /// Calculates the local position of the note on the stave based on the clef type.
   ///
@@ -22,8 +23,7 @@ class StavePosition {
   /// on the center of the staff lines from the global position of the note.
   ///
   /// Returns the local position of the note.
-  int localPosition(ClefType clefType) =>
-      globalPosition - clefType.positionOnCenter;
+  int get localPosition => globalPosition - clefType.positionOnCenter;
 
   @override
   String toString() {
