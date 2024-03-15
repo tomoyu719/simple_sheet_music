@@ -6,3 +6,6 @@
 
 ## 0.0.3
 * add Rests.
+
+## 0.0.4-dev.1
+* add key signatures.
