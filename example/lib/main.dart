@@ -33,11 +33,11 @@ class SimpleSheetMusicDemoState extends State {
   late final List<MusicObjectStyle> musicObjects;
   late final Measure measure;
   late final Staff staff;
-  late final ClefType initialClefType;
+  late final Clef initialClef;
 
   @override
   void initState() {
-    initialClefType = ClefType.treble;
+    initialClef = const Clef(ClefType.treble);
     musicObjects = [
       const Clef(ClefType.treble),
       const Note(
@@ -74,7 +74,7 @@ class SimpleSheetMusicDemoState extends State {
         appBar: AppBar(title: const Text('Simple Sheet Music Example')),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           SimpleSheetMusic(
-            initialClef: initialClefType,
+            initialClef: initialClef,
             margin: const EdgeInsets.all(10),
             height: height,
             width: width,
