@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'font_types.dart';
-import 'music_objects/clef/clef_type.dart';
+import 'music_objects/clef/clef.dart';
 import 'music_objects/interface/music_object_style.dart';
+import 'music_objects/key_signature/key_signature.dart';
 import 'sheet_music_builder.dart';
 import 'sheet_music_gesture_handler.dart';
 import 'sheet_music_layout.dart';
@@ -20,7 +21,8 @@ class SimpleSheetMusic extends StatefulWidget {
   const SimpleSheetMusic({
     Key? key,
     required this.staffs,
-    required this.initialClefType,
+    required this.initialClef,
+    this.initialKeySignature = const KeySignature(KeySignatureType.cMajor),
     this.margin = EdgeInsets.zero,
     this.height = 400.0,
     this.width = 400.0,
@@ -43,8 +45,11 @@ class SimpleSheetMusic extends StatefulWidget {
   /// The font type to be used for rendering the sheet music.
   FontType get fontType => FontType.bravura;
 
-  /// The initial clef type for the sheet music.
-  final ClefType initialClefType;
+  /// The initial clef  for the sheet music.
+  final Clef initialClef;
+
+  /// The initial keySignature for the sheet music.
+  final KeySignature initialKeySignature;
 
   /// A callback function that is called when a music object is tapped.
   final OnTapMusicObjectCallback? onTap;
@@ -69,8 +74,8 @@ class SimpleSheetMusicState extends State<SimpleSheetMusic> {
   @override
   void initState() {
     memoizer = AsyncMemoizer();
-    staffsBuilder = SheetMusicBuilder(
-        widget.staffs, widget.initialClefType, widget.lineColor);
+    staffsBuilder = SheetMusicBuilder(widget.staffs, widget.initialClef,
+        widget.initialKeySignature, widget.lineColor);
     layout = SheetMusicLayout(
         staffsBuilder.buildStaffs, widget.margin, widget.width, widget.height);
     super.initState();
@@ -78,8 +83,8 @@ class SimpleSheetMusicState extends State<SimpleSheetMusic> {
 
   @override
   void didUpdateWidget(covariant SimpleSheetMusic oldWidget) {
-    staffsBuilder = SheetMusicBuilder(
-        widget.staffs, widget.initialClefType, widget.lineColor);
+    staffsBuilder = SheetMusicBuilder(widget.staffs, widget.initialClef,
+        widget.initialKeySignature, widget.lineColor);
     layout = SheetMusicLayout(
         staffsBuilder.buildStaffs, widget.margin, widget.width, widget.height);
     super.didUpdateWidget(oldWidget);

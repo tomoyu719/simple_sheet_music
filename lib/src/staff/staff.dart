@@ -17,6 +17,14 @@ class Staff {
       : _staffBuilder = const StaffBuilder(),
         assert(measures.length != 0);
 
+  /// Returns the last keySignature object in the staff, or null if there are no keySignatures.
+  KeySignature? get keySignature {
+    final staffObjects =
+        measures.map((measure) => measure.objectStyles).expand((e) => e);
+    final keySignatures = staffObjects.whereType<KeySignature>();
+    return keySignatures.isEmpty ? null : keySignatures.last;
+  }
+
   /// Returns the last clef object in the staff, or null if there are no clefs.
   Clef? get lastClef {
     final staffObjects =
@@ -25,9 +33,19 @@ class Staff {
     return clefs.isEmpty ? null : clefs.last;
   }
 
-  BuiltStaff buildStaff(ClefType staffInitialClefType, bool isEndStaff,
-      Color sheetMusicLineColor) {
-    return _staffBuilder.buildStaff(this, staffInitialClefType, isEndStaff,
-        staffLineColor ?? sheetMusicLineColor);
-  }
+  BuiltStaff buildStaff(
+    Clef staffInitialClef,
+    KeySignature keySignature,
+    Color sheetMusicLineColor, {
+    required bool isBeginStaff,
+    required bool isEndStaff,
+  }) =>
+      _staffBuilder.buildStaff(
+        this,
+        staffInitialClef,
+        keySignature,
+        staffLineColor ?? sheetMusicLineColor,
+        isBeginStaff: isBeginStaff,
+        isEndStaff: isEndStaff,
+      );
 }

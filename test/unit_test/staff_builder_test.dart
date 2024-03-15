@@ -10,8 +10,9 @@ void main() {
   test('StaffBuilder should build staff correctly', () {
     // Arrange
     const staffBuilder = StaffBuilder();
-    const staffInitialClefType = ClefType.treble;
-    const isEndStaff = true;
+    const staffInitialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
+
     final measures = [
       Measure([MockMusicObjectStyle()]),
       Measure([MockMusicObjectStyle()]),
@@ -23,8 +24,8 @@ void main() {
     // Act
     final builtStaff = staffBuilder.buildStaff(
       staff,
-      staffInitialClefType,
-      isEndStaff,
+      staffInitialClef,
+      keySignature,
       lineColor,
     );
 
@@ -34,7 +35,8 @@ void main() {
   test('isEndStaff true', () {
     // Arrange
     const staffBuilder = StaffBuilder();
-    const staffInitialClefType = ClefType.treble;
+    const staffInitialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     const isEndStaff = true;
     final measures = [
       Measure([MockMusicObjectStyle()]),
@@ -47,9 +49,10 @@ void main() {
     // Act
     final builtStaff = staffBuilder.buildStaff(
       staff,
-      staffInitialClefType,
-      isEndStaff,
+      staffInitialClef,
+      keySignature,
       lineColor,
+      isEndStaff: isEndStaff,
     );
 
     // Assert
@@ -57,11 +60,12 @@ void main() {
     expect(builtStaff.measures[1].barline, Barline.barlineThin);
     expect(builtStaff.measures[2].barline, Barline.barlineFinal);
   });
-  test('isEndStaff false', () {
+  test('StaffBuilder should build child measures with appropriate clefs', () {
     // Arrange
     const staffBuilder = StaffBuilder();
-    const staffInitialClefType = ClefType.treble;
-    const isEndStaff = false;
+
+    const staffInitialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     final measures = [
       Measure([MockMusicObjectStyle()]),
       Measure([MockMusicObjectStyle(), const Clef(ClefType.alto)]),
@@ -73,8 +77,8 @@ void main() {
     // Act
     final builtStaff = staffBuilder.buildStaff(
       staff,
-      staffInitialClefType,
-      isEndStaff,
+      staffInitialClef,
+      keySignature,
       lineColor,
     );
 

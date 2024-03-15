@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/simple_sheet_music.dart';
-import 'package:simple_sheet_music/src/measure/staffline.dart';
 import 'package:simple_sheet_music/src/mixins/text_paint_mixin.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/built_object.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/music_object_on_canvas.dart';
@@ -99,7 +98,8 @@ class BuiltKeySignature implements BuiltObject {
       this.keySignatureParts, this.keySignature, this.specifiedMargin);
 
   EdgeInsets get margin =>
-      specifiedMargin ?? EdgeInsets.symmetric(horizontal: _objectWidth / 8);
+      // specifiedMargin ?? EdgeInsets.symmetric(horizontal: _objectWidth / 16);
+      specifiedMargin ?? EdgeInsets.symmetric(horizontal: 0);
 
   @override
   double get lowerHeight => keySignatureParts.fold(

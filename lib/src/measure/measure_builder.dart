@@ -2,10 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 
 import '../music_objects/clef/clef.dart';
-import '../music_objects/clef/clef_type.dart';
-
 import '../music_objects/interface/built_object.dart';
 import '../music_objects/interface/music_object_style.dart';
+import '../music_objects/key_signature/key_signature.dart';
 import 'barline/barline.dart';
 import 'measure.dart';
 import 'built_measure.dart';
@@ -22,11 +21,18 @@ class MeasureBuilder {
       isEndMeasure ? Barline.barlineFinal : Barline.barlineThin;
 
   /// Builds a BuiltMeasure object based on the given Measure object, initial clef type, measure line color, and whether it is the end measure or not.
-  BuiltMeasure buildMeasure(Measure measure, ClefType measureInitialClefType,
-      {required Color measureLineColor, required bool isEndMeasure}) {
-    final builtObjects =
-        _buildObjects(measureInitialClefType, measure.objectStyles);
-
+  BuiltMeasure buildMeasure(
+    Measure measure,
+    Clef measureInitialClef,
+    KeySignature keySignature,
+    Color measureLineColor, {
+    bool isLeftMostMeasure = false,
+    bool isBeginMeasure = false,
+    bool isEndMeasure = false,
+  }) {
+    final builtObjects = _buildObjects(
+        measureInitialClef, keySignature, measure.objectStyles,
+        isLeftMostMeasure: isLeftMostMeasure);
     return BuiltMeasure(
       builtObjects,
       measureLineColor,
@@ -39,9 +45,14 @@ class MeasureBuilder {
 
   /// Builds a list of BuiltObject based on the initial clef type and the list of MusicObjectStyle.
   List<BuiltObject> _buildObjects(
-      ClefType initialClefType, List<MusicObjectStyle> objects) {
+    Clef initialClef,
+    KeySignature keySignature,
+    List<MusicObjectStyle> objects, {
+    required bool isLeftMostMeasure,
+  }) {
     List<BuiltObject> builtObjects = [];
-    var currentClefType = initialClefType;
+
+    var currentClefType = initialClef.clefType;
     for (final object in objects) {
       currentClefType = object is Clef ? object.clefType : currentClefType;
       builtObjects.add(object.build(currentClefType));

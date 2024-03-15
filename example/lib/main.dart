@@ -74,7 +74,7 @@ class SimpleSheetMusicDemoState extends State {
         appBar: AppBar(title: const Text('Simple Sheet Music Example')),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           SimpleSheetMusic(
-            initialClefType: initialClefType,
+            initialClef: initialClefType,
             margin: const EdgeInsets.all(10),
             height: height,
             width: width,

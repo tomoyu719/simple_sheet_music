@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:simple_sheet_music/simple_sheet_music.dart';
 import 'package:simple_sheet_music/src/measure/barline/barline.dart';
 import 'package:simple_sheet_music/src/measure/measure_builder.dart';
-import 'package:simple_sheet_music/src/measure/measure.dart';
-import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
-import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 
 import '../mock/mock_music_object.dart';
 
@@ -12,18 +10,18 @@ void main() {
   test('MeasureBuilder should build a measure correctly', () {
     // Arrange
 
-    const initialClefType = ClefType.treble;
-    const isEndMeasure = true;
+    const initialClef = Clef(ClefType.treble);
     final objectStyles = [MockMusicObjectStyle()];
     final measure = Measure(objectStyles);
     const measureBuilder = MeasureBuilder();
+    const keySignature = KeySignature(KeySignatureType.cMajor);
 
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
-      isEndMeasure: isEndMeasure,
+      initialClef,
+      keySignature,
+      Colors.black,
     );
 
     // Assert
@@ -34,9 +32,9 @@ void main() {
       'MeasureBuilder should properly build measures even if different clef types are in the middle.',
       () {
     // Arrange
-    const initialClefType = ClefType.treble;
-    const isEndMeasure = false;
+    const initialClef = Clef(ClefType.treble);
     const middleClef = Clef(ClefType.bass);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     final measure = Measure([
       MockMusicObjectStyle(),
       middleClef,
@@ -47,30 +45,34 @@ void main() {
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
-      isEndMeasure: isEndMeasure,
+      initialClef,
+      keySignature,
+      Colors.black,
     );
 
     // Assert
     expect((builtMeasure.builtObjects[0] as MockBuiltObject).clefType,
         ClefType.treble);
-    expect((builtMeasure.builtObjects[0] as MockBuiltObject).clefType,
+    expect((builtMeasure.builtObjects[2] as MockBuiltObject).clefType,
         middleClef.clefType);
   });
 
   test('MeasureBuilder should build a measure with correctly barline', () {
     // Arrange
-    const initialClefType = ClefType.treble;
+    const initialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     final measure = Measure([MockMusicObjectStyle()]);
     const measureBuilder = MeasureBuilder();
     const isEndMeasure = false;
+    const isBeginMeasure = true;
 
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
+      initialClef,
+      keySignature,
+      Colors.black,
+      isBeginMeasure: isBeginMeasure,
       isEndMeasure: isEndMeasure,
     );
 
@@ -82,7 +84,8 @@ void main() {
       'MeasureBuilder should build a measure with the correct bar line when it is the end measure',
       () {
     // Arrange
-    const initialClefType = ClefType.treble;
+    const initialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     final measure = Measure([MockMusicObjectStyle()]);
     const measureBuilder = MeasureBuilder();
     const isEndMeasure = true;
@@ -90,8 +93,9 @@ void main() {
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
+      initialClef,
+      keySignature,
+      Colors.black,
       isEndMeasure: isEndMeasure,
     );
 
@@ -103,7 +107,8 @@ void main() {
       'MeasureBuilder should build a measure with the correct bar line when it is not the end measure',
       () {
     // Arrange
-    const initialClefType = ClefType.treble;
+    const initialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
     final measure = Measure([MockMusicObjectStyle()]);
     const measureBuilder = MeasureBuilder();
     const isEndMeasure = false;
@@ -111,8 +116,9 @@ void main() {
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
+      initialClef,
+      keySignature,
+      Colors.black,
       isEndMeasure: isEndMeasure,
     );
 
@@ -124,7 +130,9 @@ void main() {
       'MeasureBuilder should build a measure with the correct width and heights',
       () {
     // Arrange
-    const initialClefType = ClefType.treble;
+    const initialClef = Clef(ClefType.treble);
+    const keySignature = KeySignature(KeySignatureType.cMajor);
+
     final measure = Measure([
       MockMusicObjectStyle(upperHeight: 10, lowerHeight: 5, width: 5),
       MockMusicObjectStyle(upperHeight: 5, lowerHeight: 10, width: 5),
@@ -137,8 +145,9 @@ void main() {
     // Act
     final builtMeasure = measureBuilder.buildMeasure(
       measure,
-      initialClefType,
-      measureLineColor: Colors.black,
+      initialClef,
+      keySignature,
+      Colors.black,
       isEndMeasure: isEndMeasure,
     );
 

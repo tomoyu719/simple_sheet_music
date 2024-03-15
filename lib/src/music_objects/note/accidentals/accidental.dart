@@ -3,7 +3,7 @@ import 'dart:ui';
 enum Accidental {
   natural(_naturalGlyph, _naturalBbox),
   sharp(_sharpGlyph, _sharpBbox),
-  doublesharp(_doubleSharpGlyph, _doubleSharpBbox),
+  doubleSharp(_doubleSharpGlyph, _doubleSharpBbox),
   flat(_flatGlyph, _flatBbox),
   doubleFlat(_doubleFlatpGlyph, _doubleFlatBbox);
 

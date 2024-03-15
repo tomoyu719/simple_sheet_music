@@ -79,7 +79,7 @@ class MeasureOnCanvas with LineDrawer, DebugPaint {
   void _renderObjects(Canvas canvas, Size size, String fontFamily) {
     for (final object in musicObjects) {
       object.render(canvas, size, fontFamily);
-      boxPaint(canvas, size, object.renderArea);
+      // boxPaint(canvas, size, object.renderArea);
     }
   }
 

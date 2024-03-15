@@ -18,7 +18,7 @@ class Clef implements MusicObjectStyle, BuiltObject {
   const Clef(this.clefType, {this.specifiedMargin, this.color = Colors.black});
 
   EdgeInsets get _defaultMargin =>
-      EdgeInsets.symmetric(horizontal: clefType.width / 4);
+      EdgeInsets.symmetric(horizontal: clefType.width / 8);
 
   @override
   double get lowerHeight =>
