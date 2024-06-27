@@ -6,7 +6,7 @@
 
 // import '../../../box_paint_mixin.dart';
 
-// // TODO List<TimeSignatureNum> to be class
+// // `TODO` List<TimeSignatureNum> to be class
 
 // class TimeSignatureFractionPainter
 //     with TextPaint, BoxPaint

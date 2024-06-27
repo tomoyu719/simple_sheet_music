@@ -30,56 +30,45 @@ class SimpleSheetMusicDemo extends StatefulWidget {
 }
 
 class SimpleSheetMusicDemoState extends State {
-  late final List<MusicObjectStyle> musicObjects;
+  late final List<MusicalSymbol> musicObjects;
   late final Measure measure;
-  late final Staff staff;
-  late final Clef initialClef;
 
   @override
   void initState() {
-    initialClef = const Clef(ClefType.treble);
     musicObjects = [
       const Clef(ClefType.treble),
-      const Note(
-          pitch: Pitch.c4,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.sharp,
-          fingering: Fingering.one),
-      const Note(
-          pitch: Pitch.e4,
-          noteDuration: NoteDuration.eighth,
-          fingering: Fingering.two),
-      const Note(
-          pitch: Pitch.g4,
-          noteDuration: NoteDuration.eighth,
-          fingering: Fingering.three),
-      const Note(
-          pitch: Pitch.c5,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.flat,
-          fingering: Fingering.four),
+      const Clef(ClefType.alto),
+      const Clef(ClefType.tenor),
+      const Clef(ClefType.bass),
     ];
-    measure = Measure(musicObjects);
-    staff = Staff([measure]);
+    measure = Measure(musicObjects, isLineBreak: true);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final height = screenSize.height / 2;
-    final width = screenSize.width;
+    final sheetMusicSize = MediaQuery.of(context).size / 2;
     return Scaffold(
         appBar: AppBar(title: const Text('Simple Sheet Music Example')),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SimpleSheetMusic(
-            initialClef: initialClef,
-            margin: const EdgeInsets.all(10),
-            height: height,
-            width: width,
-            staffs: [staff],
-          )
-        ]));
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+            ),
+            height: sheetMusicSize.height,
+            width: sheetMusicSize.width,
+            child: Center(
+              child: SimpleSheetMusic(
+                fontType: FontType.petaluma,
+                maximumHeight: sheetMusicSize.height / 2,
+                maximumWidth: sheetMusicSize.width / 2,
+                measures: [
+                  measure,
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

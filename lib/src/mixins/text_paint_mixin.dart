@@ -25,11 +25,10 @@ mixin TextPaint {
       textDirection: TextDirection.ltr,
       text: TextSpan(
           style: TextStyle(
-              color: color, fontSize: fontSize, fontFamily: fontFamily),
-          text: glyph),
+              color: color, fontSize: fontSize, fontFamily: fontFamily,),
+          text: glyph,),
     )
       ..layout(
-        minWidth: 0,
         maxWidth: size.width,
       )
       ..paint(canvas, offset.translate(0, -topToBaselineHeight));

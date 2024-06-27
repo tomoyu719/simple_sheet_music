@@ -1,14 +1,19 @@
 enum FontType {
-  bravura(path: bravuraPath, name: bravuraName);
+  bravura(svgPath: bravuraSvgPath, metadataPath: bravuraMetadataPath),
+  petaluma(svgPath: petalumaSvgPath, metadataPath: petalumaMetadataPath);
+
   // bravura(path: bravuraPath, name: bravuraName),
-  // petaluma(path: petalumaPath, name: petalumaName);
+  const FontType({required this.svgPath, required this.metadataPath});
 
-  static const bravuraPath = 'packages/simple_sheet_music/assets/Bravura.otf';
-  static const bravuraName = 'Bravura';
-  static const petalumaPath = 'packages/simple_sheet_music/assets/Petaluma.otf';
-  static const petalumaName = 'Petaluma';
+  static const bravuraSvgPath =
+      'packages/simple_sheet_music/assets/Bravura.svg';
+  static const bravuraMetadataPath =
+      'packages/simple_sheet_music/assets/bravura_metadata.json';
+  static const petalumaSvgPath =
+      'packages/simple_sheet_music/assets/Petaluma.svg';
+  static const petalumaMetadataPath =
+      'packages/simple_sheet_music/assets/petaluma_metadata.json';
 
-  final String path;
-  final String name;
-  const FontType({required this.path, required this.name});
+  final String svgPath;
+  final String metadataPath;
 }

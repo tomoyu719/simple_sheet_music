@@ -48,7 +48,7 @@ enum NoteFlagType {
       required this.upGlyph,
       required this.downGlyph,
       required this.upOffsetHeight,
-      required this.downOffsetHeight});
+      required this.downOffsetHeight,});
 
   final Rect upBbox;
   final Rect downBbox;
@@ -69,23 +69,23 @@ enum NoteFlagType {
   static const _flag128thDownGlyph = '';
 
   static const _flag8thUpGlyphBbox =
-      Rect.fromLTRB(0.0, -0.03521239682756091, 1.056, 3.240768470618394);
+      Rect.fromLTRB(0, -0.03521239682756091, 1.056, 3.240768470618394);
   static const _flag8thDownGlyphBbox =
-      Rect.fromLTRB(0.0, -3.232896633157715, 1.224, 0.0575672);
-  static const _flag16thUpGlyphBbox = Rect.fromLTRB(0.0, -0.008, 1.116, 3.252);
+      Rect.fromLTRB(0, -3.232896633157715, 1.224, 0.0575672);
+  static const _flag16thUpGlyphBbox = Rect.fromLTRB(0, -0.008, 1.116, 3.252);
   static const _flag16thDownGlyphBbox = Rect.fromLTRB(-1.9418183745617774e-05,
-      -3.2480256, 1.1635806326044895, 0.03601094374150052);
-  static const _flag32thUpGlyphBbox = Rect.fromLTRB(0.0, -0.596, 1.044, 3.248);
+      -3.2480256, 1.1635806326044895, 0.03601094374150052,);
+  static const _flag32thUpGlyphBbox = Rect.fromLTRB(0, -0.596, 1.044, 3.248);
   static const _flag32thDownGlyphBbox =
-      Rect.fromLTRB(0.0, -3.248, 1.092, 0.687477099907407);
+      Rect.fromLTRB(0, -3.248, 1.092, 0.687477099907407);
   static const _flag64thUpGlyphBbox =
-      Rect.fromLTRB(0.0, -1.387108, 1.044, 3.248);
+      Rect.fromLTRB(0, -1.387108, 1.044, 3.248);
   static const _flag64thDownGlyphBbox =
-      Rect.fromLTRB(0.0, -3.248, 1.092, 1.5040263329569774);
+      Rect.fromLTRB(0, -3.248, 1.092, 1.5040263329569774);
   static const _flag128thDownGlyphBbox =
-      Rect.fromLTRB(0.0, -3.248, 1.092, 2.320034471092627);
+      Rect.fromLTRB(0, -3.248, 1.092, 2.320034471092627);
   static const _flag128thUpGlyphBbox =
-      Rect.fromLTRB(0.0, -2.1320003247537183, 1.044, 3.248);
+      Rect.fromLTRB(0, -2.1320003247537183, 1.044, 3.248);
 
   // double get _upOffsetHeightToY0 => -upBbox.top;
   // double get downOffsetHeightToY0 => -upBbox.bottom;

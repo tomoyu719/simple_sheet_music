@@ -8,6 +8,17 @@ import '../mixins/draw_line_mixin.dart';
 /// It takes in parameters such as the center Y position of the staff lines, the initial X position,
 /// the width of the lines, and the color of the lines.
 class StaffLineRenderer with LineDrawer {
+
+  /// Constructs a [StaffLineRenderer] with the given parameters.
+  ///
+  /// The [lineColor] parameter specifies the color of the staff lines.
+  /// The [staffLineCenterY] parameter specifies the Y position of the center of the staff lines.
+  /// The [staffLineInitialX] parameter specifies the initial X position of the staff lines.
+  /// The [width] parameter specifies the width of the staff lines.
+  const StaffLineRenderer(this.lineColor,
+      {required this.staffLineCenterY,
+      required this.staffLineInitialX,
+      required this.width,});
   // Constants for staff line thickness and spacing
   static const staffLineThickness = 0.13;
   static const staffLineSpaceHeight = 1.0;
@@ -22,17 +33,6 @@ class StaffLineRenderer with LineDrawer {
   final double staffLineInitialX;
   final double width;
   final Color lineColor;
-
-  /// Constructs a [StaffLineRenderer] with the given parameters.
-  ///
-  /// The [lineColor] parameter specifies the color of the staff lines.
-  /// The [staffLineCenterY] parameter specifies the Y position of the center of the staff lines.
-  /// The [staffLineInitialX] parameter specifies the initial X position of the staff lines.
-  /// The [width] parameter specifies the width of the staff lines.
-  const StaffLineRenderer(this.lineColor,
-      {required this.staffLineCenterY,
-      required this.staffLineInitialX,
-      required this.width});
 
   /// Generates the Y positions of the staff lines.
   List<double> get _staffLineYs => staffLineYs(staffLineCenterY);
@@ -52,4 +52,4 @@ List<double> staffLineYs(double staffLineCenterY) => List.generate(
     5,
     (index) =>
         staffLineCenterY +
-        (index - 2) * StaffLineRenderer.staffLineSpaceHeight);
+        (index - 2) * StaffLineRenderer.staffLineSpaceHeight,);

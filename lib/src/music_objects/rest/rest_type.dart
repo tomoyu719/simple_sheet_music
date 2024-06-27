@@ -43,12 +43,12 @@ enum RestType {
   static const _rest64thGlyph = '𝅁';
   static const _rest128thGlyph = '𝅂';
 
-  static const _restWholeGlyphBbox = Rect.fromLTRB(0.0, -0.036, 1.128, 0.54);
-  static const _restHalfGlyphBbox = Rect.fromLTRB(0.0, -0.568, 1.128, 0.008);
+  static const _restWholeGlyphBbox = Rect.fromLTRB(0, -0.036, 1.128, 0.54);
+  static const _restHalfGlyphBbox = Rect.fromLTRB(0, -0.568, 1.128, 0.008);
   static const _restQuarterGlyphBbox = Rect.fromLTRB(0.004, -1.492, 1.08, 1.5);
-  static const _rest8thGlyphBbox = Rect.fromLTRB(0.0, -0.696, 0.988, 1.004);
-  static const _rest16thGlyphBbox = Rect.fromLTRB(0.0, -0.716, 1.28, 2.0);
-  static const _rest32ndGlyphBbox = Rect.fromLTRB(0.0, -1.704, 1.452, 2.0);
-  static const _rest64thGlyphBbox = Rect.fromLTRB(0.0, -1.72, 1.692, 3.012);
-  static const _rest128thGlyphBbox = Rect.fromLTRB(0.0, -2.756, 1.94, 3.0);
+  static const _rest8thGlyphBbox = Rect.fromLTRB(0, -0.696, 0.988, 1.004);
+  static const _rest16thGlyphBbox = Rect.fromLTRB(0, -0.716, 1.28, 2);
+  static const _rest32ndGlyphBbox = Rect.fromLTRB(0, -1.704, 1.452, 2);
+  static const _rest64thGlyphBbox = Rect.fromLTRB(0, -1.72, 1.692, 3.012);
+  static const _rest128thGlyphBbox = Rect.fromLTRB(0, -2.756, 1.94, 3);
 }

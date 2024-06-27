@@ -7,7 +7,7 @@
 // import '../../../music_object_painter.dart';
 
 // class TimeSignatureParser {
-//   // TODO  validate
+//   // `TODO`  validate
 //   final String timeSignatureStr;
 //   const TimeSignatureParser(this.timeSignatureStr);
 
@@ -15,7 +15,7 @@
 //   Offset get commonsOffsetToY0 => Offset(0, -commonsOffsetHeightToY0);
 //   double get fractionOffsetHeightToY0 => 6.0;
 //   Offset get fractionOffsetToY0 => Offset(0, -fractionOffsetHeightToY0);
-//   // TODO fix
+//   // `TODO` fix
 //   MusicObjectPainter parseToPainter(
 //       Color color, Offset renderOffset, TimeSignature timeSignature) {
 //     if (_isTimeSignatureCommons) {

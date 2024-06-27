@@ -8,16 +8,17 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  async: ^2.8.2
   flutter:
     sdk: flutter
-  async: ^2.8.2
   golden_toolkit: ^0.15.0
   svg_path_parser: ^1.1.2
+  xml: ^6.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  pedantic_mono: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -25,15 +26,16 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
-
-  fonts:
-      - family: Bravura
-        fonts:
-            - asset: assets/Bravura.otf
-            
-
+  # fonts:
+  #     - family: Bravura
+  #       fonts:
+  #           - asset: assets/Bravura.otf
   # To add assets to your package, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/Bravura.svg
+    - assets/bravura_metadata.json
+    - assets/Petaluma.svg
+    - assets/petaluma_metadata.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #

@@ -9,6 +9,6 @@ extension AddMargin on Rect {
     final marginedRight = right + margin.right;
     final marginedBottom = bottom + margin.bottom;
     return Rect.fromLTRB(
-        marginedLeft, marginedTop, marginedRight, marginedBottom);
+        marginedLeft, marginedTop, marginedRight, marginedBottom,);
   }
 }
