@@ -200,7 +200,7 @@ packages:
     source: hosted
     version: "1.2.0"
   svg_path_parser:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: svg_path_parser
       sha256: adff09b1099a0c9e0dc81e1975de70999889f825c1a2e8e9139bab03464a3657
