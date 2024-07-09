@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_sheet_music/src/measure/measure_metrics.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// The renderer for a staff, which is responsible for rendering measures and handling hit tests.
 class StaffRenderer {

@@ -1,14 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_sheet_music/src/extension/list_extension.dart';
-import 'package:simple_sheet_music/src/glyph_metadata.dart';
-import 'package:simple_sheet_music/src/glyph_path.dart';
-import 'package:simple_sheet_music/src/measure/measure.dart';
-import 'package:simple_sheet_music/src/measure/measure_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
-import 'package:simple_sheet_music/src/musical_context.dart';
 import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
-import 'package:simple_sheet_music/src/staff/staff_metrics.dart';
 
 import 'mock/mocks.dart';
 

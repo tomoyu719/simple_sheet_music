@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/sheet_music_layout.dart';
-import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
-import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
 
 import 'mock/mock_sheet_music_metrics.dart';
 
