@@ -7,11 +7,13 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/measure/measure.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
+import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
 import 'package:simple_sheet_music/src/sheet_music_renderer.dart';
 import 'package:xml/xml.dart';
 
 import 'font_types.dart';
 import 'music_objects/interface/musical_symbol.dart';
+import 'music_objects/key_signature/keysignature_type.dart';
 import 'sheet_music_layout.dart';
 
 typedef OnTapMusicObjectCallback = void Function(
@@ -26,9 +28,9 @@ class SimpleSheetMusic extends StatefulWidget {
     super.key,
     required this.measures,
     this.initialClefType = ClefType.treble,
-    this.maximumHeight = 400.0,
-    this.maximumWidth = 400.0,
-    this.onTap,
+    this.initialKeySignatureType = KeySignatureType.cMajor,
+    this.height = 400.0,
+    this.width = 400.0,
     this.lineColor = Colors.black54,
     this.fontType = FontType.bravura,
   });
@@ -37,10 +39,10 @@ class SimpleSheetMusic extends StatefulWidget {
   final List<Measure> measures;
 
   /// Receive maximum width and height so as not to break the aspect ratio of the score.
-  final double maximumHeight;
+  final double height;
 
   /// Receive maximum width and height so as not to break the aspect ratio of the score.
-  final double maximumWidth;
+  final double width;
 
   /// The font type to be used for rendering the sheet music.
   final FontType fontType;
@@ -49,10 +51,10 @@ class SimpleSheetMusic extends StatefulWidget {
   final ClefType initialClefType;
 
   // / The initial keySignature for the sheet music.
-  // final KeySignature initialKeySignature;
+  final KeySignatureType initialKeySignatureType;
 
   /// A callback function that is called when a music object is tapped.
-  final OnTapMusicObjectCallback? onTap;
+  // final OnTapMusicObjectCallback? onTap;
 
   final Color lineColor;
 
@@ -65,11 +67,6 @@ class SimpleSheetMusic extends StatefulWidget {
 /// This class manages the state of the SimpleSheetMusic widget and handles the initialization,
 /// font asset loading, and building of the widget.
 class SimpleSheetMusicState extends State<SimpleSheetMusic> {
-  // late final AsyncMemoizer memoizer;
-  // late final SheetMusicLayout layout;
-  // late final SheetMusicRenderer renderer;
-  // late SheetMusicBuilder staffsBuilder;
-
   late final GlyphPaths glyphPath;
   late final GlyphMetadata metadata;
 
@@ -91,25 +88,29 @@ class SimpleSheetMusicState extends State<SimpleSheetMusic> {
 
   @override
   Widget build(BuildContext context) {
-    final targetSize = Size(widget.maximumWidth, widget.maximumHeight);
+    final targetSize = Size(widget.width, widget.height);
     return FutureBuilder(
       future: load(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Center(child: CircularProgressIndicator());
         }
-
-        final layout = SheetMusicLayout(
+        final metricsBuilder = SheetMusicMetrics(
           widget.measures,
+          widget.initialClefType,
+          widget.initialKeySignatureType,
           metadata,
           glyphPath,
+        );
+        final layout = SheetMusicLayout(
+          metricsBuilder,
           widget.lineColor,
-          maximumWidth: widget.maximumWidth,
-          maximumHeight: widget.maximumHeight,
+          widgetWidth: widget.width,
+          widgetHeight: widget.height,
         );
         return GestureDetector(
           onTap: () {
-            print('Tapped');
+            // print('Tapped');
           },
           child: CustomPaint(
             size: targetSize,

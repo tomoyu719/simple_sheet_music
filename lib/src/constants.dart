@@ -1,1 +1,3 @@
-const staffSpace = 250.0;
+class Constants {
+  static const staffSpace = 250.0;
+}

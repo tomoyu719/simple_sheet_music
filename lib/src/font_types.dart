@@ -2,7 +2,6 @@ enum FontType {
   bravura(svgPath: bravuraSvgPath, metadataPath: bravuraMetadataPath),
   petaluma(svgPath: petalumaSvgPath, metadataPath: petalumaMetadataPath);
 
-  // bravura(path: bravuraPath, name: bravuraName),
   const FontType({required this.svgPath, required this.metadataPath});
 
   static const bravuraSvgPath =

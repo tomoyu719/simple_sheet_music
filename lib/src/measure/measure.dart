@@ -1,77 +1,77 @@
 import 'dart:core';
 
-import 'package:flutter/material.dart';
-import 'package:simple_sheet_music/src/measure/measure_on_y0.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
+import 'package:simple_sheet_music/src/glyph_metadata.dart';
+import 'package:simple_sheet_music/src/glyph_path.dart';
+import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
+import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/key_signature/key_signature.dart';
+import 'package:simple_sheet_music/src/musical_context.dart';
 
-import '../../simple_sheet_music.dart';
+import '../music_objects/key_signature/keysignature_type.dart';
 
-import 'barline/barline.dart';
-
-import 'staffline.dart';
-
-/// Represents a musical measure.
+/// Represents a measure in sheet music.
 class Measure {
-  // final KeySignature? keySignature;
-
-  /// Constructs a Measure object.
+  /// Creates a new instance of the [Measure] class.
   ///
-  /// The [musicalSymbols] parameter is a list of [MusicalSymbol] that represent the musical objects in the measure.
-  /// The [measureLineColor] parameter specifies the color of the staff lines.
+  /// The [musicalSymbols] parameter is a list of musical symbols that make up the measure.
+  /// The [isNewLine] parameter indicates whether the measure is a new line in the sheet music.
+  ///
+  /// Throws an [AssertionError] if the [musicalSymbols] list is empty.
   const Measure(
     this.musicalSymbols, {
-    this.measureLineColor,
-    // this.barline,
-    this.isLineBreak = false,
+    this.isNewLine = false,
   }) : assert(musicalSymbols.length != 0);
-  static const double measureMinUpperHeight =
-      StaffLineRenderer.staffLineSpaceHeight * 2 +
-          StaffLineRenderer.staffLineThickness / 2;
-  static const double measureMinLowerHeight =
-      StaffLineRenderer.staffLineSpaceHeight * 2 +
-          StaffLineRenderer.staffLineThickness / 2;
 
-  // final MeasureBuilder _measureBuilder;
-
+  /// The list of musical symbols that make up the measure.
   final List<MusicalSymbol> musicalSymbols;
 
-  final Color? measureLineColor;
-  // final Barline? barline;
-  final bool isLineBreak;
+  /// Indicates whether the measure is a new line in the sheet music.
+  final bool isNewLine;
 
-  // BuiltMeasure buildMeasure(
-  //   Clef measureInitialClef,
-  //   KeySignature keySignature,
-  //   Color staffLineColor, {
-  //   bool isLeftMostMeasure = false,
-  //   bool isBeginMeasure = false,
-  //   bool isEndMeasure = false,
-  // }) {
-  //   return _measureBuilder.buildMeasure(
-  //     this,
-  //     measureInitialClef,
-  //     this.keySignature ?? keySignature,
-  //     measureLineColor ?? staffLineColor,
-  //     isLeftMostMeasure: isLeftMostMeasure,
-  //     isBeginMeasure: isBeginMeasure,
-  //     isEndMeasure: isEndMeasure,
-  //   );
-  // }
+  /// Sets the context for the measure and returns a list of musical symbol metrics.
+  ///
+  /// The [context] parameter is the musical context in which the measure is being rendered.
+  /// The [metadata] parameter provides metadata for the glyphs used in the measure.
+  /// The [paths] parameter provides the paths for the glyphs used in the measure.
+  ///
+  /// Returns a list of [MusicalSymbolMetrics] objects representing the metrics of each musical symbol in the measure.
+  List<MusicalSymbolMetrics> setContext(
+    MusicalContext context,
+    GlyphMetadata metadata,
+    GlyphPaths paths,
+  ) {
+    final result = <MusicalSymbolMetrics>[];
+    var symbolContext = context;
+    for (final symbol in musicalSymbols) {
+      final symbolMetrics = symbol.setContext(symbolContext, metadata, paths);
+      symbolContext = symbolContext.update(symbol);
+      result.add(symbolMetrics);
+    }
+    return result;
+  }
 
-  Clef? get lastClef {
-    for (final object in musicalSymbols.reversed) {
-      if (object is Clef) {
-        return object;
+  ClefType? get lastClefType {
+    for (final symbol in musicalSymbols.reversed) {
+      if (symbol is Clef) {
+        return symbol.clefType;
       }
     }
     return null;
   }
 
-  MeasureOnY0 setOnY0(SheetMusicLayout layout) {
-    return MeasureOnY0(musicalSymbols, layout);
+  KeySignatureType? get lastKeySignatureType {
+    for (final symbol in musicalSymbols.reversed) {
+      if (symbol is KeySignature) {
+        return symbol.keySignatureType;
+      }
+    }
+    return null;
   }
 
-  // MeasureRenderer renderer(SheetMusicLayout layout) {
-  //   return MeasureRenderer(musicalSymbols, layout);
-  // }
+  MusicalContext updateContext(MusicalContext context) => context.updateWith(
+        clefType: lastClefType,
+        keySignatureType: lastKeySignatureType,
+      );
 }

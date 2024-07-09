@@ -1,113 +1,89 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:simple_sheet_music/simple_sheet_music.dart';
-import 'package:simple_sheet_music/src/extension/list_extension.dart';
-import 'package:simple_sheet_music/src/glyph_metadata.dart';
-import 'package:simple_sheet_music/src/glyph_path.dart';
-import 'package:simple_sheet_music/src/staff/staff_on_y0.dart';
+import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
+import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
 
-import 'staff/staff_renderer.dart';
-
+/// Represents the layout of the sheet music.
 class SheetMusicLayout {
-
   SheetMusicLayout(
-    this.measures,
-    this.metadata,
-    this.glyphPaths,
+    this.metrics,
     this.lineColor, {
-    required this.maximumHeight,
-    required this.maximumWidth,
-  }) {
-    staffs = _createStaffs(measures);
+    required this.widgetHeight,
+    required this.widgetWidth,
+  });
 
-    staffsOnY0 = staffs.map((staff) => staff.setOnY0(this)).toList();
-    scale =
-        _canvasScale(maximumWidth: maximumWidth, maximumHeight: maximumHeight);
-    staffRenderers = setRenderer(staffsOnY0,
-        upperPadding: upperPadding, leftPadding: leftPadding,);
-  }
-  final List<Measure> measures;
-  late final List<Staff> staffs;
-  late final List<StaffOnY0> staffsOnY0;
-  late final List<StaffRenderer> staffRenderers;
-  final double maximumWidth;
-  final double maximumHeight;
-  late final double scale;
-  final GlyphPaths glyphPaths;
-  final GlyphMetadata metadata;
+  /// The height of the widget.
+  final double widgetHeight;
+
+  /// The width of the widget.
+  final double widgetWidth;
+
+  /// The metrics for the sheet music.
+  final SheetMusicMetrics metrics;
+
+  /// The color of the lines in the sheet music.
   final Color lineColor;
 
-  double get horizontalPadding => maximumWidth / scale - _staffsMaximumWidth;
-  double get verticalPadding => maximumHeight / scale - _staffsHeightsSum;
-  double get upperPadding => verticalPadding / 2;
-  double get leftPadding => horizontalPadding / 2;
+  /// The maximum width of a staff.
+  double get _maximumStaffWidth => metrics.maximumStaffWidth;
 
-  double get staffLineThickness => metadata.staffLineThickness;
+  /// The sum of the horizontal margins of all the staffs.
+  double get _maximumStaffHorizontalMarginSum =>
+      metrics.maximumStaffHorizontalMarginSum;
 
-  // // // `TODO` rename
-  // void setRenderer() {
-  //   var currentY = upperPadding;
-  //   for (final staff in staffRenderers) {
-  //     currentY += staff.upperHeight;
-  //     staff.setOffset(currentY, leftPadding);
-  //     currentY += staff.lowerHeight;
-  //   }
-  // }
+  /// The horizontal padding of the sheet music.
+  double get _horizontalPadding =>
+      widgetWidth -
+      (_maximumStaffWidth * canvasScale + _maximumStaffHorizontalMarginSum);
 
-  // TODOrename
+  /// The horizontal padding on the canvas.
+  double get _horizontalPaddingOnCanvas => _horizontalPadding / canvasScale;
 
-  double _canvasScale(
-      {required double maximumWidth, required double maximumHeight,}) {
-    final widthScale = maximumWidth / _staffsMaximumWidth;
-    final heightScale = maximumHeight / _staffsHeightsSum;
-    return min(widthScale, heightScale);
+  /// The left padding on the canvas.
+  double get _leftPaddingOnCanvas => _horizontalPaddingOnCanvas / 2;
+
+  /// The vertical padding of the sheet music.
+  double get _verticalPadding => widgetHeight - _staffsHeightsSum * canvasScale;
+
+  /// The vertical padding on the canvas.
+  double get _verticalPaddingOnCanvas => _verticalPadding / canvasScale;
+
+  /// The upper padding on the canvas.
+  double get _upperPaddingOnCanvas => _verticalPaddingOnCanvas / 2;
+
+  /// The list of staff renderers.
+  List<StaffRenderer> get staffRenderers {
+    var currentY = _upperPaddingOnCanvas;
+    return metrics.staffsMetricses.map((staffMetrics) {
+      currentY += staffMetrics.upperHeight;
+      final staffRenderer = staffMetrics.renderer(
+        this,
+        staffLineCenterY: currentY,
+        leftPadding: _leftPaddingOnCanvas,
+      );
+      currentY += staffMetrics.lowerHeight;
+      return staffRenderer;
+    }).toList();
   }
 
-  double get _staffsMaximumWidth => staffsOnY0.map((staff) => staff.width).max;
+  /// The sum of the heights of all the staffs.
+  double get _staffsHeightsSum => metrics.staffsHeightSum;
 
-  double get _staffsHeightsSum => staffsOnY0.map((staff) => staff.height).sum;
+  /// The scale factor for the width of the sheet music.
+  double get _widthScale =>
+      (widgetWidth - _maximumStaffHorizontalMarginSum) / _maximumStaffWidth;
 
+  /// The scale factor for the height of the sheet music.
+  double get _heightScale => widgetHeight / _staffsHeightsSum;
+
+  /// The scale factor for the canvas.
+  double get canvasScale => min(_widthScale, _heightScale);
+
+  /// Renders the sheet music on the canvas.
   void render(Canvas canvas, Size size) {
     for (final staff in staffRenderers) {
       staff.render(canvas, size);
     }
   }
-
-  // TODOrename
-  Path getPath(String pathKey) => glyphPaths.getPath(pathKey);
-}
-
-// TODOrename
-List<Staff> _createStaffs(List<Measure> inputMeasures) {
-  final staffs = <Staff>[];
-  var measures = <Measure>[];
-  for (final measure in inputMeasures) {
-    measures.add(measure);
-    if (measure.isLineBreak) {
-      final staff = Staff(measures);
-      staffs.add(staff);
-      measures = <Measure>[];
-    }
-  }
-  if (measures.isNotEmpty) {
-    final staff = Staff(measures);
-    staffs.add(staff);
-  }
-  return staffs;
-}
-
-// TODOrename
-List<StaffRenderer> setRenderer(List<StaffOnY0> staffs,
-    {required double upperPadding, required double leftPadding,}) {
-  var currentY = upperPadding;
-  final renderers = <StaffRenderer>[];
-  for (final staff in staffs) {
-    currentY += staff.upperHeight;
-    final renderer =
-        staff.renderer(staffLineCenterY: currentY, leftPadding: leftPadding);
-    renderers.add(renderer);
-    currentY += staff.lowerHeight;
-  }
-  return renderers;
 }

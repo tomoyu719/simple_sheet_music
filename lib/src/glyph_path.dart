@@ -5,12 +5,12 @@ import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:xml/xml.dart';
 
 class GlyphPaths {
-  GlyphPaths(this.allGlyphs) : _cachedPaths = {};
+  const GlyphPaths(this.allGlyphs);
   final Set<XmlElement> allGlyphs;
-  final Map<String, Path> _cachedPaths;
+  static final Map<String, Path> _cachedPaths = {};
 
   /// Retrieves the [Path] object associated with the given [pathKey].
-  Path getPath(String pathKey) {
+  Path parsePath(String pathKey) {
     if (_cachedPaths.containsKey(pathKey)) {
       return _cachedPaths[pathKey]!;
     }
@@ -24,15 +24,9 @@ class GlyphPaths {
     return pathYReversed;
   }
 
-  String _pathKeyToPathStr(String glyphName) {
-    try {
-      return allGlyphs
-          .firstWhere(
-            (element) => element.getAttribute('glyph-name') == glyphName,
-          )
-          .getAttribute('d')!;
-    } catch (e) {
-      throw 'Path key not found: $glyphName';
-    }
-  }
+  String _pathKeyToPathStr(String glyphName) => allGlyphs
+      .firstWhere(
+        (element) => element.getAttribute('glyph-name') == glyphName,
+      )
+      .getAttribute('d')!;
 }

@@ -1,14 +1,12 @@
 import 'package:flutter/rendering.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_y0.dart';
 
+/// An abstract class representing a renderer for a musical symbol.
 abstract class MusicalSymbolRenderer {
   MusicalSymbolRenderer();
-  MusicalSymbolOnY0 get musicalSymbol;
 
-  Rect get renderArea;
-
+  /// Checks if the symbol is hit at the given position.
   bool isHit(Offset position);
 
-  // final Offset renderOffset;
-  void render(Canvas canvas, Size size);
+  /// Renders the symbol on the given canvas.
+  void render(Canvas canvas);
 }
