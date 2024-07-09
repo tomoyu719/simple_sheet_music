@@ -9,3 +9,7 @@
 
 ## 0.0.4-dev.1
 * add key signatures.
+
+## 1.0.0-dev.1
+* add chord 
+* switching rendering methods
