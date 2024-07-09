@@ -11,62 +11,8 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-The `simple_sheet_music` library provides a simple way to display sheet music in a Flutter application.
-It includes classes for rendering staffs, measures, clefs, notes, and other music objects.
+The `simple_sheet_music` library provides a simple way to display sheet music in Flutter applications.
+It contains classes for rendering staves, measures, clefs, notes and other notation objects.
 
-<div align="center">
-<img src=https://github.com/tomoyu719/simple_sheet_music/blob/main/Screenshot_1710153630.png?raw=true width=50%>
 
-</div>
-## Features
-
-Can express sheet musics declaratively. Support for multiple single staffs.<br>
-Currently supported music symbols are
-<li>Clefs
-<li>Notes (accidentals and fingerings)
-<li>Barlines<br>
-<li>Rests<br>
-
-## Usage
-To make the image above, do the following
-```dart
-musicObjects = [
-    Clef(ClefType.treble),
-    Note(
-        pitch: Pitch.c4,
-        noteDuration: NoteDuration.eighth,
-        accidental: Accidental.sharp,
-        fingering: Fingering.one),
-    Note(
-        pitch: Pitch.e4,
-        noteDuration: NoteDuration.eighth,
-        fingering: Fingering.two),
-    Note(
-        pitch: Pitch.g4,
-        noteDuration: NoteDuration.eighth,
-        fingering: Fingering.three),
-    Note(
-        pitch: Pitch.c5,
-        noteDuration: NoteDuration.eighth,
-        accidental: Accidental.flat,
-        fingering: Fingering.four),
-];
-measure = Measure(musicObjects);
-staff = Staff([measure]);
-
-SimpleSheetMusic(
-    initialClefType: ClefType.treble,
-    staffs: [staff],
-)
-```
-
-## Future plans
-Currently planned additions are as follows.
-
-<li>Time signatures<br>
-<li>Rests<br>
-<li>Various fonts<br>
-<li>Enrich gestures<br>
-<li>import from MIDI, MusicXML<br>
-<li>Grand staff<br>
-...
+<img src="https://github.com/tomoyu719/simple_sheet_music/assets/29626818/33364f6a-63ae-4b41-9c98-46998fe3c702" width="30%" style="display: block; margin: 0 auto;">
