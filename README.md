@@ -14,5 +14,6 @@ and the Flutter guide for
 The `simple_sheet_music` library provides a simple way to display sheet music in Flutter applications.
 It contains classes for rendering staves, measures, clefs, notes and other notation objects.
 
-
-<img src="https://github.com/tomoyu719/simple_sheet_music/assets/29626818/33364f6a-63ae-4b41-9c98-46998fe3c702" width="30%" style="display: block; margin: 0 auto;">
+<p align="center">
+    <img src="https://github.com/tomoyu719/simple_sheet_music/assets/29626818/33364f6a-63ae-4b41-9c98-46998fe3c702" width="30%" style="display: block; margin: 0 auto;">
+</p>
