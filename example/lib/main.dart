@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
         home: const SimpleSheetMusicDemo());
   }
@@ -24,62 +25,74 @@ class SimpleSheetMusicDemo extends StatefulWidget {
   const SimpleSheetMusicDemo({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return SimpleSheetMusicDemoState();
-  }
+  State<StatefulWidget> createState() => SimpleSheetMusicDemoState();
 }
 
 class SimpleSheetMusicDemoState extends State {
-  late final List<MusicObjectStyle> musicObjects;
-  late final Measure measure;
-  late final Staff staff;
-  late final Clef initialClef;
+  late final Measure measure1;
+  late final Measure measure2;
+  late final Measure measure3;
 
   @override
   void initState() {
-    initialClef = const Clef(ClefType.treble);
-    musicObjects = [
+    measure1 = Measure([
       const Clef(ClefType.treble),
-      const Note(
-          pitch: Pitch.c4,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.sharp,
-          fingering: Fingering.one),
-      const Note(
-          pitch: Pitch.e4,
-          noteDuration: NoteDuration.eighth,
-          fingering: Fingering.two),
-      const Note(
-          pitch: Pitch.g4,
-          noteDuration: NoteDuration.eighth,
-          fingering: Fingering.three),
-      const Note(
-          pitch: Pitch.c5,
-          noteDuration: NoteDuration.eighth,
-          accidental: Accidental.flat,
-          fingering: Fingering.four),
-    ];
-    measure = Measure(musicObjects);
-    staff = Staff([measure]);
-
+      const KeySignature(KeySignatureType.dMajor),
+      const ChordNote([
+        ChordNotePart(Pitch.b4),
+        ChordNotePart(Pitch.g5, accidental: Accidental.sharp),
+      ]),
+      const Rest(RestType.quarter),
+      const Note(Pitch.a4,
+          noteDuration: NoteDuration.sixteenth, accidental: Accidental.flat),
+      const Rest(RestType.sixteenth),
+    ]);
+    measure2 = Measure([
+      const ChordNote([
+        ChordNotePart(Pitch.c4),
+        ChordNotePart(Pitch.c5),
+      ], noteDuration: NoteDuration.sixteenth),
+      const Note(Pitch.a4,
+          noteDuration: NoteDuration.sixteenth, accidental: Accidental.flat)
+    ]);
+    measure3 = Measure(
+      [
+        const Clef(ClefType.bass),
+        const KeySignature(KeySignatureType.cMinor),
+        const ChordNote(
+          [
+            ChordNotePart(Pitch.c2),
+            ChordNotePart(Pitch.c3),
+          ],
+        ),
+        const Rest(RestType.quarter),
+        const Note(Pitch.a3,
+            noteDuration: NoteDuration.whole, accidental: Accidental.flat),
+      ],
+      isNewLine: true,
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final height = screenSize.height / 2;
-    final width = screenSize.width;
+    final sheetMusicSize = MediaQuery.of(context).size;
+    final width = sheetMusicSize.width;
+    final height = sheetMusicSize.height / 2;
     return Scaffold(
-        appBar: AppBar(title: const Text('Simple Sheet Music Example')),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SimpleSheetMusic(
-            initialClef: initialClef,
-            margin: const EdgeInsets.all(10),
-            height: height,
-            width: width,
-            staffs: [staff],
-          )
-        ]));
+        appBar: AppBar(title: const Text('Simple Sheet Music')),
+        body: Center(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: SimpleSheetMusic(
+              height: height,
+              width: width,
+              measures: [measure1, measure2, measure3],
+            ),
+          ),
+        ));
   }
 }

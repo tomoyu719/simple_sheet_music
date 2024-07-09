@@ -1,4 +1,12 @@
-include: package:flutter_lints/flutter.yaml
+
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+include: package:pedantic_mono/analysis_options.yaml
+
+linter:
+  rules:
+    lines_longer_than_80_chars: false
+    avoid_print: false
+    flutter_style_todos: false

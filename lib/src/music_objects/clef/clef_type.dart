@@ -1,29 +1,50 @@
-import 'dart:ui';
+import 'package:simple_sheet_music/src/music_objects/notes/note_pitch.dart';
 
-import 'package:simple_sheet_music/simple_sheet_music.dart';
-
+/// Enum representing different types of clefs.
 enum ClefType {
-  treble(_trebleGlyph, _trebleBbox, _trebleOffsetHeight,
-      _trebleSharpKeySignaturePositions, _trebleFlatKeySignaturePositions),
-  alto(_altoGlyph, _altoBbox, _altoOffsetHeight,
-      _altoSharpKeySignaturePositions, _altoFlatKeySignaturePositions),
-  tenor(_altoGlyph, _altoBbox, _tenorOffsetHeight,
-      _tenorSharpKeySignaturePositions, _tenorFlatKeySignaturePositions),
-  bass(_bassGlyph, _bassBbox, _bassOffsetHeight,
-      _bassSharpKeySignaturePositions, _bassFlatKeySignaturePositions);
+  /// Treble clef.
+  treble(
+    'uniE050',
+    _trebleOffsetSpace,
+    sharpKeySignaturePositions: _trebleSharpKeySignaturePositions,
+    flatKeySignaturePositions: _trebleFlatKeySignaturePositions,
+  ),
 
-  static const _trebleGlyph = '';
-  static const _altoGlyph = '';
-  static const _bassGlyph = '';
+  /// Alto clef.
+  alto(
+    'uniE05C',
+    _altoOffsetSpace,
+    sharpKeySignaturePositions: _altoSharpKeySignaturePositions,
+    flatKeySignaturePositions: _altoFlatKeySignaturePositions,
+  ),
 
-  static const _trebleBbox = Rect.fromLTRB(0.0, -4.392, 2.684, 2.632);
-  static const _altoBbox = Rect.fromLTRB(0.0, -2.024, 2.796, 2.024);
-  static const _bassBbox = Rect.fromLTRB(-0.02, -1.048, 2.736, 2.54);
+  /// Tenor clef.
+  tenor(
+    'uniE05C',
+    _tenorOffsetSpace,
+    sharpKeySignaturePositions: _tenorSharpKeySignaturePositions,
+    flatKeySignaturePositions: _tenorFlatKeySignaturePositions,
+  ),
 
-  static const _trebleOffsetHeight = 1.0;
-  static const _altoOffsetHeight = 0.0;
-  static const _tenorOffsetHeight = -1.0;
-  static const _bassOffsetHeight = -1.0;
+  /// Bass clef.
+  bass(
+    'uniE062',
+    _bassOffsetSpace,
+    sharpKeySignaturePositions: _bassSharpKeySignaturePositions,
+    flatKeySignaturePositions: _bassFlatKeySignaturePositions,
+  );
+
+  const ClefType(
+    this.pathKey,
+    this.offsetSpace, {
+    required this.sharpKeySignaturePositions,
+    required this.flatKeySignaturePositions,
+  });
+
+  static const _trebleOffsetSpace = 1;
+  static const _altoOffsetSpace = 0;
+  static const _tenorOffsetSpace = -1;
+  static const _bassOffsetSpace = -1;
 
   static const _trebleSharpKeySignaturePositions = [4, 1, 5, 2, -1, 3, 0];
   static const _altoSharpKeySignaturePositions = [3, 0, 4, 1, -2, 2, -1];
@@ -35,15 +56,14 @@ enum ClefType {
   static const _tenorFlatKeySignaturePositions = [1, 4, 0, 3, -1, 2, -2];
   static const _bassFlatKeySignaturePositions = [-2, 1, -3, 0, -4, -1, -5];
 
-  const ClefType(this.glyph, this.glyphBbox, this.offsetHeight,
-      this.sharpKeySignaturePositions, this.flatKeySignaturePositions);
+  final String pathKey;
 
-  final String glyph;
-  final Rect glyphBbox;
-  final double offsetHeight;
+  /// The [offsetSpace] property represents the number of spaces the clef is offset from the default position.
+  final int offsetSpace;
   final List<int> sharpKeySignaturePositions;
   final List<int> flatKeySignaturePositions;
 
+  /// Returns the position of the clef on the center line of the staff.
   int get positionOnCenter {
     switch (this) {
       case treble:
@@ -56,7 +76,4 @@ enum ClefType {
         return Pitch.d3.position;
     }
   }
-
-  double get width => glyphBbox.width;
-  double get offsetX => -glyphBbox.left;
 }

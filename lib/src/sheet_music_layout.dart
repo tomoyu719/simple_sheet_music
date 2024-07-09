@@ -1,39 +1,89 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
+import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
 
-import 'staff/built_staff.dart';
-import 'staff/staff_on_canvas.dart';
-
-/// The `SheetMusicPlacer` is responsible for calculating the layout of the staffs on the canvas.
+/// Represents the layout of the sheet music.
 class SheetMusicLayout {
-  final List<BuiltStaff> _staffsContainMeasures;
-  final EdgeInsets margin;
-  final double width;
-  final double height;
+  SheetMusicLayout(
+    this.metrics,
+    this.lineColor, {
+    required this.widgetHeight,
+    required this.widgetWidth,
+  });
 
-  const SheetMusicLayout(
-      this._staffsContainMeasures, this.margin, this.width, this.height);
+  /// The height of the widget.
+  final double widgetHeight;
 
-  double get canvasScale {
-    final staffsHeightSum = _staffsContainMeasures.fold<double>(
-        0.0, (previousValue, element) => previousValue + element.height);
-    final staffsMaxWidth = _staffsContainMeasures.fold<double>(
-        0.0, (previousValue, element) => max(previousValue, element.width));
-    final widthScale = (width - margin.horizontal) / staffsMaxWidth;
-    final heightScale = (height - margin.vertical) / staffsHeightSum;
-    return min(widthScale, heightScale);
+  /// The width of the widget.
+  final double widgetWidth;
+
+  /// The metrics for the sheet music.
+  final SheetMusicMetrics metrics;
+
+  /// The color of the lines in the sheet music.
+  final Color lineColor;
+
+  /// The maximum width of a staff.
+  double get _maximumStaffWidth => metrics.maximumStaffWidth;
+
+  /// The sum of the horizontal margins of all the staffs.
+  double get _maximumStaffHorizontalMarginSum =>
+      metrics.maximumStaffHorizontalMarginSum;
+
+  /// The horizontal padding of the sheet music.
+  double get _horizontalPadding =>
+      widgetWidth -
+      (_maximumStaffWidth * canvasScale + _maximumStaffHorizontalMarginSum);
+
+  /// The horizontal padding on the canvas.
+  double get _horizontalPaddingOnCanvas => _horizontalPadding / canvasScale;
+
+  /// The left padding on the canvas.
+  double get _leftPaddingOnCanvas => _horizontalPaddingOnCanvas / 2;
+
+  /// The vertical padding of the sheet music.
+  double get _verticalPadding => widgetHeight - _staffsHeightsSum * canvasScale;
+
+  /// The vertical padding on the canvas.
+  double get _verticalPaddingOnCanvas => _verticalPadding / canvasScale;
+
+  /// The upper padding on the canvas.
+  double get _upperPaddingOnCanvas => _verticalPaddingOnCanvas / 2;
+
+  /// The list of staff renderers.
+  List<StaffRenderer> get staffRenderers {
+    var currentY = _upperPaddingOnCanvas;
+    return metrics.staffsMetricses.map((staffMetrics) {
+      currentY += staffMetrics.upperHeight;
+      final staffRenderer = staffMetrics.renderer(
+        this,
+        staffLineCenterY: currentY,
+        leftPadding: _leftPaddingOnCanvas,
+      );
+      currentY += staffMetrics.lowerHeight;
+      return staffRenderer;
+    }).toList();
   }
 
-  List<StaffOnCanvas> get staffsOnCanvas {
-    final sheetMusicMargin = margin / canvasScale;
-    double currentHeightSum = sheetMusicMargin.top;
-    final placedStaffs = <StaffOnCanvas>[];
-    for (final staff in _staffsContainMeasures) {
-      final staffLineCenterY = currentHeightSum + staff.upperHeight;
-      placedStaffs.add(staff.placeOnCanvas(staffLineCenterY, sheetMusicMargin));
-      currentHeightSum += staff.height;
+  /// The sum of the heights of all the staffs.
+  double get _staffsHeightsSum => metrics.staffsHeightSum;
+
+  /// The scale factor for the width of the sheet music.
+  double get _widthScale =>
+      (widgetWidth - _maximumStaffHorizontalMarginSum) / _maximumStaffWidth;
+
+  /// The scale factor for the height of the sheet music.
+  double get _heightScale => widgetHeight / _staffsHeightsSum;
+
+  /// The scale factor for the canvas.
+  double get canvasScale => min(_widthScale, _heightScale);
+
+  /// Renders the sheet music on the canvas.
+  void render(Canvas canvas, Size size) {
+    for (final staff in staffRenderers) {
+      staff.render(canvas, size);
     }
-    return placedStaffs;
   }
 }
