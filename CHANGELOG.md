@@ -13,3 +13,7 @@
 ## 1.0.0-dev.1
 * add chord 
 * switching rendering methods
+
+## 1.0.0 - 2024/07/09
+* add chord 
+* switching rendering method
