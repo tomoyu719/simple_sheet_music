@@ -179,7 +179,7 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
   /// Gets the top coordinate of the bounding box.
   double get _top => [
         noteHeadsBbox.top,
-        stemTipOffset.dy,
+        (stemTipOffset?.dy ?? double.infinity),
         (_flagBbox?.top ?? double.infinity),
         _accidentalsBbox.top,
       ].min;
@@ -194,7 +194,7 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
   /// Gets the bottom coordinate of the bounding box.
   double get _bottom => [
         noteHeadsBbox.bottom,
-        stemTipOffset.dy,
+        (stemTipOffset?.dy ?? double.negativeInfinity),
         (_flagBbox?.bottom ?? double.negativeInfinity),
         _accidentalsBbox.bottom,
       ].max;
@@ -285,7 +285,10 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
       Offset(_isStemUp ? -stemThickness / 2 : stemThickness / 2, 0);
 
   /// Gets the offset of the stem tip.
-  Offset get stemTipOffset {
+  Offset? get stemTipOffset {
+    if (!hasStem) {
+      return null;
+    }
     if (hasFlag) {
       return _flagStemTipOffset! + Offset(stemThickness / 2, 0);
     }
@@ -487,7 +490,7 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
     }
     canvas.drawLine(
       note.stemRootOffset + _renderOffset,
-      note.stemTipOffset + _renderOffset,
+      note.stemTipOffset! + _renderOffset,
       Paint()
         ..color = note.note.color
         ..strokeWidth = note.stemThickness,
