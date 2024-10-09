@@ -62,45 +62,62 @@ class SimpleSheetMusic extends StatefulWidget {
   SimpleSheetMusicState createState() => SimpleSheetMusicState();
 }
 
+class _FontData {
+  _FontData(this.glyphPath, this.metadata);
+  late final GlyphPaths glyphPath;
+  late final GlyphMetadata metadata;
+}
+
 /// The state class for the SimpleSheetMusic widget.
 ///
 /// This class manages the state of the SimpleSheetMusic widget and handles the initialization,
 /// font asset loading, and building of the widget.
 class SimpleSheetMusicState extends State<SimpleSheetMusic> {
-  late final GlyphPaths glyphPath;
-  late final GlyphMetadata metadata;
+  late Future<_FontData> _fontData;
 
   FontType get fontType => widget.fontType;
 
   @override
   void initState() {
     super.initState();
+    _fontData = _loadFonts();
   }
 
-  Future<void> load() async {
-    final xml = await rootBundle.loadString(fontType.svgPath);
-    final document = XmlDocument.parse(xml);
-    final allGlyphs = document.findAllElements('glyph').toSet();
-    glyphPath = GlyphPaths(allGlyphs);
-    final json = await rootBundle.loadString(fontType.metadataPath);
-    metadata = GlyphMetadata(jsonDecode(json) as Map<String, dynamic>);
+  Future<_FontData> _loadFonts() async {
+    final svgFuture = rootBundle.loadString(fontType.svgPath).then((xml) {
+      final document = XmlDocument.parse(xml);
+      final allGlyphs = document.findAllElements('glyph').toSet();
+      return GlyphPaths(allGlyphs);
+    });
+
+    final metadataFuture =
+        rootBundle.loadString(fontType.metadataPath).then((json) {
+      return GlyphMetadata(jsonDecode(json) as Map<String, dynamic>);
+    });
+
+    return Future.wait([metadataFuture, svgFuture]).then((list) {
+      return _FontData(
+        list[1] as GlyphPaths,
+        list[0] as GlyphMetadata,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final targetSize = Size(widget.width, widget.height);
-    return FutureBuilder(
-      future: load(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+    return FutureBuilder<_FontData>(
+      future: _fontData,
+      builder: (context, fontData) {
+        if (fontData.connectionState != ConnectionState.done) {
           return const Center(child: CircularProgressIndicator());
         }
         final metricsBuilder = SheetMusicMetrics(
           widget.measures,
           widget.initialClefType,
           widget.initialKeySignatureType,
-          metadata,
-          glyphPath,
+          fontData.requireData.metadata,
+          fontData.requireData.glyphPath,
         );
         final layout = SheetMusicLayout(
           metricsBuilder,
