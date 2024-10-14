@@ -69,11 +69,13 @@ class SimpleSheetMusic extends StatefulWidget {
 class SimpleSheetMusicState extends State<SimpleSheetMusic> {
   late final GlyphPaths glyphPath;
   late final GlyphMetadata metadata;
+  late final Future<void> _future;
 
   FontType get fontType => widget.fontType;
 
   @override
   void initState() {
+    _future = load();
     super.initState();
   }
 
@@ -90,7 +92,7 @@ class SimpleSheetMusicState extends State<SimpleSheetMusic> {
   Widget build(BuildContext context) {
     final targetSize = Size(widget.width, widget.height);
     return FutureBuilder(
-      future: load(),
+      future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Center(child: CircularProgressIndicator());
