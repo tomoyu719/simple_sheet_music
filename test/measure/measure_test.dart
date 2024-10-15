@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/simple_sheet_music.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 import '../mock/mocks.dart';
@@ -65,9 +66,9 @@ void main() {
 
   test('Measure should return the last key signature type', () {
     final musicalSymbols = [
-      const KeySignature(KeySignatureType.cMajor),
+      const KeySignature.cMajor(),
       MockMusicalSymbol(),
-      const KeySignature(KeySignatureType.aMinor),
+      const KeySignature.aMinor(),
       MockMusicalSymbol(),
     ];
     final measure = Measure(musicalSymbols);
@@ -85,7 +86,7 @@ void main() {
     final musicalSymbols = [
       const Clef.bass(),
       MockMusicalSymbol(),
-      const KeySignature(KeySignatureType.aMinor),
+      const KeySignature.aMinor(),
       MockMusicalSymbol(),
     ];
     final measure = Measure(musicalSymbols);
