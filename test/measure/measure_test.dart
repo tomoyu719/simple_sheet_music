@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/simple_sheet_music.dart';
+import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
@@ -15,9 +16,9 @@ void main() {
     const context = MusicalContext(ClefType.treble, KeySignatureType.cMajor);
 
     final musicalSymbols = [
-      const Clef(ClefType.treble),
+      const Clef.treble(),
       MockMusicalSymbol(),
-      const Clef(ClefType.bass),
+      const Clef.bass(),
       MockMusicalSymbol(),
     ];
     final measure = Measure(musicalSymbols);
@@ -51,9 +52,9 @@ void main() {
 
   test('Measure should return the last clef type', () {
     final musicalSymbols = [
-      const Clef(ClefType.treble),
+      const Clef.treble(),
       MockMusicalSymbol(),
-      const Clef(ClefType.bass),
+      const Clef.bass(),
       MockMusicalSymbol(),
     ];
     final measure = Measure(musicalSymbols);
@@ -82,7 +83,7 @@ void main() {
         MusicalContext(initialClefType, initialKeySignatureType);
 
     final musicalSymbols = [
-      const Clef(ClefType.bass),
+      const Clef.bass(),
       MockMusicalSymbol(),
       const KeySignature(KeySignatureType.aMinor),
       MockMusicalSymbol(),
