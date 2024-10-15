@@ -37,7 +37,7 @@ class SimpleSheetMusicDemoState extends State {
   void initState() {
     measure1 = Measure([
       const Clef.treble(),
-      const KeySignature(KeySignatureType.dMajor),
+      const KeySignature.dMajor(),
       const ChordNote([
         ChordNotePart(Pitch.b4),
         ChordNotePart(Pitch.g5, accidental: Accidental.sharp),
@@ -58,7 +58,7 @@ class SimpleSheetMusicDemoState extends State {
     measure3 = Measure(
       [
         const Clef.bass(),
-        const KeySignature(KeySignatureType.cMinor),
+        const KeySignature.cMinor(),
         const ChordNote(
           [
             ChordNotePart(Pitch.c2),
