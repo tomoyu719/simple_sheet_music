@@ -13,11 +13,156 @@ import 'package:simple_sheet_music/src/musical_context.dart';
 import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 class KeySignature implements MusicalSymbol {
-  const KeySignature(
-    this.keySignatureType, {
+  const KeySignature.cMajor({
     this.color = Colors.black,
     this.margin = const EdgeInsets.all(10),
-  });
+  }) : keySignatureType = KeySignatureType.cMajor;
+
+  const KeySignature.aMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.aMinor;
+
+  const KeySignature.gMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.gMajor;
+
+  const KeySignature.eMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.eMinor;
+
+  const KeySignature.dMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.dMajor;
+
+  const KeySignature.bMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.bMinor;
+
+  const KeySignature.aMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.aMajor;
+
+  const KeySignature.fSharpMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.fSharpMinor;
+
+  const KeySignature.eMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.eMajor;
+
+  const KeySignature.cSharpMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.cSharpMinor;
+
+  const KeySignature.bMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.bMajor;
+
+  const KeySignature.gSharpMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.gSharpMinor;
+
+  const KeySignature.fSharpMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.fSharpMajor;
+
+  const KeySignature.dSharpMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.dSharpMinor;
+
+  const KeySignature.cSharpMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.cSharpMajor;
+
+  const KeySignature.aSharpMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.aSharpMinor;
+
+  const KeySignature.fMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.fMajor;
+
+  const KeySignature.dMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.dMinor;
+
+  const KeySignature.bFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.bFlatMajor;
+
+  const KeySignature.gMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.gMinor;
+
+  const KeySignature.eFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.eFlatMajor;
+
+  const KeySignature.cMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.cMinor;
+
+  const KeySignature.aFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.aFlatMajor;
+
+  const KeySignature.fMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.fMinor;
+
+  const KeySignature.dFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.dFlatMajor;
+
+  const KeySignature.bFlatMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.bFlatMinor;
+
+  const KeySignature.gFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.gFlatMajor;
+
+  const KeySignature.eFlatMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.eFlatMinor;
+
+  const KeySignature.cFlatMajor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.cFlatMajor;
+
+  const KeySignature.aFlatMinor({
+    this.color = Colors.black,
+    this.margin = const EdgeInsets.all(10),
+  }) : keySignatureType = KeySignatureType.aFlatMinor;
+
   final KeySignatureType keySignatureType;
 
   @override

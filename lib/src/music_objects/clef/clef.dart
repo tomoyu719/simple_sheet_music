@@ -11,11 +11,26 @@ import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// Represents a musical clef symbol.
 class Clef implements MusicalSymbol {
-  const Clef(
-    this.clefType, {
+
+  const Clef.treble({
     this.margin = const EdgeInsets.all(10),
     this.color = Colors.black,
-  });
+  }) : clefType = ClefType.treble;
+
+  const Clef.alto({
+    this.margin = const EdgeInsets.all(10),
+    this.color = Colors.black,
+  }) : clefType = ClefType.alto;
+
+  const Clef.tenor({
+    this.margin = const EdgeInsets.all(10),
+    this.color = Colors.black,
+  }) : clefType = ClefType.tenor;
+
+  const Clef.bass({
+    this.margin = const EdgeInsets.all(10),
+    this.color = Colors.black,
+  }) : clefType = ClefType.bass;
 
   /// The type of the clef.
   final ClefType clefType;

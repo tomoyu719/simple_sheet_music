@@ -11,7 +11,7 @@ void main() {
     // Arrange
     const musicalContext =
         MusicalContext(ClefType.treble, KeySignatureType.cMajor);
-    const clef = Clef(ClefType.bass);
+    const clef = Clef.bass();
 
     // Act
     final updatedContext = musicalContext.update(clef);
@@ -26,7 +26,7 @@ void main() {
     // Arrange
     const musicalContext =
         MusicalContext(ClefType.treble, KeySignatureType.cMajor);
-    const keySignature = KeySignature(KeySignatureType.aFlatMinor);
+    const keySignature = KeySignature.aFlatMinor();
 
     // Act
     final updatedContext = musicalContext.update(keySignature);
