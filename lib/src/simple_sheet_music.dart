@@ -110,14 +110,9 @@ class SimpleSheetMusicState extends State<SimpleSheetMusic> {
           widgetWidth: widget.width,
           widgetHeight: widget.height,
         );
-        return GestureDetector(
-          onTap: () {
-            // print('Tapped');
-          },
-          child: CustomPaint(
-            size: targetSize,
-            painter: SheetMusicRenderer(layout),
-          ),
+        return CustomPaint(
+          size: targetSize,
+          painter: SheetMusicRenderer(layout),
         );
       },
     );
