@@ -4,14 +4,9 @@ A Python tool for reading OTF files and extracting font information, with suppor
 
 ## Features
 
-- Extract basic font information from OTF files
-- Generate Dart font constants with CSV input mapping
-- Get the following information for each glyph:
-  - Name
-  - Bounding box
-  - Path commands (SVG format)
-  - Unicode value
-  - Width information
+- Generate Dart font constants from OTF files using CSV input mapping
+- Extract SVG path data for specified glyphs
+- Support for custom glyph naming through CSV configuration
 
 ## Installation
 
