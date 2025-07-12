@@ -63,34 +63,6 @@ const BravuraFont = {
 };
 ```
 
-### 2. Display specific glyph information
-
-```bash
-python3 font_parser.py path/to/font.otf A
-```
-
-### 3. Display entire font information
-
-```bash
-python3 font_parser.py path/to/font.otf
-```
-
-### 4. Use in Python code
-
-```python
-from font_parser import OTFFontParser
-
-# Load font file
-parser = OTFFontParser("path/to/font.otf")
-
-# Generate Dart font from CSV
-dart_code = parser.export_dart_font("glyphs.csv", "output.dart")
-
-# Get font information
-font_info = parser.get_font_info()
-print(f"Font name: {font_info.font_name}")
-print(f"Total glyphs: {len(font_info.glyphs)}")
-```
 
 ## Output Data Structure
 
@@ -107,24 +79,6 @@ const FontName = {
 };
 ```
 
-### Glyph Information (Python API)
-```python
-{
-    'name': str,
-    'unicode_value': int | None,
-    'unicode_char': str | None,
-    'bounding_box': {
-        'xMin': float,
-        'yMin': float,
-        'xMax': float,
-        'yMax': float,
-        'width': float,
-        'height': float
-    },
-    'path_commands': str,  # SVG format: "M 97,-125 C 186,-125 295,-43 295,42 Z"
-    'advance_width': float
-}
-```
 
 ## Dependencies
 

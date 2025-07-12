@@ -9,8 +9,7 @@ Tool for reading OTF files and extracting font information (boundingBox, path, n
 import os
 import sys
 import csv
-from typing import Dict, List, Tuple, Optional, Set
-from dataclasses import dataclass
+from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 from datetime import datetime
 
@@ -24,28 +23,8 @@ except ImportError:
     sys.exit(1)
 
 
-@dataclass
-class GlyphInfo:
-    """Data class for storing glyph information"""
-    name: str
-    unicode_value: Optional[int]
-    bounding_box: Tuple[float, float, float, float]  # (xMin, yMin, xMax, yMax)
-    path_commands: str  # SVG path format command string
-    advance_width: float
 
 
-@dataclass
-class FontInfo:
-    """Data class for storing font information"""
-    font_name: str
-    family_name: str
-    style_name: str
-    version: str
-    units_per_em: int
-    ascender: int
-    descender: int
-    line_gap: int
-    glyphs: Dict[str, GlyphInfo]
 
 
 class OTFFontParser:
@@ -65,49 +44,15 @@ class OTFFontParser:
         self.font = TTFont(str(self.font_path))
         self.glyph_set = self.font.getGlyphSet()
     
-    def get_font_info(self) -> FontInfo:
+    def _get_font_family_name(self) -> str:
         """
-        Get basic font information
+        Get font family name
         
         Returns:
-            FontInfo: Font information
+            str: Font family name
         """
-        # Get information from name table
         name_table = self.font['name']
-        font_name = self._get_name_by_id(name_table, 1) or "Unknown"  # Family name
-        family_name = self._get_name_by_id(name_table, 1) or "Unknown"
-        style_name = self._get_name_by_id(name_table, 2) or "Regular"  # Subfamily name
-        version = self._get_name_by_id(name_table, 5) or "Unknown"  # Version
-        
-        # Get header information
-        head_table = self.font['head']
-        units_per_em = head_table.unitsPerEm
-        
-        # Get metrics information
-        hhea_table = self.font.get('hhea')
-        if hhea_table:
-            ascender = hhea_table.ascent
-            descender = hhea_table.descent
-            line_gap = hhea_table.lineGap
-        else:
-            ascender = 0
-            descender = 0
-            line_gap = 0
-        
-        # Get glyph information
-        glyphs = self._extract_all_glyphs()
-        
-        return FontInfo(
-            font_name=font_name,
-            family_name=family_name,
-            style_name=style_name,
-            version=version,
-            units_per_em=units_per_em,
-            ascender=ascender,
-            descender=descender,
-            line_gap=line_gap,
-            glyphs=glyphs
-        )
+        return self._get_name_by_id(name_table, 1) or "Unknown"
     
     def _get_name_by_id(self, name_table, name_id: int) -> Optional[str]:
         """
@@ -125,73 +70,22 @@ class OTFFontParser:
                 return str(record)
         return None
     
-    def _extract_all_glyphs(self) -> Dict[str, GlyphInfo]:
+    def _get_glyph_path(self, glyph_name: str) -> str:
         """
-        Extract information for all glyphs
-        
-        Returns:
-            Dict[str, GlyphInfo]: Glyph information dictionary with glyph names as keys
-        """
-        glyphs = {}
-        
-        # Get Unicode mapping
-        cmap = self.font.getBestCmap() or {}
-        unicode_to_glyph = {v: k for k, v in cmap.items()}
-        
-        # Process all glyphs
-        for glyph_name in self.font.getGlyphNames():
-            try:
-                glyph_info = self._extract_glyph_info(glyph_name, unicode_to_glyph)
-                if glyph_info:
-                    glyphs[glyph_name] = glyph_info
-            except Exception as e:
-                print(f"Error processing glyph '{glyph_name}': {e}")
-                continue
-        
-        return glyphs
-    
-    def _extract_glyph_info(self, glyph_name: str, unicode_to_glyph: Dict[int, str]) -> Optional[GlyphInfo]:
-        """
-        Extract information for a single glyph
+        Get SVG path for a specific glyph
         
         Args:
             glyph_name (str): Glyph name
-            unicode_to_glyph (Dict[int, str]): Mapping from Unicode values to glyph names
             
         Returns:
-            Optional[GlyphInfo]: Glyph information
+            str: SVG path commands
         """
         if glyph_name not in self.glyph_set:
-            return None
+            return ""
         
         glyph = self.glyph_set[glyph_name]
-        
-        # Get Unicode value
-        unicode_value = None
-        for unicode_val, mapped_glyph in unicode_to_glyph.items():
-            if mapped_glyph == glyph_name:
-                unicode_value = unicode_val
-                break
-        
-        # Get bounding box
-        if hasattr(glyph, 'xMin'):
-            bounding_box = (glyph.xMin, glyph.yMin, glyph.xMax, glyph.yMax)
-        else:
-            bounding_box = (0, 0, 0, 0)
-        
-        # Get path commands
-        path_commands = self._extract_path_commands(glyph)
-        
-        # Get width
-        advance_width = glyph.width if hasattr(glyph, 'width') else 0
-        
-        return GlyphInfo(
-            name=glyph_name,
-            unicode_value=unicode_value,
-            bounding_box=bounding_box,
-            path_commands=path_commands,
-            advance_width=advance_width
-        )
+        return self._extract_path_commands(glyph)
+    
     
     def _extract_path_commands(self, glyph) -> str:
         """
@@ -297,72 +191,47 @@ class OTFFontParser:
             
         return glyph_mapping
     
-    def export_dart_font(self, csv_path: str = None, output_path: str = None) -> str:
+    def export_dart_font(self, csv_path: str, output_path: str = None) -> str:
         """
-        Export font glyphs as Dart code format
+        Export font glyphs as Dart code format based on CSV mapping
         
         Args:
-            csv_path (str, optional): CSV file with glyph names to include
+            csv_path (str): CSV file with glyph names to include
             output_path (str, optional): Output file path for Dart code
             
         Returns:
             str: Dart code string
         """
-        font_info = self.get_font_info()
-        
-        # Load glyph mapping from CSV if provided
-        glyph_mapping = {}
-        if csv_path:
-            glyph_mapping = self.load_csv_glyphs(csv_path)
-            if not glyph_mapping:
-                print("Warning: No valid glyph names found in CSV file")
+        # Load glyph mapping from CSV
+        glyph_mapping = self.load_csv_glyphs(csv_path)
+        if not glyph_mapping:
+            raise ValueError("No valid glyph names found in CSV file")
         
         # Get font name for the constant name
-        font_name = font_info.family_name.replace(' ', '').replace('-', '')
+        font_name = self._get_font_family_name().replace(' ', '').replace('-', '')
         
         # Build Dart code
         dart_lines = []
         dart_lines.append(f"const {font_name}Font = {{")
         dart_lines.append("    'glyphs': {")
         
-        # Add glyphs
+        # Add glyphs from CSV mapping
         glyph_count = 0
-        
-        if glyph_mapping:
-            # Use CSV mapping
-            for display_name, font_glyph_name in glyph_mapping.items():
-                if font_glyph_name in font_info.glyphs:
-                    glyph = font_info.glyphs[font_glyph_name]
-                    
-                    # Skip glyphs without path data
-                    if not glyph.path_commands.strip():
-                        continue
-                    
-                    # Use the unicode value from CSV
-                    unicode_value = glyph_mapping[display_name]
-                    
-                    dart_lines.append(f"        '{display_name}': {{")
-                    dart_lines.append(f"            'unicode': \"{unicode_value}\",")
-                    dart_lines.append(f"            'path': \"{glyph.path_commands}\",")
-                    dart_lines.append("        },")
-                    glyph_count += 1
-        else:
-            # Fallback to all glyphs
-            for glyph_name, glyph in font_info.glyphs.items():
-                # Skip glyphs without path data
-                if not glyph.path_commands.strip():
-                    continue
-                    
-                # Get unicode value as hex string
-                unicode_hex = ""
-                if glyph.unicode_value:
-                    unicode_hex = f"U+{glyph.unicode_value:04X}"
-                    
-                dart_lines.append(f"        '{glyph_name}': {{")
-                dart_lines.append(f"            'unicode': \"{unicode_hex}\",")
-                dart_lines.append(f"            'path': \"{glyph.path_commands}\",")
-                dart_lines.append("        },")
-                glyph_count += 1
+        for display_name, font_glyph_name in glyph_mapping.items():
+            path_commands = self._get_glyph_path(font_glyph_name)
+            
+            # Skip glyphs without path data
+            if not path_commands.strip():
+                continue
+            
+            # Use the unicode value from CSV
+            unicode_value = glyph_mapping[display_name]
+            
+            dart_lines.append(f"        '{display_name}': {{")
+            dart_lines.append(f"            'unicode': \"{unicode_value}\",")
+            dart_lines.append(f"            'path': \"{path_commands}\",")
+            dart_lines.append("        },")
+            glyph_count += 1
         
         # Remove trailing comma from last glyph
         if dart_lines and dart_lines[-1].endswith(","):
@@ -407,8 +276,7 @@ def main():
             output_path = sys.argv[3]
         else:
             # Generate output file name based on font name
-            font_info = parser.get_font_info()
-            font_name = font_info.family_name.replace(' ', '').replace('-', '').lower()
+            font_name = parser._get_font_family_name().replace(' ', '').replace('-', '').lower()
             output_path = f"{font_name}_font.dart"
         
         # Export as Dart file
