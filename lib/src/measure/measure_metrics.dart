@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:simple_sheet_music/src/extension/list_extension.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
+import 'package:simple_sheet_music/src/measure/bar_line_type.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
@@ -16,10 +17,12 @@ class MeasureMetrics {
   /// for the measure.
   ///
   /// The [isNewLine] parameter indicates whether a line break should occur in this measure.
+  /// The [barLine] parameter controls the bar line drawn at the end of this measure.
   const MeasureMetrics(
     this.musicalSymbolsMetricses,
     this.metadata, {
     required this.isNewLine,
+    this.barLine = BarLineType.single,
   });
 
   /// The list of [MusicalSymbolMetrics] representing the metrics of each musical
@@ -31,6 +34,9 @@ class MeasureMetrics {
 
   /// Indicates whether a line break should occur in this measure.
   final bool isNewLine;
+
+  /// The type of bar line to draw at the end of this measure.
+  final BarLineType barLine;
 
   /// Gets the total width of all the musical symbols in the measure.
   double get objectsWidth =>
@@ -86,6 +92,7 @@ class MeasureMetrics {
         layout,
         measureOriginX: measureInitialX,
         staffLineCenterY: staffLineCenterY,
+        barLine: barLine,
       );
 
   List<MusicalSymbolRenderer> _symbolRenderers(

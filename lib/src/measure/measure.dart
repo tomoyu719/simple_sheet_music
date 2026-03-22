@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
+import 'package:simple_sheet_music/src/measure/bar_line_type.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
@@ -17,11 +18,13 @@ class Measure {
   ///
   /// The [musicalSymbols] parameter is a list of musical symbols that make up the measure.
   /// The [isNewLine] parameter indicates whether the measure is a new line in the sheet music.
+  /// The [barLine] parameter controls the bar line drawn at the end of this measure.
   ///
   /// Throws an [AssertionError] if the [musicalSymbols] list is empty.
   const Measure(
     this.musicalSymbols, {
     this.isNewLine = false,
+    this.barLine = BarLineType.single,
   }) : assert(musicalSymbols.length != 0);
 
   /// The list of musical symbols that make up the measure.
@@ -29,6 +32,9 @@ class Measure {
 
   /// Indicates whether the measure is a new line in the sheet music.
   final bool isNewLine;
+
+  /// The type of bar line to draw at the end of this measure.
+  final BarLineType barLine;
 
   /// Sets the context for the measure and returns a list of musical symbol metrics.
   ///

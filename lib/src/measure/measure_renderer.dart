@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/constants.dart';
+import 'package:simple_sheet_music/src/measure/bar_line_type.dart';
 import 'package:simple_sheet_music/src/measure/measure_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/sheet_music_layout.dart';
@@ -14,12 +15,14 @@ class MeasureRenderer {
     this.layout, {
     required this.measureOriginX,
     required this.staffLineCenterY,
+    this.barLine = BarLineType.single,
   });
 
   final List<MusicalSymbolRenderer> symbolRenderers;
   final MeasureMetrics measureMetrics;
   final double measureOriginX;
   final double staffLineCenterY;
+  final BarLineType barLine;
 
   /// Performs a hit test at the given [position] and returns the corresponding [MusicalSymbolRenderer].
   ///
@@ -39,6 +42,7 @@ class MeasureRenderer {
     for (final symbol in symbolRenderers) {
       symbol.render(canvas);
     }
+    _renderBarLine(canvas);
   }
 
   void _renderStaffLine(Canvas canvas) {
@@ -58,6 +62,41 @@ class MeasureRenderer {
           ..color = layout.lineColor
           ..strokeWidth = measureMetrics.staffLineThickness,
       );
+    }
+  }
+
+  void _renderBarLine(Canvas canvas) {
+    if (barLine == BarLineType.none) return;
+
+    final top    = staffLineCenterY - Constants.staffSpace * 2;
+    final bottom = staffLineCenterY + Constants.staffSpace * 2;
+    final x      = measureOriginX + width;
+    final thick  = measureMetrics.staffLineThickness;
+
+    final thinPaint = Paint()
+      ..color = layout.lineColor
+      ..strokeWidth = thick;
+
+    final thickPaint = Paint()
+      ..color = layout.lineColor
+      ..strokeWidth = thick * 4;
+
+    switch (barLine) {
+      case BarLineType.none:
+        break;
+      case BarLineType.single:
+        canvas.drawLine(Offset(x, top), Offset(x, bottom), thinPaint);
+        break;
+      case BarLineType.double_:
+        final gap = Constants.staffSpace * 0.18;
+        canvas.drawLine(Offset(x - gap, top), Offset(x - gap, bottom), thinPaint);
+        canvas.drawLine(Offset(x, top), Offset(x, bottom), thinPaint);
+        break;
+      case BarLineType.final_:
+        final gap = Constants.staffSpace * 0.25;
+        canvas.drawLine(Offset(x - gap - thick * 2, top), Offset(x - gap - thick * 2, bottom), thinPaint);
+        canvas.drawLine(Offset(x, top), Offset(x, bottom), thickPaint);
+        break;
     }
   }
 
