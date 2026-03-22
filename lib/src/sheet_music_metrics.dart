@@ -35,8 +35,12 @@ class SheetMusicMetrics {
         paths,
       );
       context = measure.updateContext(context);
-      final measureMetrics =
-          MeasureMetrics(symbols, metadata, isNewLine: measure.isNewLine);
+      final measureMetrics = MeasureMetrics(
+        symbols,
+        metadata,
+        isNewLine: measure.isNewLine,
+        barLine: measure.barLine,
+      );
       result.add(measureMetrics);
     }
 
