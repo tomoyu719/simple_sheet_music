@@ -14,5 +14,6 @@ class SheetMusicRenderer extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(SheetMusicRenderer oldDelegate) => true;
+  bool shouldRepaint(SheetMusicRenderer oldDelegate) =>
+      sheetMusicLayout != oldDelegate.sheetMusicLayout;
 }
