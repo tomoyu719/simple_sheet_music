@@ -261,7 +261,7 @@ class OTFFontParser:
 
         # Build Dart code
         dart_lines = []
-        dart_lines.append(f"const {const_name} = {{")
+        dart_lines.append(f"const Map<String, Object> {const_name} = {{")
         dart_lines.append("  'glyphs': {")
 
         # Add glyphs from mapping (keyed by unicode for compatibility)
@@ -276,7 +276,9 @@ class OTFFontParser:
             # Use unicode (e.g., uniE050) as key for lookup compatibility
             dart_lines.append(f"    '{unicode_value}': {{")
             dart_lines.append(f"      'name': '{display_name}',")
-            dart_lines.append(f"      'path': \"{path_commands}\",")
+            # Escape single quotes in path and use single quotes for Dart lint compliance
+            escaped_path = path_commands.replace("'", "\\'")
+            dart_lines.append(f"      'path': '{escaped_path}',")
             dart_lines.append("    },")
             glyph_count += 1
         

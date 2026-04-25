@@ -1,4 +1,4 @@
-const bravuraMetadata = {
+const Map<String, Object> bravuraMetadata = {
   'fontName': 'Bravura',
   'fontVersion': 1.392,
   'engravingDefaults': {
@@ -25,7 +25,7 @@ const bravuraMetadata = {
     'stemThickness': 0.12,
     'subBracketThickness': 0.16,
     'textEnclosureThickness': 0.16,
-    'textFontFamily': ["Academico", "Century Schoolbook", "Edwin", "serif"],
+    'textFontFamily': ['Academico', 'Century Schoolbook', 'Edwin', 'serif'],
     'thickBarlineThickness': 0.5,
     'thinBarlineThickness': 0.16,
     'tieEndpointThickness': 0.1,
@@ -500,5 +500,5 @@ const bravuraMetadata = {
       'opticalCenter': [0.616, 0.0],
     },
   },
-  'generatedOn': '2026-04-25 23:44:51',
+  'generatedOn': '2026-04-25 23:56:55',
 };

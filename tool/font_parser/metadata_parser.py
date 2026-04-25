@@ -99,7 +99,7 @@ class MetadataParser:
         glyphs_with_anchors = self.metadata.get('glyphsWithAnchors', {})
 
         dart_lines = []
-        dart_lines.append(f"const {const_name} = {{")
+        dart_lines.append(f"const Map<String, Object> {const_name} = {{")
 
         # Font info
         dart_lines.append(f"  'fontName': '{self.metadata.get('fontName', '')}',")
@@ -109,7 +109,9 @@ class MetadataParser:
         dart_lines.append("  'engravingDefaults': {")
         for key, value in engraving_defaults.items():
             if isinstance(value, list):
-                dart_lines.append(f"    '{key}': {json.dumps(value)},")
+                # Format list with single quotes for Dart lint compliance
+                formatted_list = '[' + ', '.join(f"'{v}'" if isinstance(v, str) else str(v) for v in value) + ']'
+                dart_lines.append(f"    '{key}': {formatted_list},")
             elif isinstance(value, str):
                 dart_lines.append(f"    '{key}': '{value}',")
             else:

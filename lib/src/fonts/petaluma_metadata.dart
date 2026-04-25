@@ -1,4 +1,4 @@
-const petalumaMetadata = {
+const Map<String, Object> petalumaMetadata = {
   'fontName': 'Petaluma',
   'fontVersion': 1.065,
   'engravingDefaults': {
@@ -424,5 +424,5 @@ const petalumaMetadata = {
       'opticalCenter': [0.616, 0.0],
     },
   },
-  'generatedOn': '2026-04-25 23:47:03',
+  'generatedOn': '2026-04-25 23:56:55',
 };
