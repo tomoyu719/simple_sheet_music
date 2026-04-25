@@ -1,4 +1,4 @@
-const BravuraGlyphs = {
+const bravuraGlyphs = {
   'glyphs': {
     'uniE050': {
       'name': 'gClef',
@@ -293,5 +293,5 @@ const BravuraGlyphs = {
       'path': "M 15,0 L 15,875 L -15,875 L -15,0 Z",
     }
   },
-  'generatedOn': '2026-04-25 20:55:35'
+  'generatedOn': '2026-04-25 23:41:29',
 };

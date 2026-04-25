@@ -4,8 +4,8 @@ import 'package:simple_sheet_music/src/fonts/petaluma_glyphs.dart';
 import 'package:simple_sheet_music/src/fonts/petaluma_metadata.dart';
 
 enum FontType {
-  bravura(glyphsData: BravuraGlyphs, metadataData: BravuraMetadata),
-  petaluma(glyphsData: PetalumaGlyphs, metadataData: PetalumaMetadata);
+  bravura(glyphsData: bravuraGlyphs, metadataData: bravuraMetadata),
+  petaluma(glyphsData: petalumaGlyphs, metadataData: petalumaMetadata);
 
   const FontType({required this.glyphsData, required this.metadataData});
 

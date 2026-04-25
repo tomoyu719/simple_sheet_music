@@ -90,6 +90,7 @@ class MetadataParser:
             raise ValueError("No valid glyph names found in glyph file")
 
         font_name = self._get_font_name().replace(' ', '').replace('-', '')
+        const_name = font_name[0].lower() + font_name[1:] + 'Metadata'
 
         # Extract relevant data
         engraving_defaults = self.metadata.get('engravingDefaults', {})
@@ -98,7 +99,7 @@ class MetadataParser:
         glyphs_with_anchors = self.metadata.get('glyphsWithAnchors', {})
 
         dart_lines = []
-        dart_lines.append(f"const {font_name}Metadata = {{")
+        dart_lines.append(f"const {const_name} = {{")
 
         # Font info
         dart_lines.append(f"  'fontName': '{self.metadata.get('fontName', '')}',")
@@ -116,13 +117,17 @@ class MetadataParser:
         dart_lines.append("  },")
 
         # Glyph advance widths (filtered by glyph_mapping)
-        dart_lines.append("  'glyphAdvanceWidths': {")
-        width_count = 0
+        width_entries = []
         for glyph_name in glyph_mapping.keys():
             if glyph_name in glyph_advance_widths:
-                dart_lines.append(f"    '{glyph_name}': {glyph_advance_widths[glyph_name]},")
-                width_count += 1
-        dart_lines.append("  },")
+                width_entries.append(f"    '{glyph_name}': {glyph_advance_widths[glyph_name]},")
+        width_count = len(width_entries)
+        if width_entries:
+            dart_lines.append("  'glyphAdvanceWidths': {")
+            dart_lines.extend(width_entries)
+            dart_lines.append("  },")
+        else:
+            dart_lines.append("  'glyphAdvanceWidths': <String, dynamic>{},")
 
         # Glyph bounding boxes (filtered by glyph_mapping)
         dart_lines.append("  'glyphBBoxes': {")
@@ -150,8 +155,9 @@ class MetadataParser:
                 anchor_count += 1
         dart_lines.append("  },")
 
-        dart_lines.append(f"  'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'")
+        dart_lines.append(f"  'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}',")
         dart_lines.append("};")
+        dart_lines.append("")  # Add trailing newline
 
         dart_code = '\n'.join(dart_lines)
 

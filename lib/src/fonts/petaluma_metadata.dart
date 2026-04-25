@@ -1,4 +1,4 @@
-const PetalumaMetadata = {
+const petalumaMetadata = {
   'fontName': 'Petaluma',
   'fontVersion': 1.065,
   'engravingDefaults': {
@@ -30,8 +30,7 @@ const PetalumaMetadata = {
     'tieMidpointThickness': 0.22,
     'tupletBracketThickness': 0.16,
   },
-  'glyphAdvanceWidths': {
-  },
+  'glyphAdvanceWidths': <String, dynamic>{},
   'glyphBBoxes': {
     'gClef': {
       'bBoxNE': [2.656, 4.036],
@@ -425,5 +424,5 @@ const PetalumaMetadata = {
       'opticalCenter': [0.616, 0.0],
     },
   },
-  'generatedOn': '2026-04-25 20:24:06'
+  'generatedOn': '2026-04-25 23:47:03',
 };

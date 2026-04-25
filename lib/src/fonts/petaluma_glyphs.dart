@@ -1,4 +1,4 @@
-const PetalumaGlyphs = {
+const petalumaGlyphs = {
   'glyphs': {
     'uniE050': {
       'name': 'gClef',
@@ -293,5 +293,5 @@ const PetalumaGlyphs = {
       'path': "M 11,0 C 17,0 19,5 21,9 C 29,31 31,54 31,77 C 31,332 32,587 36,842 C 36,857 33,873 31,888 C 30,894 28,901 19,901 C 11,901 6,897 5,888 C 2,874 0,860 0,845 L 0,73 C 0,52 3,31 5,11 C 5,6 4,0 11,0 Z",
     }
   },
-  'generatedOn': '2026-04-25 20:55:35'
+  'generatedOn': '2026-04-25 23:41:46',
 };

@@ -1,4 +1,4 @@
-const BravuraMetadata = {
+const bravuraMetadata = {
   'fontName': 'Bravura',
   'fontVersion': 1.392,
   'engravingDefaults': {
@@ -500,5 +500,5 @@ const BravuraMetadata = {
       'opticalCenter': [0.616, 0.0],
     },
   },
-  'generatedOn': '2026-04-25 20:24:06'
+  'generatedOn': '2026-04-25 23:44:51',
 };

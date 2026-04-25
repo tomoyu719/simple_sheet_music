@@ -255,12 +255,13 @@ class OTFFontParser:
         if not glyph_mapping:
             raise ValueError("No valid glyph names found in glyph file")
         
-        # Get font name for the constant name
+        # Get font name for the constant name (lowerCamelCase)
         font_name = self._get_font_family_name().replace(' ', '').replace('-', '')
-        
+        const_name = font_name[0].lower() + font_name[1:] + 'Glyphs'
+
         # Build Dart code
         dart_lines = []
-        dart_lines.append(f"const {font_name}Glyphs = {{")
+        dart_lines.append(f"const {const_name} = {{")
         dart_lines.append("  'glyphs': {")
 
         # Add glyphs from mapping (keyed by unicode for compatibility)
@@ -284,8 +285,9 @@ class OTFFontParser:
             dart_lines[-1] = dart_lines[-1][:-1]
 
         dart_lines.append("  },")
-        dart_lines.append(f"  'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'")
+        dart_lines.append(f"  'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}',")
         dart_lines.append("};")
+        dart_lines.append("")  # Add trailing newline
 
         dart_code = '\n'.join(dart_lines)
         
