@@ -293,5 +293,5 @@ const Map<String, Object> bravuraGlyphs = {
       'path': 'M 15,0 L 15,875 L -15,875 L -15,0 Z',
     }
   },
-  'generatedOn': '2026-04-26 00:00:45',
+  'generatedOn': '2026-04-26 00:03:47',
 };

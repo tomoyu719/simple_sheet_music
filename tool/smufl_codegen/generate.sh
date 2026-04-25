@@ -19,36 +19,26 @@ if ! python3 -c "import fontTools" 2>/dev/null; then
     exit 1
 fi
 
-# Generate glyph files from OTF fonts
-echo "=== Generating glyph files ==="
+# Generate files for each font
+for FONT_NAME in bravura petaluma; do
+    FONT_DIR="$SCRIPT_DIR/$FONT_NAME"
 
-echo "Processing Bravura.otf..."
-python3 "$SCRIPT_DIR/glyph_codegen.py" \
-    "$SCRIPT_DIR/Bravura.otf" \
-    "$SCRIPT_DIR/glyphs.json" \
-    "$FONTS_OUTPUT_DIR/bravura_glyphs.dart"
+    echo "=== Processing $FONT_NAME ==="
 
-echo "Processing Petaluma.otf..."
-python3 "$SCRIPT_DIR/glyph_codegen.py" \
-    "$SCRIPT_DIR/Petaluma.otf" \
-    "$SCRIPT_DIR/glyphs.json" \
-    "$FONTS_OUTPUT_DIR/petaluma_glyphs.dart"
+    echo "Generating glyphs..."
+    python3 "$SCRIPT_DIR/glyph_codegen.py" \
+        "$FONT_DIR/font.otf" \
+        "$SCRIPT_DIR/glyphs.json" \
+        "$FONTS_OUTPUT_DIR/${FONT_NAME}_glyphs.dart"
 
-# Generate metadata files
-echo ""
-echo "=== Generating metadata files ==="
+    echo "Generating metadata..."
+    python3 "$SCRIPT_DIR/metadata_codegen.py" \
+        "$FONT_DIR/metadata.json" \
+        "$SCRIPT_DIR/glyphs.json" \
+        "$FONTS_OUTPUT_DIR/${FONT_NAME}_metadata.dart"
 
-echo "Processing bravura_metadata.json..."
-python3 "$SCRIPT_DIR/metadata_codegen.py" \
-    "$SCRIPT_DIR/bravura_metadata.json" \
-    "$SCRIPT_DIR/glyphs.json" \
-    "$FONTS_OUTPUT_DIR/bravura_metadata.dart"
-
-echo "Processing petaluma_metadata.json..."
-python3 "$SCRIPT_DIR/metadata_codegen.py" \
-    "$SCRIPT_DIR/petaluma_metadata.json" \
-    "$SCRIPT_DIR/glyphs.json" \
-    "$FONTS_OUTPUT_DIR/petaluma_metadata.dart"
+    echo ""
+done
 
 # Apply Dart fixes and formatting
 echo ""
