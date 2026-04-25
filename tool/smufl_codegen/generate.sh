@@ -1,6 +1,6 @@
 #!/bin/bash
-# Font generation script
-# Parses OTF files, generates Dart code, and applies linting/formatting
+# SMuFL Code Generator
+# Generates Dart code from OTF fonts and SMuFL metadata JSON
 
 set -e
 
@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 FONTS_OUTPUT_DIR="$PROJECT_ROOT/lib/src/fonts"
 
-echo "=== Font Generation Script ==="
+echo "=== SMuFL Code Generator ==="
 echo "Script directory: $SCRIPT_DIR"
 echo "Output directory: $FONTS_OUTPUT_DIR"
 echo ""
@@ -23,13 +23,13 @@ fi
 echo "=== Generating glyph files ==="
 
 echo "Processing Bravura.otf..."
-python3 "$SCRIPT_DIR/font_parser.py" \
+python3 "$SCRIPT_DIR/glyph_codegen.py" \
     "$SCRIPT_DIR/Bravura.otf" \
     "$SCRIPT_DIR/glyphs.json" \
     "$FONTS_OUTPUT_DIR/bravura_glyphs.dart"
 
 echo "Processing Petaluma.otf..."
-python3 "$SCRIPT_DIR/font_parser.py" \
+python3 "$SCRIPT_DIR/glyph_codegen.py" \
     "$SCRIPT_DIR/Petaluma.otf" \
     "$SCRIPT_DIR/glyphs.json" \
     "$FONTS_OUTPUT_DIR/petaluma_glyphs.dart"
@@ -39,13 +39,13 @@ echo ""
 echo "=== Generating metadata files ==="
 
 echo "Processing bravura_metadata.json..."
-python3 "$SCRIPT_DIR/metadata_parser.py" \
+python3 "$SCRIPT_DIR/metadata_codegen.py" \
     "$SCRIPT_DIR/bravura_metadata.json" \
     "$SCRIPT_DIR/glyphs.json" \
     "$FONTS_OUTPUT_DIR/bravura_metadata.dart"
 
 echo "Processing petaluma_metadata.json..."
-python3 "$SCRIPT_DIR/metadata_parser.py" \
+python3 "$SCRIPT_DIR/metadata_codegen.py" \
     "$SCRIPT_DIR/petaluma_metadata.json" \
     "$SCRIPT_DIR/glyphs.json" \
     "$FONTS_OUTPUT_DIR/petaluma_metadata.dart"

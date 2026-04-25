@@ -500,5 +500,5 @@ const Map<String, Object> bravuraMetadata = {
       'opticalCenter': [0.616, 0.0],
     },
   },
-  'generatedOn': '2026-04-25 23:56:55',
+  'generatedOn': '2026-04-26 00:00:45',
 };
