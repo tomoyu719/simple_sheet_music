@@ -1,79 +1,127 @@
-# OTF Font Parser
+# Font Parser Tools
 
-A Python tool for reading OTF files and extracting font information, with support for generating Dart font constants from CSV input.
+Tools for extracting glyph data from OTF fonts and SMuFL metadata files, generating Dart code.
 
-## Features
+## Tools
 
-- Generate Dart font constants from OTF files using CSV input mapping
-- Extract SVG path data for specified glyphs
-- Support for custom glyph naming through CSV configuration
+| Script | Input | Output | Description |
+|--------|-------|--------|-------------|
+| `font_parser.py` | OTF + glyphs.json | `*_font.dart` | SVG path data |
+| `metadata_parser.py` | metadata.json + glyphs.json | `*_metadata.dart` | BBox, anchors, widths |
 
 ## Installation
-
-Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Or:
-
-```bash
-pip install fonttools
-```
-
 ## Usage
 
-### 1. Generate Dart font constants from CSV
-
-The primary use case is to generate Dart font constants using a CSV file that maps display names to Unicode glyph names:
+### Generate Font Path Data
 
 ```bash
-python3 font_parser.py Bravura.otf glyphs.csv
-python3 font_parser.py Bravura.otf glyphs.csv output.dart
+python3 font_parser.py Bravura.otf glyphs.json
+python3 font_parser.py Petaluma.otf glyphs.json
 ```
 
-**CSV Format:**
-```csv
-name,unicode
-timeSig0,uniE080
-timeSig1,uniE081
-timeSig2,uniE082
+### Generate Metadata
+
+```bash
+python3 metadata_parser.py ../../assets/bravura_metadata.json glyphs.json
+python3 metadata_parser.py ../../assets/petaluma_metadata.json glyphs.json
 ```
 
-**Generated Dart Output:**
+### Custom Output Path
+
+```bash
+python3 font_parser.py Bravura.otf glyphs.json custom_output.dart
+python3 metadata_parser.py metadata.json glyphs.json custom_output.dart
+```
+
+## Glyph Definition (glyphs.json)
+
+```json
+{
+  "clefs": {
+    "gClef": { "codepoint": "U+E050", "description": "G clef" },
+    "fClef": { "codepoint": "U+E062", "description": "F clef" }
+  },
+  "noteheads": {
+    "noteheadWhole": { "codepoint": "U+E0A2", "description": "Whole notehead" }
+  }
+}
+```
+
+## Output
+
+### *_font.dart (Path Data)
+
 ```dart
 const BravuraFont = {
-  'glyphs': {
-    'timeSig0': {
-      'unicode': "uniE080",
-      'path': "M 450,0 C 450,139 354,251...",
+    'glyphs': {
+        'gClef': {
+            'unicode': "uniE050",
+            'path': "M 450,0 C 450,139...",
+        },
     },
-    'timeSig1': {
-      'unicode': "uniE081", 
-      'path': "M 24,13 C 24,13 20,7 20,0...",
-    },
-  },
-  'generatedOn': '2025-07-12 23:45:48'
+    'generatedOn': '2025-04-25 18:00:00'
 };
 ```
 
+### *_metadata.dart (Metadata)
 
-## Output Data Structure
-
-### Dart Font Constant
 ```dart
-const FontName = {
-  'glyphs': {
-    'displayName': {
-      'unicode': "unicodeValue",
-      'path': "SVG path commands",
-    },
+const BravuraMetadata = {
+  'fontName': 'Bravura',
+  'fontVersion': 1.392,
+  'engravingDefaults': {
+    'staffLineThickness': 0.13,
+    'stemThickness': 0.12,
+    ...
   },
-  'generatedOn': 'timestamp'
+  'glyphAdvanceWidths': {
+    'gClef': 2.684,
+    ...
+  },
+  'glyphBBoxes': {
+    'gClef': {
+      'bBoxNE': [2.556, 4.392],
+      'bBoxSW': [-0.18, -2.632],
+    },
+    ...
+  },
+  'glyphsWithAnchors': {
+    'noteheadWhole': {
+      'stemUpSE': [1.328, -0.5],
+      'stemDownNW': [0.0, 0.5],
+    },
+    ...
+  },
+  'generatedOn': '2025-04-25 18:00:00'
 };
 ```
 
+## Directory Structure
+
+```
+simple_sheet_music/
+├── assets/
+│   ├── bravura_metadata.json    # SMuFL metadata (input)
+│   └── petaluma_metadata.json
+├── glyphs/                      # Generated output
+│   ├── bravura_font.dart
+│   ├── bravura_metadata.dart
+│   ├── petaluma_font.dart
+│   └── petaluma_metadata.dart
+└── tools/font_parser/
+    ├── font_parser.py           # Path extractor
+    ├── metadata_parser.py       # Metadata extractor
+    ├── glyphs.json              # Glyph definitions
+    ├── Bravura.otf              # Font files (input)
+    ├── Petaluma.otf
+    ├── README.md
+    └── requirements.txt
+```
 
 ## Dependencies
 

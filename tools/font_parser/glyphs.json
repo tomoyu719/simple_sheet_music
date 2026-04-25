@@ -1,0 +1,105 @@
+{
+  "clefs": {
+    "gClef": { "codepoint": "U+E050", "description": "G clef" },
+    "fClef": { "codepoint": "U+E062", "description": "F clef" },
+    "cClef": { "codepoint": "U+E05C", "description": "C clef" },
+    "unpitchedPercussionClef1": { "codepoint": "U+E069", "description": "Unpitched percussion clef 1" },
+    "6stringTabClef": { "codepoint": "U+E06D", "description": "6-string tab clef" },
+    "4stringTabClef": { "codepoint": "U+E06E", "description": "4-string tab clef" }
+  },
+  "timeSignatures": {
+    "timeSig0": { "codepoint": "U+E080", "description": "Time signature 0" },
+    "timeSig1": { "codepoint": "U+E081", "description": "Time signature 1" },
+    "timeSig2": { "codepoint": "U+E082", "description": "Time signature 2" },
+    "timeSig3": { "codepoint": "U+E083", "description": "Time signature 3" },
+    "timeSig4": { "codepoint": "U+E084", "description": "Time signature 4" },
+    "timeSig5": { "codepoint": "U+E085", "description": "Time signature 5" },
+    "timeSig6": { "codepoint": "U+E086", "description": "Time signature 6" },
+    "timeSig7": { "codepoint": "U+E087", "description": "Time signature 7" },
+    "timeSig8": { "codepoint": "U+E088", "description": "Time signature 8" },
+    "timeSig9": { "codepoint": "U+E089", "description": "Time signature 9" },
+    "timeSigCommon": { "codepoint": "U+E08A", "description": "Common time" },
+    "timeSigCutCommon": { "codepoint": "U+E08B", "description": "Cut time" }
+  },
+  "noteheads": {
+    "noteheadDoubleWhole": { "codepoint": "U+E0A0", "description": "Double whole (breve) notehead" },
+    "noteheadWhole": { "codepoint": "U+E0A2", "description": "Whole (semibreve) notehead" },
+    "noteheadHalf": { "codepoint": "U+E0A3", "description": "Half (minim) notehead" },
+    "noteheadBlack": { "codepoint": "U+E0A4", "description": "Black notehead" }
+  },
+  "accidentals": {
+    "accidentalFlat": { "codepoint": "U+E260", "description": "Flat" },
+    "accidentalNatural": { "codepoint": "U+E261", "description": "Natural" },
+    "accidentalSharp": { "codepoint": "U+E262", "description": "Sharp" },
+    "accidentalDoubleSharp": { "codepoint": "U+E263", "description": "Double sharp" },
+    "accidentalDoubleFlat": { "codepoint": "U+E264", "description": "Double flat" }
+  },
+  "flags": {
+    "flag8thUp": { "codepoint": "U+E240", "description": "Combining flag 1 (8th) above" },
+    "flag8thDown": { "codepoint": "U+E241", "description": "Combining flag 1 (8th) below" },
+    "flag16thUp": { "codepoint": "U+E242", "description": "Combining flag 2 (16th) above" },
+    "flag16thDown": { "codepoint": "U+E243", "description": "Combining flag 2 (16th) below" },
+    "flag32ndUp": { "codepoint": "U+E244", "description": "Combining flag 3 (32nd) above" },
+    "flag32ndDown": { "codepoint": "U+E245", "description": "Combining flag 3 (32nd) below" },
+    "flag64thUp": { "codepoint": "U+E246", "description": "Combining flag 4 (64th) above" },
+    "flag64thDown": { "codepoint": "U+E247", "description": "Combining flag 4 (64th) below" },
+    "flag128thUp": { "codepoint": "U+E248", "description": "Combining flag 5 (128th) above" },
+    "flag128thDown": { "codepoint": "U+E249", "description": "Combining flag 5 (128th) below" }
+  },
+  "rests": {
+    "restWhole": { "codepoint": "U+E4E3", "description": "Whole (semibreve) rest" },
+    "restHalf": { "codepoint": "U+E4E4", "description": "Half (minim) rest" },
+    "restQuarter": { "codepoint": "U+E4E5", "description": "Quarter (crotchet) rest" },
+    "rest8th": { "codepoint": "U+E4E6", "description": "Eighth (quaver) rest" },
+    "rest16th": { "codepoint": "U+E4E7", "description": "16th (semiquaver) rest" },
+    "rest32nd": { "codepoint": "U+E4E8", "description": "32nd (demisemiquaver) rest" },
+    "rest64th": { "codepoint": "U+E4E9", "description": "64th (hemidemisemiquaver) rest" },
+    "rest128th": { "codepoint": "U+E4EA", "description": "128th (semihemidemisemiquaver) rest" }
+  },
+  "dots": {
+    "augmentationDot": { "codepoint": "U+E1E7", "description": "Augmentation dot" }
+  },
+  "articulations": {
+    "articAccentAbove": { "codepoint": "U+E4A0", "description": "Accent above" },
+    "articAccentBelow": { "codepoint": "U+E4A1", "description": "Accent below" },
+    "articStaccatoAbove": { "codepoint": "U+E4A2", "description": "Staccato above" },
+    "articStaccatoBelow": { "codepoint": "U+E4A3", "description": "Staccato below" },
+    "articTenutoAbove": { "codepoint": "U+E4A4", "description": "Tenuto above" },
+    "articTenutoBelow": { "codepoint": "U+E4A5", "description": "Tenuto below" },
+    "articMarcatoAbove": { "codepoint": "U+E4AC", "description": "Marcato above" },
+    "articMarcatoBelow": { "codepoint": "U+E4AD", "description": "Marcato below" }
+  },
+  "dynamics": {
+    "dynamicPiano": { "codepoint": "U+E520", "description": "Piano" },
+    "dynamicMezzo": { "codepoint": "U+E521", "description": "Mezzo" },
+    "dynamicForte": { "codepoint": "U+E522", "description": "Forte" },
+    "dynamicRinforzando": { "codepoint": "U+E523", "description": "Rinforzando" },
+    "dynamicSforzando": { "codepoint": "U+E524", "description": "Sforzando" },
+    "dynamicNiente": { "codepoint": "U+E526", "description": "Niente" }
+  },
+  "fermatas": {
+    "fermataAbove": { "codepoint": "U+E4C0", "description": "Fermata above" },
+    "fermataBelow": { "codepoint": "U+E4C1", "description": "Fermata below" }
+  },
+  "ornaments": {
+    "ornamentTrill": { "codepoint": "U+E566", "description": "Trill" },
+    "ornamentTurn": { "codepoint": "U+E567", "description": "Turn" },
+    "ornamentMordent": { "codepoint": "U+E56D", "description": "Mordent" }
+  },
+  "repeats": {
+    "segno": { "codepoint": "U+E047", "description": "Segno" },
+    "coda": { "codepoint": "U+E048", "description": "Coda" }
+  },
+  "brackets": {
+    "bracketTop": { "codepoint": "U+E003", "description": "Bracket top" },
+    "bracketBottom": { "codepoint": "U+E004", "description": "Bracket bottom" }
+  },
+  "barlines": {
+    "barlineSingle": { "codepoint": "U+E030", "description": "Single barline" },
+    "barlineDouble": { "codepoint": "U+E031", "description": "Double barline" },
+    "barlineFinal": { "codepoint": "U+E032", "description": "Final barline" }
+  },
+  "stems": {
+    "stem": { "codepoint": "U+E210", "description": "Combining stem" }
+  }
+}
