@@ -9,6 +9,7 @@ Tool for reading OTF files and extracting font information (boundingBox, path, n
 import os
 import sys
 import csv
+import json
 from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 from datetime import datetime
@@ -188,59 +189,104 @@ class OTFFontParser:
                         
         except Exception as e:
             print(f"Error reading CSV file: {e}")
-            
+
         return glyph_mapping
-    
-    def export_dart_font(self, csv_path: str, output_path: str = None) -> str:
+
+    def load_json_glyphs(self, json_path: str) -> Dict[str, str]:
         """
-        Export font glyphs as Dart code format based on CSV mapping
-        
+        Load glyph names and unicode values from JSON file
+
         Args:
-            csv_path (str): CSV file with glyph names to include
+            json_path (str): Path to JSON file with categorized glyphs
+
+        Returns:
+            Dict[str, str]: Dictionary mapping display names to unicode glyph names
+        """
+        glyph_mapping = {}
+
+        try:
+            with open(json_path, 'r', encoding='utf-8') as jsonfile:
+                data = json.load(jsonfile)
+
+                # Iterate through categories
+                for category, glyphs in data.items():
+                    if isinstance(glyphs, dict):
+                        for glyph_name, glyph_info in glyphs.items():
+                            if isinstance(glyph_info, dict) and 'codepoint' in glyph_info:
+                                # Convert U+E050 to uniE050 format
+                                codepoint = glyph_info['codepoint']
+                                unicode_value = codepoint.replace('U+', 'uni')
+                                glyph_mapping[glyph_name] = unicode_value
+
+        except Exception as e:
+            print(f"Error reading JSON file: {e}")
+
+        return glyph_mapping
+
+    def load_glyphs(self, file_path: str) -> Dict[str, str]:
+        """
+        Load glyph names from CSV or JSON file (auto-detect by extension)
+
+        Args:
+            file_path (str): Path to CSV or JSON file
+
+        Returns:
+            Dict[str, str]: Dictionary mapping display names to unicode glyph names
+        """
+        path = Path(file_path)
+        if path.suffix.lower() == '.json':
+            return self.load_json_glyphs(file_path)
+        else:
+            return self.load_csv_glyphs(file_path)
+
+    def export_dart_font(self, glyph_file_path: str, output_path: str = None) -> str:
+        """
+        Export font glyphs as Dart code format based on CSV or JSON mapping
+
+        Args:
+            glyph_file_path (str): CSV or JSON file with glyph names to include
             output_path (str, optional): Output file path for Dart code
-            
+
         Returns:
             str: Dart code string
         """
-        # Load glyph mapping from CSV
-        glyph_mapping = self.load_csv_glyphs(csv_path)
+        # Load glyph mapping from CSV or JSON
+        glyph_mapping = self.load_glyphs(glyph_file_path)
         if not glyph_mapping:
-            raise ValueError("No valid glyph names found in CSV file")
+            raise ValueError("No valid glyph names found in glyph file")
         
         # Get font name for the constant name
         font_name = self._get_font_family_name().replace(' ', '').replace('-', '')
         
         # Build Dart code
         dart_lines = []
-        dart_lines.append(f"const {font_name}Font = {{")
-        dart_lines.append("    'glyphs': {")
-        
-        # Add glyphs from CSV mapping
+        dart_lines.append(f"const {font_name}Glyphs = {{")
+        dart_lines.append("  'glyphs': {")
+
+        # Add glyphs from mapping (keyed by unicode for compatibility)
         glyph_count = 0
-        for display_name, font_glyph_name in glyph_mapping.items():
-            path_commands = self._get_glyph_path(font_glyph_name)
-            
+        for display_name, unicode_value in glyph_mapping.items():
+            path_commands = self._get_glyph_path(unicode_value)
+
             # Skip glyphs without path data
             if not path_commands.strip():
                 continue
-            
-            # Use the unicode value from CSV
-            unicode_value = glyph_mapping[display_name]
-            
-            dart_lines.append(f"        '{display_name}': {{")
-            dart_lines.append(f"            'unicode': \"{unicode_value}\",")
-            dart_lines.append(f"            'path': \"{path_commands}\",")
-            dart_lines.append("        },")
+
+            # Use unicode (e.g., uniE050) as key for lookup compatibility
+            dart_lines.append(f"    '{unicode_value}': {{")
+            dart_lines.append(f"      'name': '{display_name}',")
+            dart_lines.append(f"      'path': \"{path_commands}\",")
+            dart_lines.append("    },")
             glyph_count += 1
         
         # Remove trailing comma from last glyph
         if dart_lines and dart_lines[-1].endswith(","):
             dart_lines[-1] = dart_lines[-1][:-1]
-        
-        dart_lines.append("    },")
-        dart_lines.append(f"    'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'")
+
+        dart_lines.append("  },")
+        dart_lines.append(f"  'generatedOn': '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'")
         dart_lines.append("};")
-        
+
         dart_code = '\n'.join(dart_lines)
         
         # Write to file if output path provided
@@ -259,28 +305,31 @@ class OTFFontParser:
 def main():
     """Main function"""
     if len(sys.argv) < 3:
-        print("Usage: python font_parser.py <OTF file path> <CSV file> [output file]")
+        print("Usage: python font_parser.py <OTF file path> <glyphs file> [output file]")
         print("Examples:")
+        print("  python font_parser.py Bravura.otf glyphs.json")
         print("  python font_parser.py Bravura.otf glyphs.csv")
-        print("  python font_parser.py Bravura.otf glyphs.csv output.dart")
+        print("  python font_parser.py Bravura.otf glyphs.json output.dart")
         return
-    
+
     font_path = sys.argv[1]
-    csv_path = sys.argv[2]
-    
+    glyph_file_path = sys.argv[2]
+
     try:
         parser = OTFFontParser(font_path)
-        
+
         # Third argument is output file path
         if len(sys.argv) > 3:
             output_path = sys.argv[3]
         else:
-            # Generate output file name based on font name
+            # Generate output file name in lib/src/fonts/ directory
+            script_dir = Path(__file__).parent
+            fonts_dir = script_dir.parent.parent / "lib" / "src" / "fonts"
             font_name = parser._get_font_family_name().replace(' ', '').replace('-', '').lower()
-            output_path = f"{font_name}_font.dart"
-        
+            output_path = str(fonts_dir / f"{font_name}_glyphs.dart")
+
         # Export as Dart file
-        dart_code = parser.export_dart_font(csv_path, output_path)
+        dart_code = parser.export_dart_font(glyph_file_path, output_path)
     
     except Exception as e:
         print(f"Error: {e}")
