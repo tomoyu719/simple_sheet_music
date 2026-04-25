@@ -18,5 +18,10 @@
 * add chord
 * switching rendering method
 
-## 1.1.0-dev.1
+## 1.0.1-dev.1
 * Add CD workflow for pub.dev publishing
+
+## 1.0.1-dev.2
+* Migrate font handling to compile-time Dart constants
+* Convert SimpleSheetMusic to StatelessWidget
+* Remove xml package dependency
