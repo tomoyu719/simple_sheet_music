@@ -15,5 +15,8 @@
 * switching rendering methods
 
 ## 1.0.0 - 2024/07/09
-* add chord 
+* add chord
 * switching rendering method
+
+## 1.0.1-dev.1
+* Add CD workflow for pub.dev publishing
