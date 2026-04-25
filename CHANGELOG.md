@@ -25,3 +25,7 @@
 * Migrate font handling to compile-time Dart constants
 * Convert SimpleSheetMusic to StatelessWidget
 * Remove xml package dependency
+
+## 1.0.2-dev
+* Add SMuFL code generator tools (tool/smufl_codegen)
+* Reorganize font source files by font name
