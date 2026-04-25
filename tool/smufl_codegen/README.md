@@ -113,17 +113,31 @@ simple_sheet_music/
 │   └── petaluma_metadata.dart
 └── tool/smufl_codegen/
     ├── bravura/                # Bravura font data
-    │   ├── font.otf
-    │   └── metadata.json
+    │   ├── Bravura.otf
+    │   └── bravura_metadata.json
     ├── petaluma/               # Petaluma font data
-    │   ├── font.otf
-    │   └── metadata.json
+    │   ├── Petaluma.otf
+    │   └── petaluma_metadata.json
     ├── glyphs.json             # Shared glyph definitions
     ├── generate.sh             # Main script
     ├── glyph_codegen.py        # Glyph extractor
     ├── metadata_codegen.py     # Metadata extractor
     ├── README.md
     └── requirements.txt
+```
+
+## Updating Font Sources
+
+Copy files from upstream repositories:
+
+```bash
+# Bravura
+cp /path/to/bravura/redist/otf/Bravura.otf tool/smufl_codegen/bravura/
+cp /path/to/bravura/redist/bravura_metadata.json tool/smufl_codegen/bravura/
+
+# Petaluma
+cp /path/to/petaluma/redist/otf/Petaluma.otf tool/smufl_codegen/petaluma/
+cp /path/to/petaluma/redist/petaluma_metadata.json tool/smufl_codegen/petaluma/
 ```
 
 ## Dependencies
