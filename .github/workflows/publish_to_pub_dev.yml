@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-24.04-slim
+    runs-on: ubuntu-slim
 
     steps:
       - name: Checkout
