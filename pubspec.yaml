@@ -16,6 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic_mono: any
+  alchemist: ^0.14.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -23,6 +24,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
+  uses-material-design: true
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #

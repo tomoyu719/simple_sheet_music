@@ -1,0 +1,39 @@
+name: Visual Regression Test
+
+on:
+  push:
+    tags:
+      - 'v*'  # リリースタグ作成時のみ実行
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  golden-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.3"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Golden Tests
+        run: flutter test --tags=golden
+        env:
+          CI: true
+
+      - name: Upload Golden Failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failures
+          path: |
+            test/failures/
+            test/golden_test/goldens/
+          retention-days: 7
