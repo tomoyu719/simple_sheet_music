@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/extension/list_extension.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
@@ -16,8 +17,9 @@ class SheetMusicMetrics {
     this.initialClefType,
     this.initialKeySignatureType,
     this.metadata,
-    this.paths,
-  );
+    this.paths, {
+    this.lineColor = Colors.black,
+  });
 
   List<MeasureRenderer>? _measureRenderersCache;
 
@@ -35,8 +37,12 @@ class SheetMusicMetrics {
         paths,
       );
       context = measure.updateContext(context);
-      final measureRenderer =
-          MeasureRenderer(symbols, metadata, isNewLine: measure.isNewLine);
+      final measureRenderer = MeasureRenderer(
+        symbols,
+        metadata,
+        isNewLine: measure.isNewLine,
+        lineColor: lineColor,
+      );
       result.add(measureRenderer);
     }
 
@@ -71,6 +77,7 @@ class SheetMusicMetrics {
   final KeySignatureType initialKeySignatureType;
   final GlyphMetadata metadata;
   final GlyphPaths paths;
+  final Color lineColor;
 
   /// Gets the staff with the maximum width in the sheet music.
   StaffRenderer get _maximumWidthStaff {

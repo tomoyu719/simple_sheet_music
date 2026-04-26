@@ -6,15 +6,15 @@ import 'package:simple_sheet_music/src/constants.dart';
 import 'package:simple_sheet_music/src/extension/list_extension.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// The renderer for a measure in sheet music.
 /// Combines metrics calculation and rendering functionality.
 class MeasureRenderer {
-  const MeasureRenderer(
+  MeasureRenderer(
     this.symbolRenderers,
     this.metadata, {
     required this.isNewLine,
+    required this.lineColor,
   });
 
   /// The list of [MusicalSymbolRenderer] representing the renderers of each musical
@@ -26,6 +26,36 @@ class MeasureRenderer {
 
   /// Indicates whether a line break should occur in this measure.
   final bool isNewLine;
+
+  /// The color of the staff lines.
+  final Color lineColor;
+
+  // Position state
+  double _canvasScale = 1;
+  double _measureInitialX = 0;
+  double _staffLineCenterY = 0;
+
+  /// Sets the position information for rendering.
+  void setPosition({
+    required double canvasScale,
+    required double measureInitialX,
+    required double staffLineCenterY,
+  }) {
+    _canvasScale = canvasScale;
+    _measureInitialX = measureInitialX;
+    _staffLineCenterY = staffLineCenterY;
+
+    // Set positions for all symbols
+    var x = measureInitialX;
+    for (final symbol in symbolRenderers) {
+      symbol.setPosition(
+        canvasScale: canvasScale,
+        staffLineCenterY: staffLineCenterY,
+        symbolX: x,
+      );
+      x += symbol.width + symbol.margin.horizontal / canvasScale;
+    }
+  }
 
   // Metrics properties
 
@@ -64,70 +94,42 @@ class MeasureRenderer {
   /// Performs a hit test at the given [position] and returns the corresponding [MusicalSymbolRenderer].
   ///
   /// Returns `null` if no symbol is hit.
-  MusicalSymbolRenderer? hitTest(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double measureInitialX,
-    required double staffLineCenterY,
-  }) {
-    var x = measureInitialX;
+  /// [setPosition] must be called before this method.
+  MusicalSymbolRenderer? hitTest(Offset position) {
     for (final symbol in symbolRenderers) {
-      if (symbol.isHit(
-        position,
-        layout: layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: x,
-      )) {
+      if (symbol.isHit(position)) {
         return symbol;
       }
-      x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
     }
     return null;
   }
 
   /// Renders the measure on the given [canvas] with the specified [size].
-  void render(
-    Canvas canvas,
-    Size size, {
-    required SheetMusicLayout layout,
-    required double measureInitialX,
-    required double staffLineCenterY,
-  }) {
-    _renderStaffLine(canvas, layout, measureInitialX, staffLineCenterY);
-    var x = measureInitialX;
+  ///
+  /// [setPosition] must be called before this method.
+  void render(Canvas canvas, Size size) {
+    _renderStaffLine(canvas);
     for (final symbol in symbolRenderers) {
-      symbol.render(
-        canvas,
-        layout: layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: x,
-      );
-      x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
+      symbol.render(canvas);
     }
   }
 
-  void _renderStaffLine(
-    Canvas canvas,
-    SheetMusicLayout layout,
-    double measureInitialX,
-    double staffLineCenterY,
-  ) {
-    final initX = measureInitialX;
-    final measureWidth =
-        objectsWidth + horizontalMarginSum / layout.canvasScale;
+  void _renderStaffLine(Canvas canvas) {
+    final initX = _measureInitialX;
+    final measureWidth = objectsWidth + horizontalMarginSum / _canvasScale;
     final staffLineHeights = [
-      staffLineCenterY - Constants.staffSpace * 2,
-      staffLineCenterY - Constants.staffSpace,
-      staffLineCenterY,
-      staffLineCenterY + Constants.staffSpace,
-      staffLineCenterY + Constants.staffSpace * 2,
+      _staffLineCenterY - Constants.staffSpace * 2,
+      _staffLineCenterY - Constants.staffSpace,
+      _staffLineCenterY,
+      _staffLineCenterY + Constants.staffSpace,
+      _staffLineCenterY + Constants.staffSpace * 2,
     ];
     for (final height in staffLineHeights) {
       canvas.drawLine(
         Offset(initX, height),
         Offset(initX + measureWidth, height),
         Paint()
-          ..color = layout.lineColor
+          ..color = lineColor
           ..strokeWidth = staffLineThickness,
       );
     }

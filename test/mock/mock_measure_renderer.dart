@@ -17,4 +17,14 @@ class MockMeasureRenderer extends Fake implements MeasureRenderer {
   final double objectsWidth;
   @override
   final double horizontalMarginSum;
+
+  @override
+  void setPosition({
+    required double canvasScale,
+    required double measureInitialX,
+    required double staffLineCenterY,
+  }) {}
+
+  @override
+  double width(double scale) => objectsWidth + horizontalMarginSum / scale;
 }

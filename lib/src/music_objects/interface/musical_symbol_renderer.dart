@@ -1,5 +1,4 @@
 import 'package:flutter/rendering.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// An abstract class representing a renderer for a musical symbol.
 abstract class MusicalSymbolRenderer {
@@ -15,19 +14,22 @@ abstract class MusicalSymbolRenderer {
   /// The margin around the musical symbol. Vertical margin is not used.
   EdgeInsets get margin;
 
-  /// Checks if the symbol is hit at the given position.
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
+  /// Sets the position information for rendering.
+  ///
+  /// This must be called before [render] or [isHit].
+  void setPosition({
+    required double canvasScale,
     required double staffLineCenterY,
     required double symbolX,
   });
 
+  /// Checks if the symbol is hit at the given position.
+  ///
+  /// [setPosition] must be called before this method.
+  bool isHit(Offset position);
+
   /// Renders the symbol on the given canvas.
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  });
+  ///
+  /// [setPosition] must be called before this method.
+  void render(Canvas canvas);
 }

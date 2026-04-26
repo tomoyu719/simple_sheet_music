@@ -6,4 +6,11 @@ class MockStaffRenderer extends Fake implements StaffRenderer {
 
   @override
   final double width;
+
+  @override
+  void setPosition({
+    required double canvasScale,
+    required double staffLineCenterY,
+    required double leftPadding,
+  }) {}
 }
