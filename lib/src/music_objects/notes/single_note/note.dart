@@ -4,7 +4,6 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/notes/accidental.dart';
 import 'package:simple_sheet_music/src/music_objects/notes/legerline.dart';
@@ -25,14 +24,10 @@ class Note implements MusicalSymbol {
     this.accidental,
     this.margin = const EdgeInsets.all(10),
     this.color = Colors.black,
-    // this.stemDirection,
   });
 
   @override
   final EdgeInsets margin;
-
-  // /// The direction of the note stem.
-  // final StemDirection? stemDirection;
 
   @override
   final Color color;
@@ -50,17 +45,17 @@ class Note implements MusicalSymbol {
   NoteHeadType get noteHeadType => noteDuration.noteHeadType;
 
   @override
-  MusicalSymbolMetrics setContext(
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      NoteMetrics(this, context, metadata, paths);
+      NoteRenderer(this, context, metadata, paths);
 }
 
-/// Represents the metrics (size, position, etc.) of a single note in sheet music.
-class NoteMetrics implements MusicalSymbolMetrics {
-  const NoteMetrics(
+/// A class that renders a musical note symbol and provides its metrics.
+class NoteRenderer implements MusicalSymbolRenderer {
+  const NoteRenderer(
     this.note,
     this.context,
     this.metadata,
@@ -78,6 +73,8 @@ class NoteMetrics implements MusicalSymbolMetrics {
 
   // The note object associated with these metrics.
   final Note note;
+
+  // Metrics properties
 
   @override
   double get lowerHeight => bbox.bottom;
@@ -125,19 +122,6 @@ class NoteMetrics implements MusicalSymbolMetrics {
 
   // The color of the note.
   Color get color => note.color;
-
-  @override
-  MusicalSymbolRenderer renderer(
-    SheetMusicLayout layout, {
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      NoteRenderer(
-        this,
-        layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: symbolX,
-      );
 
   @override
   double get upperHeight => -bbox.top;
@@ -251,7 +235,6 @@ class NoteMetrics implements MusicalSymbolMetrics {
   bool get hasStem => note.noteDuration.hasStem;
 
   // Whether the stem is up.
-  // bool get _isStemUp => note.stemDirection?.isUp ?? _defaultStemDirection.isUp;
   bool get _isStemUp => _defaultStemDirection.isUp;
 
   // The default stem direction based on the stave position.
@@ -319,116 +302,116 @@ class NoteMetrics implements MusicalSymbolMetrics {
 
   // The bounding box of the flag.
   Rect? get _flagBbox => flagPath?.getBounds();
-}
 
-/// A class that renders a musical note symbol.
-class NoteRenderer implements MusicalSymbolRenderer {
-  const NoteRenderer(
-    this.note,
-    this.layout, {
-    required this.staffLineCenterY,
-    required this.symbolX,
-  });
-
-  final SheetMusicLayout layout;
-  final double staffLineCenterY;
-  final double symbolX;
-  final NoteMetrics note;
-
-  /// Returns the scale of the canvas.
-  double get canvasScale => layout.canvasScale;
+  // Rendering methods
 
   @override
-  bool isHit(Offset position) => _renderArea.contains(position);
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) =>
+      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
 
   @override
-  void render(Canvas canvas) {
-    _renderNoteHead(canvas);
-    _renderFlag(canvas);
-    _renderAccidental(canvas);
-    _renderStem(canvas);
-    _renderLegerLine(canvas);
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
+    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+    _renderNoteHead(canvas, renderOffset);
+    _renderFlag(canvas, renderOffset);
+    _renderAccidental(canvas, renderOffset);
+    _renderStem(canvas, renderOffset);
+    _renderLegerLine(canvas, layout, staffLineCenterY, symbolX);
   }
 
-  void _renderNoteHead(Canvas canvas) {
-    canvas.drawPath(noteHeadRenderPath, Paint()..color = note.color);
+  void _renderNoteHead(Canvas canvas, Offset renderOffset) {
+    canvas.drawPath(
+      noteHeadPath.shift(renderOffset),
+      Paint()..color = color,
+    );
   }
 
-  void _renderAccidental(Canvas canvas) {
-    if (!note.hasAccidental) {
+  void _renderAccidental(Canvas canvas, Offset renderOffset) {
+    if (!hasAccidental) {
       return;
     }
     canvas.drawPath(
-      renderAccidentalPath!,
+      accidentalPath!.shift(renderOffset),
       Paint()
-        ..color = note.note.color
+        ..color = note.color
         ..strokeWidth = 2,
     );
   }
 
-  /// Returns the path of the accidental, shifted by the render offset.
-  Path? get renderAccidentalPath => note.accidentalPath?.shift(_renderOffset);
-
-  void _renderStem(Canvas canvas) {
-    if (!note.hasStem) {
+  void _renderStem(Canvas canvas, Offset renderOffset) {
+    if (!hasStem) {
       return;
     }
     canvas.drawLine(
-      note.stemRootOffset + _renderOffset,
-      note.stemTipOffset + _renderOffset,
+      stemRootOffset + renderOffset,
+      stemTipOffset + renderOffset,
       Paint()
-        ..color = note.color
-        ..strokeWidth = note.stemThickness,
+        ..color = color
+        ..strokeWidth = stemThickness,
     );
   }
 
-  /// Returns the path of the note head, shifted by the render offset.
-  Path get noteHeadRenderPath => note.noteHeadPath.shift(_renderOffset);
-
-  void _renderFlag(Canvas canvas) {
-    if (!note.hasFlag) {
+  void _renderFlag(Canvas canvas, Offset renderOffset) {
+    if (!hasFlag) {
       return;
     }
     canvas.drawPath(
-      note.flagPath!.shift(_renderOffset),
-      Paint()..color = note.color,
+      flagPath!.shift(renderOffset),
+      Paint()..color = color,
     );
   }
 
   /// Returns the render offset, which is the sum of the symbol X position and the staff line center Y position.
-  Offset get _renderOffset => Offset(symbolX, staffLineCenterY) + _marginOffset;
+  Offset _renderOffset(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
 
   /// Returns the margin offset, which is the left margin of the note divided by the canvas scale.
-  Offset get _marginOffset => Offset(note.margin.left / canvasScale, 0);
+  Offset _marginOffset(SheetMusicLayout layout) =>
+      Offset(margin.left / layout.canvasScale, 0);
 
   /// Returns the render area of the note, shifted by the render offset.
-  Rect get _renderArea => note.bbox.shift(_renderOffset);
+  Rect _renderArea(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
 
   /// Returns the width of the leger line, which is twice the leger line extension plus the note head width.
-  double get _legerLineWidth => note.legerLineExtension * 2 + _noteHeadWidth;
-
-  /// Returns the thickness of the leger line.
-  double get _legerLineThickness => note.legerLineThickness;
+  double get _legerLineWidth => legerLineExtension * 2 + noteHeadWidth;
 
   /// Renders the leger line.
-  void _renderLegerLine(Canvas canvas) => LegerLineRenderer(
-        layout.lineColor,
-        _notePosition,
-        staffLineCenterY: staffLineCenterY,
-        noteCenterX: _noteHeadCenterX,
-        legerLineWidth: _legerLineWidth,
-        legerLineThickness: _legerLineThickness,
-      ).render(canvas);
+  void _renderLegerLine(
+    Canvas canvas,
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) {
+    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+    final noteHeadLeftX = renderOffset.dx + this.noteHeadLeftX;
+    final noteHeadCenterX = noteHeadLeftX + noteHeadWidth / 2;
 
-  /// Returns the position of the note on the stave.
-  StavePosition get _notePosition => note.stavePosition;
-
-  /// Returns the width of the note head.
-  double get _noteHeadWidth => note.noteHeadWidth;
-
-  /// Returns the left X position of the note head.
-  double get _noteHeadLeftX => _renderOffset.dx + note.noteHeadLeftX;
-
-  /// Returns the center X position of the note head.
-  double get _noteHeadCenterX => _noteHeadLeftX + note.noteHeadWidth / 2;
+    LegerLineRenderer(
+      layout.lineColor,
+      stavePosition,
+      staffLineCenterY: staffLineCenterY,
+      noteCenterX: noteHeadCenterX,
+      legerLineWidth: _legerLineWidth,
+      legerLineThickness: legerLineThickness,
+    ).render(canvas);
+  }
 }

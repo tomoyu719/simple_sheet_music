@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_sheet_music/src/measure/measure_metrics.dart';
+import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 
 import '../mock/mocks.dart';
 
@@ -8,17 +8,17 @@ void main() {
   test('Objects width should be calculated correctly', () {
     // Arrange
     final musicalSymbols = [
-      MockMusicalSymbolMetrics(width: 10),
-      MockMusicalSymbolMetrics(width: 20),
-      MockMusicalSymbolMetrics(width: 15),
+      MockMusicalSymbolRenderer(width: 10),
+      MockMusicalSymbolRenderer(width: 20),
+      MockMusicalSymbolRenderer(width: 15),
     ];
-    final measureMetrics = MeasureMetrics(
+    final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
     );
     // Act
-    final objectsWidth = measureMetrics.objectsWidth;
+    final objectsWidth = measureRenderer.objectsWidth;
     // Assert
     expect(objectsWidth, 45);
   });
@@ -26,17 +26,17 @@ void main() {
   test('Upper height should be calculated correctly', () {
     // Arrange
     final musicalSymbols = [
-      MockMusicalSymbolMetrics(upperHeight: 6),
-      MockMusicalSymbolMetrics(upperHeight: 10),
-      MockMusicalSymbolMetrics(upperHeight: 7),
+      MockMusicalSymbolRenderer(upperHeight: 6),
+      MockMusicalSymbolRenderer(upperHeight: 10),
+      MockMusicalSymbolRenderer(upperHeight: 7),
     ];
-    final measureMetrics = MeasureMetrics(
+    final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
     );
     // Act
-    final upperHeight = measureMetrics.upperHeight;
+    final upperHeight = measureRenderer.upperHeight;
     // Assert
     expect(upperHeight, 10);
   });
@@ -45,19 +45,19 @@ void main() {
       () {
     // Arrange
     final musicalSymbols = [
-      MockMusicalSymbolMetrics(upperHeight: -5),
-      MockMusicalSymbolMetrics(upperHeight: -10),
-      MockMusicalSymbolMetrics(upperHeight: -7),
+      MockMusicalSymbolRenderer(upperHeight: -5),
+      MockMusicalSymbolRenderer(upperHeight: -10),
+      MockMusicalSymbolRenderer(upperHeight: -7),
     ];
     const measureUpperHeight = 1.0;
     final metadata = MockGlyphMetadata(measureUpperHeight: measureUpperHeight);
-    final measureMetrics = MeasureMetrics(
+    final measureRenderer = MeasureRenderer(
       musicalSymbols,
       metadata,
       isNewLine: false,
     );
     // Act
-    final upperHeight = measureMetrics.upperHeight;
+    final upperHeight = measureRenderer.upperHeight;
     // Assert
     expect(upperHeight, measureUpperHeight);
   });
@@ -65,17 +65,17 @@ void main() {
   test('Lower height should be calculated correctly', () {
     // Arrange
     final musicalSymbols = [
-      MockMusicalSymbolMetrics(lowerHeight: 3),
-      MockMusicalSymbolMetrics(lowerHeight: 6),
-      MockMusicalSymbolMetrics(lowerHeight: 4),
+      MockMusicalSymbolRenderer(lowerHeight: 3),
+      MockMusicalSymbolRenderer(lowerHeight: 6),
+      MockMusicalSymbolRenderer(lowerHeight: 4),
     ];
-    final measureMetrics = MeasureMetrics(
+    final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
     );
     // Act
-    final lowerHeight = measureMetrics.lowerHeight;
+    final lowerHeight = measureRenderer.lowerHeight;
     // Assert
     expect(lowerHeight, 6);
   });
@@ -83,23 +83,23 @@ void main() {
   test('Horizontal margin sum should be calculated correctly', () {
     // Arrange
     final musicalSymbols = [
-      MockMusicalSymbolMetrics(
+      MockMusicalSymbolRenderer(
         margin: const EdgeInsets.only(left: 5, right: 3),
       ),
-      MockMusicalSymbolMetrics(
+      MockMusicalSymbolRenderer(
         margin: const EdgeInsets.only(left: 2, right: 4),
       ),
-      MockMusicalSymbolMetrics(
+      MockMusicalSymbolRenderer(
         margin: const EdgeInsets.only(left: 1, right: 2),
       ),
     ];
-    final measureMetrics = MeasureMetrics(
+    final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
     );
     // Act
-    final horizontalMarginSum = measureMetrics.horizontalMarginSum;
+    final horizontalMarginSum = measureRenderer.horizontalMarginSum;
     // Assert
     expect(horizontalMarginSum, 17);
   });

@@ -6,7 +6,6 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
@@ -172,12 +171,12 @@ class KeySignature implements MusicalSymbol {
   final EdgeInsets margin;
 
   @override
-  MusicalSymbolMetrics setContext(
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      KeySignatureMetrics(
+      KeySignatureRenderer(
         this,
         context,
         metadata,
@@ -185,27 +184,39 @@ class KeySignature implements MusicalSymbol {
       );
 }
 
-class KeySignatureMetrics implements MusicalSymbolMetrics {
-  const KeySignatureMetrics(
+class KeySignatureRenderer implements MusicalSymbolRenderer {
+  KeySignatureRenderer(
     this.keySignature,
     this.context,
     this.metadata,
     this.paths,
   );
+
   final MusicalContext context;
   final GlyphMetadata metadata;
   final GlyphPaths paths;
+  final KeySignature keySignature;
+
+  // Metrics properties
+
   bool get hasParts => keySignatureType.hasParts;
   Path? get keySignaturePartPath =>
       hasParts ? paths.parsePath(keySignatureType.pathKey) : null;
 
-  List<KeySignaturePart> get keySignatureParts => hasParts
-      ? keySignaturePositionOffsets
-          .map(
-            (offset) => KeySignaturePart(keySignaturePartPath!.shift(offset)),
-          )
-          .toList()
-      : [];
+  List<KeySignaturePart>? _keySignaturePartsCache;
+  List<KeySignaturePart> get keySignatureParts {
+    if (_keySignaturePartsCache != null) {
+      return _keySignaturePartsCache!;
+    }
+    _keySignaturePartsCache = hasParts
+        ? keySignaturePositionOffsets
+            .map(
+              (offset) => KeySignaturePart(keySignaturePartPath!.shift(offset)),
+            )
+            .toList()
+        : [];
+    return _keySignaturePartsCache!;
+  }
 
   ClefType get clefType => context.clefType;
 
@@ -239,7 +250,6 @@ class KeySignatureMetrics implements MusicalSymbolMetrics {
       : Rect.zero;
 
   double get keySignaturePartWidth => hasParts ? keySignaturePartBbox.width : 0;
-  final KeySignature keySignature;
   KeySignatureType get keySignatureType => keySignature.keySignatureType;
 
   @override
@@ -257,53 +267,40 @@ class KeySignatureMetrics implements MusicalSymbolMetrics {
       hasParts ? keySignatureParts.map((e) => e.width).sum : 0;
 
   @override
-  MusicalSymbolRenderer renderer(
-    SheetMusicLayout layout, {
+  EdgeInsets get margin => keySignature.margin;
+
+  // Rendering methods
+
+  @override
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
     required double staffLineCenterY,
     required double symbolX,
-  }) =>
-      KeySignatureRenderer(
-        keySignatureParts,
-        this,
-        symbolX: symbolX,
-        staffLineCenterY: staffLineCenterY,
-      );
-
-  @override
-  EdgeInsets get margin => keySignature.margin;
-}
-
-class KeySignatureRenderer implements MusicalSymbolRenderer {
-  const KeySignatureRenderer(
-    this.keySignatureParts,
-    this.keySignature, {
-    required this.symbolX,
-    required this.staffLineCenterY,
-  });
-  final double staffLineCenterY;
-  final double symbolX;
-  Offset get renderOffset => Offset(symbolX, staffLineCenterY);
-
-  final List<KeySignaturePart> keySignatureParts;
-  final KeySignatureMetrics keySignature;
-
-  @override
-  void render(Canvas canvas) {
+  }) {
+    final renderOffset = Offset(symbolX, staffLineCenterY);
     for (final part in keySignatureParts) {
       part.render(
         canvas,
         renderOffset,
-        keySignature.keySignature.color,
+        keySignature.color,
       );
     }
   }
 
   @override
-  bool isHit(Offset position) {
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
     throw UnimplementedError();
   }
 
-  Rect get renderArea => keySignature.overallBbox.shift(renderOffset);
+  /// Returns the render area for the given position.
+  Rect renderArea(double staffLineCenterY, double symbolX) =>
+      overallBbox.shift(Offset(symbolX, staffLineCenterY));
 }
 
 class KeySignaturePart {

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_sheet_music/src/measure/measure_metrics.dart';
+import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 
-class MockMeasureMetrics extends Fake implements MeasureMetrics {
-  MockMeasureMetrics({
+class MockMeasureRenderer extends Fake implements MeasureRenderer {
+  MockMeasureRenderer({
     this.upperHeight = 0.0,
     this.lowerHeight = 0.0,
     this.objectsWidth = 0.0,
