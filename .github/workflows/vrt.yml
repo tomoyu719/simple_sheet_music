@@ -5,6 +5,12 @@ on:
     tags:
       - 'v*'  # リリースタグ作成時のみ実行
   workflow_dispatch:  # 手動実行も可能
+    inputs:
+      update_goldens:
+        description: 'Update golden images'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   golden-test:
@@ -24,9 +30,24 @@ jobs:
         run: flutter pub get
 
       - name: Run Golden Tests
+        if: ${{ github.event.inputs.update_goldens != 'true' }}
         run: flutter test --tags=golden
         env:
           CI: true
+
+      - name: Update Golden Images
+        if: ${{ github.event.inputs.update_goldens == 'true' }}
+        run: flutter test --tags=golden --update-goldens
+        env:
+          CI: true
+
+      - name: Upload Updated Goldens
+        if: ${{ github.event.inputs.update_goldens == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: updated-goldens
+          path: test/golden_test/goldens/
+          retention-days: 7
 
       - name: Upload Golden Failures
         if: failure()
