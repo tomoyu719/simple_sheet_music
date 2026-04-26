@@ -5,9 +5,10 @@ import 'dart:ui';
 import 'package:simple_sheet_music/src/constants.dart';
 
 class GlyphMetadata {
-  const GlyphMetadata(this.metadata);
+  GlyphMetadata(this.metadata) : _fontId = identityHashCode(metadata);
   static final Map<String, dynamic> _cache = {};
   final Map<String, dynamic> metadata;
+  final int _fontId;
   Map<String, dynamic> get glyphBBoxes =>
       metadata['glyphBBoxes'] as Map<String, dynamic>;
   Map<String, dynamic> get glyphsWithAnchors =>
@@ -34,13 +35,14 @@ class GlyphMetadata {
       (engravingDefaults['stemThickness'] as double) * Constants.staffSpace;
 
   double get minStemLength {
-    if (_cache['minStemLength'] != null) {
-      return _cache['minStemLength'] as double;
+    final cacheKey = '$_fontId:minStemLength';
+    if (_cache[cacheKey] != null) {
+      return _cache[cacheKey] as double;
     }
     final stem = glyphBBoxes['stem'];
     final stemNE = stem['bBoxNE'] as List<dynamic>;
     final stemSW = stem['bBoxSW'] as List<dynamic>;
-    return _cache['minStemLength'] =
+    return _cache[cacheKey] =
         ((stemNE[1] as double) - (stemSW[1] as double)).abs() *
             Constants.staffSpace;
   }

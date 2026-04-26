@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/font_types.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
@@ -8,13 +5,13 @@ import 'package:simple_sheet_music/src/music_objects/notes/noteflag_type.dart';
 import 'package:simple_sheet_music/src/music_objects/notes/notehead_type.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
   late GlyphMetadata glyphMetadata;
-  setUpAll(() async {
-    final json = await rootBundle.loadString(FontType.bravuraMetadataPath);
-    glyphMetadata = GlyphMetadata(jsonDecode(json) as Map<String, dynamic>);
+
+  setUpAll(() {
+    glyphMetadata = GlyphMetadata(FontType.bravura.metadataData);
   });
-  test('GlyphMetadata.staffLineThickness should not return null', () async {
+
+  test('GlyphMetadata.staffLineThickness should not return null', () {
     // Act
     final staffLineThickness = glyphMetadata.staffLineThickness;
     // Assert
@@ -71,7 +68,7 @@ void main() {
     expect(stemRootOffset, isNotNull);
   });
 
-  test('GlyphMetadata.stemRootOffset should not return null', () {
+  test('GlyphMetadata.stemRootOffset (stem down) should not return null', () {
     // Act
     final stemRootOffset = glyphMetadata
         .stemRootOffset(NoteHeadType.black.metadataKey, isStemUp: false);
@@ -87,7 +84,7 @@ void main() {
     expect(flagRootOffset, isNotNull);
   });
 
-  test('GlyphMetadata.flagRootOffset should not return null', () {
+  test('GlyphMetadata.flagRootOffset (stem down) should not return null', () {
     // Act
     final flagRootOffset = glyphMetadata.flagRootOffset(
       NoteFlagType.flag128th.downMetadataKey,
