@@ -4,14 +4,12 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// Represents a musical clef symbol.
 class Clef implements MusicalSymbol {
-
   const Clef.treble({
     this.margin = const EdgeInsets.all(10),
     this.color = Colors.black,
@@ -42,24 +40,25 @@ class Clef implements MusicalSymbol {
   final EdgeInsets margin;
 
   @override
-  MusicalSymbolMetrics setContext(
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      ClefMetrics(this, paths);
+      ClefRenderer(this, paths);
 }
 
-/// Represents the metrics of a clef symbol.
-class ClefMetrics implements MusicalSymbolMetrics {
-  const ClefMetrics(
+/// Renders the clef symbol and provides its metrics.
+class ClefRenderer implements MusicalSymbolRenderer {
+  const ClefRenderer(
     this.clef,
     this.paths,
   );
 
   final GlyphPaths paths;
-
   final Clef clef;
+
+  // Metrics properties
 
   @override
   double get lowerHeight => bbox.bottom;
@@ -69,6 +68,9 @@ class ClefMetrics implements MusicalSymbolMetrics {
 
   @override
   double get width => bbox.width;
+
+  @override
+  EdgeInsets get margin => clef.margin;
 
   /// Gets the path of the clef symbol on the origin.
   Path get originPath => paths.parsePath(clefType.pathKey);
@@ -97,52 +99,49 @@ class ClefMetrics implements MusicalSymbolMetrics {
   /// Gets the left margin of the clef symbol.
   double get marginLeft => clef.margin.left;
 
+  // Rendering methods
+
   @override
-  MusicalSymbolRenderer renderer(
-    SheetMusicLayout layout, {
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
     required double staffLineCenterY,
     required double symbolX,
-  }) =>
-      ClefRenderer(
-        this,
-        layout,
-        symbolX: symbolX,
-        staffLineCenterY: staffLineCenterY,
-      );
-
-  @override
-  EdgeInsets get margin => clef.margin;
-}
-
-/// Renders the clef symbol.
-class ClefRenderer implements MusicalSymbolRenderer {
-  const ClefRenderer(
-    this.clef,
-    this.layout, {
-    required this.symbolX,
-    required this.staffLineCenterY,
-  });
-
-  final ClefMetrics clef;
-  final double symbolX;
-  final double staffLineCenterY;
-
-  @override
-  void render(Canvas canvas) {
-    final p = Paint()..color = clef.color;
-    canvas.drawPath(renderPath, p);
+  }) {
+    final p = Paint()..color = color;
+    canvas.drawPath(_renderPath(layout, staffLineCenterY, symbolX), p);
   }
 
   @override
-  bool isHit(Offset position) => renderArea.contains(position);
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) =>
+      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
 
-  Offset get renderOffset => Offset(symbolX, staffLineCenterY) + marginOffset;
+  Offset _renderOffset(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
 
-  Offset get marginOffset => Offset(clef.marginLeft, 0) / layout.canvasScale;
+  Offset _marginOffset(SheetMusicLayout layout) =>
+      Offset(marginLeft, 0) / layout.canvasScale;
 
-  final SheetMusicLayout layout;
+  Rect _renderArea(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
 
-  Rect get renderArea => clef.bbox.shift(renderOffset);
-
-  Path get renderPath => clef.path.shift(renderOffset);
+  Path _renderPath(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      path.shift(_renderOffset(layout, staffLineCenterY, symbolX));
 }

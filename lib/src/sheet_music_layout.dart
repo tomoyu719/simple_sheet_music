@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
-import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
 
 /// Represents the layout of the sheet music.
 class SheetMusicLayout {
@@ -52,21 +51,6 @@ class SheetMusicLayout {
   /// The upper padding on the canvas.
   double get _upperPaddingOnCanvas => _verticalPaddingOnCanvas / 2;
 
-  /// The list of staff renderers.
-  List<StaffRenderer> get staffRenderers {
-    var currentY = _upperPaddingOnCanvas;
-    return metrics.staffsMetricses.map((staffMetrics) {
-      currentY += staffMetrics.upperHeight;
-      final staffRenderer = staffMetrics.renderer(
-        this,
-        staffLineCenterY: currentY,
-        leftPadding: _leftPaddingOnCanvas,
-      );
-      currentY += staffMetrics.lowerHeight;
-      return staffRenderer;
-    }).toList();
-  }
-
   /// The sum of the heights of all the staffs.
   double get _staffsHeightsSum => metrics.staffsHeightSum;
 
@@ -82,8 +66,17 @@ class SheetMusicLayout {
 
   /// Renders the sheet music on the canvas.
   void render(Canvas canvas, Size size) {
-    for (final staff in staffRenderers) {
-      staff.render(canvas, size);
+    var currentY = _upperPaddingOnCanvas;
+    for (final staff in metrics.staffRenderers) {
+      currentY += staff.upperHeight;
+      staff.render(
+        canvas,
+        size,
+        layout: this,
+        staffLineCenterY: currentY,
+        leftPadding: _leftPaddingOnCanvas,
+      );
+      currentY += staff.lowerHeight;
     }
   }
 }

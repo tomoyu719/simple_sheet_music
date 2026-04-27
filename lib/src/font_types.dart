@@ -12,5 +12,6 @@ enum FontType {
   final Map<String, dynamic> glyphsData;
   final Map<String, dynamic> metadataData;
 
-  Map<String, dynamic> get glyphs => glyphsData['glyphs'] as Map<String, dynamic>;
+  Map<String, dynamic> get glyphs =>
+      glyphsData['glyphs'] as Map<String, dynamic>;
 }

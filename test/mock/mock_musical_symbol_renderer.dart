@@ -1,12 +1,13 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
+import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
-class MockMusicalSymbolMetrics extends Fake implements MusicalSymbolMetrics {
-  MockMusicalSymbolMetrics({
+class MockMusicalSymbolRenderer extends Fake implements MusicalSymbolRenderer {
+  MockMusicalSymbolRenderer({
     this.context,
     this.width = 0,
     this.upperHeight = 0,
@@ -24,4 +25,21 @@ class MockMusicalSymbolMetrics extends Fake implements MusicalSymbolMetrics {
   final double lowerHeight;
   @override
   final EdgeInsets margin;
+
+  @override
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) =>
+      false;
+
+  @override
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {}
 }

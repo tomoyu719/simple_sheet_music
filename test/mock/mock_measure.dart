@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/measure/measure.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 class MockMeasure extends Fake implements Measure {
@@ -12,7 +12,7 @@ class MockMeasure extends Fake implements Measure {
   final bool isNewLine;
 
   @override
-  List<MusicalSymbolMetrics> setContext(
+  List<MusicalSymbolRenderer> setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,

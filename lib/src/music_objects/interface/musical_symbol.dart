@@ -1,7 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 /// An abstract class representing a musical symbol.
@@ -29,8 +29,8 @@ abstract class MusicalSymbol {
   /// metadata about the symbol. The [paths] parameter contains the glyph paths
   /// for the symbol.
   ///
-  /// Returns the metrics for the musical symbol.
-  MusicalSymbolMetrics setContext(
+  /// Returns the renderer for the musical symbol.
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,

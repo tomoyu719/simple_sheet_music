@@ -6,7 +6,7 @@ import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
 import 'mock/mocks.dart';
 
 void main() {
-  test('SheetMusicMetrics should calculate staffsMetricses correctly', () {
+  test('SheetMusicMetrics should calculate staffRenderers correctly', () {
     // Arrange
     final measures = [
       MockMeasure(),
@@ -22,14 +22,14 @@ void main() {
     );
 
     // Act
-    final staffsMetricses = sheetMusicMetrics.staffsMetricses;
+    final staffRenderers = sheetMusicMetrics.staffRenderers;
 
     // Assert
-    expect(staffsMetricses.length, equals(1));
-    expect(staffsMetricses.first.measuresMetricses.length, equals(3));
+    expect(staffRenderers.length, equals(1));
+    expect(staffRenderers.first.measureRenderers.length, equals(3));
   });
   test(
-      'SheetMusicMetrics should calculate staffsMetricses correctly even if there is a new line measure',
+      'SheetMusicMetrics should calculate staffRenderers correctly even if there is a new line measure',
       () {
     // Arrange
     final measures = [
@@ -46,15 +46,15 @@ void main() {
     );
 
     // Act
-    final staffsMetricses = sheetMusicMetrics.staffsMetricses;
+    final staffRenderers = sheetMusicMetrics.staffRenderers;
 
     // Assert
-    expect(staffsMetricses.length, equals(2));
-    expect(staffsMetricses[0].measuresMetricses.length, equals(2));
-    expect(staffsMetricses[1].measuresMetricses.length, equals(1));
+    expect(staffRenderers.length, equals(2));
+    expect(staffRenderers[0].measureRenderers.length, equals(2));
+    expect(staffRenderers[1].measureRenderers.length, equals(1));
   });
   test(
-      'SheetMusicMetrics should calculate staffsMetricses correctly even if first measure is a new line measure',
+      'SheetMusicMetrics should calculate staffRenderers correctly even if first measure is a new line measure',
       () {
     // Arrange
     final measures = [
@@ -71,11 +71,11 @@ void main() {
     );
 
     // Act
-    final staffsMetricses = sheetMusicMetrics.staffsMetricses;
+    final staffRenderers = sheetMusicMetrics.staffRenderers;
 
     // Assert
-    expect(staffsMetricses.length, equals(1));
-    expect(staffsMetricses.first.measuresMetricses.length, equals(3));
+    expect(staffRenderers.length, equals(1));
+    expect(staffRenderers.first.measureRenderers.length, equals(3));
   });
 
   // TODO implement

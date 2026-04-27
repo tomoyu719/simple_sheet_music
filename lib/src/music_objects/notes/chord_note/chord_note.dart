@@ -5,7 +5,6 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/notes/chord_note/accidental_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/notes/chord_note/chord_note_part.dart';
@@ -51,12 +50,12 @@ class ChordNote implements MusicalSymbol {
   String get noteHeadPathKey => noteHeadType.pathKey;
 
   @override
-  MusicalSymbolMetrics setContext(
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      ChordNoteMetrics(
+      ChordNoteRenderer(
         this,
         context,
         metadata,
@@ -64,9 +63,9 @@ class ChordNote implements MusicalSymbol {
       );
 }
 
-/// Represents the metrics (size and position) of a [ChordNote].
-class ChordNoteMetrics implements MusicalSymbolMetrics {
-  const ChordNoteMetrics(
+/// Renders a chord note and provides its metrics.
+class ChordNoteRenderer implements MusicalSymbolRenderer {
+  ChordNoteRenderer(
     this.note,
     this.context,
     this.metadata,
@@ -80,9 +79,16 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
 
   List<ChordNotePart> get _noteParts => note.noteParts;
 
-  List<ChordNoteHeadMetrics> get _noteHeads => _noteParts
-      .map((part) => ChordNoteHeadMetrics(_noteHeadPath(part), part))
-      .toList();
+  List<ChordNoteHeadMetrics>? _noteHeadsCache;
+  List<ChordNoteHeadMetrics> get _noteHeads {
+    if (_noteHeadsCache != null) {
+      return _noteHeadsCache!;
+    }
+    _noteHeadsCache = _noteParts
+        .map((part) => ChordNoteHeadMetrics(_noteHeadPath(part), part))
+        .toList();
+    return _noteHeadsCache!;
+  }
 
   /// thickness of the leger lines.
   double get legerLineThickness => metadata.legerLineThickness;
@@ -109,8 +115,13 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
         offsetX,
       );
 
+  List<AccidentalMetrics>? _accidentalMetricsesCache;
+
   /// the list of accidental metrics for all the accidental note heads.
   List<AccidentalMetrics> get accidentalMetricses {
+    if (_accidentalMetricsesCache != null) {
+      return _accidentalMetricsesCache!;
+    }
     final metricses = <AccidentalMetrics>[];
     var offsetX = 0.0;
     for (final note in _hasAccidentalNoteHeads) {
@@ -118,7 +129,8 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
       metricses.add(accidental);
       offsetX += accidental.width;
     }
-    return metricses;
+    _accidentalMetricsesCache = metricses;
+    return _accidentalMetricsesCache!;
   }
 
   /// the list of bounding boxes for all the accidental note heads.
@@ -422,124 +434,139 @@ class ChordNoteMetrics implements MusicalSymbolMetrics {
   List<Path> get noteHeadsPaths =>
       _noteHeads.map((e) => e.noteHeadPath).toList();
 
+  // Rendering methods
+
   @override
-  MusicalSymbolRenderer renderer(
-    SheetMusicLayout layout, {
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
     required double staffLineCenterY,
     required double symbolX,
   }) =>
-      ChordNoteRenderer(
-        this,
-        layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: symbolX,
-      );
-}
-
-class ChordNoteRenderer implements MusicalSymbolRenderer {
-  const ChordNoteRenderer(
-    this.note,
-    this.layout, {
-    required this.staffLineCenterY,
-    required this.symbolX,
-  });
-  final double staffLineCenterY;
-  final double symbolX;
-  final ChordNoteMetrics note;
-  final SheetMusicLayout layout;
+      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
 
   @override
-  bool isHit(Offset position) => _renderArea.contains(position);
-
-  @override
-  void render(Canvas canvas) {
-    _renderNoteHead(canvas);
-    _renderFlag(canvas);
-    _renderAccidentals(canvas);
-    _renderStem(canvas);
-    _renderLegerLine(canvas);
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
+    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+    _renderNoteHead(canvas, renderOffset);
+    _renderFlag(canvas, renderOffset);
+    _renderAccidentals(canvas, renderOffset);
+    _renderStem(canvas, renderOffset);
+    _renderLegerLine(canvas, layout, staffLineCenterY, symbolX);
   }
 
-  void _renderNoteHead(Canvas canvas) {
-    for (final path in note.noteHeadsPaths) {
+  void _renderNoteHead(Canvas canvas, Offset renderOffset) {
+    for (final path in noteHeadsPaths) {
       canvas.drawPath(
-        path.shift(_renderOffset),
+        path.shift(renderOffset),
         Paint()
-          ..color = note.note.color
+          ..color = note.color
           ..strokeWidth = 2,
       );
     }
   }
 
-  Rect get _renderArea => throw UnimplementedError();
+  Rect _renderArea(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      _bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
 
-  void _renderAccidentals(Canvas canvas) {
-    for (final accidental in note.accidentalMetricses) {
+  void _renderAccidentals(Canvas canvas, Offset renderOffset) {
+    for (final accidental in accidentalMetricses) {
       canvas.drawPath(
-        accidental.path.shift(_renderOffset),
+        accidental.path.shift(renderOffset),
         Paint()
-          ..color = note.note.color
+          ..color = note.color
           ..strokeWidth = 2,
       );
     }
   }
 
-  void _renderStem(Canvas canvas) {
-    if (!note.hasStem) {
+  void _renderStem(Canvas canvas, Offset renderOffset) {
+    if (!hasStem) {
       return;
     }
     canvas.drawLine(
-      note.stemRootOffset + _renderOffset,
-      note.stemTipOffset! + _renderOffset,
+      stemRootOffset + renderOffset,
+      stemTipOffset! + renderOffset,
       Paint()
-        ..color = note.note.color
-        ..strokeWidth = note.stemThickness,
+        ..color = note.color
+        ..strokeWidth = stemThickness,
     );
   }
 
-  void _renderFlag(Canvas canvas) {
-    if (!note.hasFlag) {
+  void _renderFlag(Canvas canvas, Offset renderOffset) {
+    if (!hasFlag) {
       return;
     }
     canvas.drawPath(
-      note.flagPath!.shift(_renderOffset),
+      flagPath!.shift(renderOffset),
       Paint()
-        ..color = note.note.color
+        ..color = note.color
         ..strokeWidth = 2,
     );
   }
 
-  Offset get _renderOffset => Offset(symbolX, staffLineCenterY) + _marginOffset;
-  Offset get _marginOffset => Offset(note.margin.left / layout.canvasScale, 0);
+  Offset _renderOffset(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
 
-  double get _legerLineWidth => note.legerLineExtension * 2 + _noteHeadWidth;
+  Offset _marginOffset(SheetMusicLayout layout) =>
+      Offset(margin.left / layout.canvasScale, 0);
 
-  double get _legerLineThickness => note.legerLineThickness;
-  void _renderLegerLine(Canvas canvas) {
+  double get _legerLineWidth => legerLineExtension * 2 + _noteHeadWidthForLeger;
+
+  double get _legerLineThickness => legerLineThickness;
+
+  void _renderLegerLine(
+    Canvas canvas,
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) {
+    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+    final noteHeadRenderArea = noteHeadsBbox.shift(renderOffset);
+    final noteHeadLeftX = noteHeadRenderArea.left;
+    final noteHeadCenterX = noteHeadLeftX + _noteHeadWidthForLeger / 2;
+
     LegerLineRenderer(
       layout.lineColor,
-      _uppestNotePosition,
+      uppestNotePosition,
       staffLineCenterY: staffLineCenterY,
-      noteCenterX: _noteHeadCenterX,
+      noteCenterX: noteHeadCenterX,
       legerLineWidth: _legerLineWidth,
       legerLineThickness: _legerLineThickness,
     ).render(canvas);
     LegerLineRenderer(
       layout.lineColor,
-      _lowestNotePosition,
+      lowestNotePosition,
       staffLineCenterY: staffLineCenterY,
-      noteCenterX: _noteHeadCenterX,
+      noteCenterX: noteHeadCenterX,
       legerLineWidth: _legerLineWidth,
       legerLineThickness: _legerLineThickness,
     ).render(canvas);
   }
 
-  StavePosition get _uppestNotePosition => note.uppestNotePosition;
-  StavePosition get _lowestNotePosition => note.lowestNotePosition;
+  double get _noteHeadWidthForLeger => noteHeadsBbox.width;
+}
 
-  double get _noteHeadWidth => _noteHeadRenderArea.width;
-  Rect get _noteHeadRenderArea => note.noteHeadsBbox.shift(_renderOffset);
-  double get _noteHeadLeftX => _noteHeadRenderArea.left;
+/// Helper class for chord note head metrics.
+class ChordNoteHeadMetrics {
+  const ChordNoteHeadMetrics(this.noteHeadPath, this.part);
 
-  double get _noteHeadCenterX => _noteHeadLeftX + _noteHeadWidth / 2;
+  final Path noteHeadPath;
+  final ChordNotePart part;
+
+  Pitch get pitch => part.pitch;
+  Rect get noteHeadRect => noteHeadPath.getBounds();
 }

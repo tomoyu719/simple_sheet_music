@@ -5,7 +5,7 @@ import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/key_signature.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
@@ -30,24 +30,24 @@ class Measure {
   /// Indicates whether the measure is a new line in the sheet music.
   final bool isNewLine;
 
-  /// Sets the context for the measure and returns a list of musical symbol metrics.
+  /// Sets the context for the measure and returns a list of musical symbol renderers.
   ///
   /// The [context] parameter is the musical context in which the measure is being rendered.
   /// The [metadata] parameter provides metadata for the glyphs used in the measure.
   /// The [paths] parameter provides the paths for the glyphs used in the measure.
   ///
-  /// Returns a list of [MusicalSymbolMetrics] objects representing the metrics of each musical symbol in the measure.
-  List<MusicalSymbolMetrics> setContext(
+  /// Returns a list of [MusicalSymbolRenderer] objects representing the renderers of each musical symbol in the measure.
+  List<MusicalSymbolRenderer> setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) {
-    final result = <MusicalSymbolMetrics>[];
+    final result = <MusicalSymbolRenderer>[];
     var symbolContext = context;
     for (final symbol in musicalSymbols) {
-      final symbolMetrics = symbol.setContext(symbolContext, metadata, paths);
+      final symbolRenderer = symbol.setContext(symbolContext, metadata, paths);
       symbolContext = symbolContext.update(symbol);
-      result.add(symbolMetrics);
+      result.add(symbolRenderer);
     }
     return result;
   }

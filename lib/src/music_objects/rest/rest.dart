@@ -3,7 +3,6 @@ import 'package:simple_sheet_music/src/constants.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_metrics.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/rest/rest_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
@@ -26,12 +25,12 @@ class Rest implements MusicalSymbol {
   final RestType restType;
 
   @override
-  MusicalSymbolMetrics setContext(
+  MusicalSymbolRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      RestMetrics(
+      RestRenderer(
         this,
         context,
         metadata,
@@ -39,9 +38,9 @@ class Rest implements MusicalSymbol {
       );
 }
 
-/// Represents the metrics of a rest in sheet music.
-class RestMetrics implements MusicalSymbolMetrics {
-  const RestMetrics(
+/// Renders a rest in sheet music and provides its metrics.
+class RestRenderer implements MusicalSymbolRenderer {
+  const RestRenderer(
     this.rest,
     this.context,
     this.metadata,
@@ -52,6 +51,8 @@ class RestMetrics implements MusicalSymbolMetrics {
   final GlyphMetadata metadata;
   final GlyphPaths paths;
   final Rest rest;
+
+  // Metrics properties
 
   RestType get restType => rest.restType;
 
@@ -73,50 +74,54 @@ class RestMetrics implements MusicalSymbolMetrics {
   double get width => bbox.width;
 
   @override
-  MusicalSymbolRenderer renderer(
-    SheetMusicLayout layout, {
+  EdgeInsets get margin => rest.margin;
+
+  // Rendering methods
+
+  @override
+  bool isHit(
+    Offset position, {
+    required SheetMusicLayout layout,
     required double staffLineCenterY,
     required double symbolX,
-  }) =>
-      RestRenderer(
-        this,
-        layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: symbolX,
-      );
-
-  @override
-  EdgeInsets get margin => rest.margin;
-}
-
-/// Renders a rest in sheet music.
-class RestRenderer implements MusicalSymbolRenderer {
-  const RestRenderer(
-    this.restMetrics,
-    this.layout, {
-    required this.staffLineCenterY,
-    required this.symbolX,
-  });
-
-  final double staffLineCenterY;
-  final double symbolX;
-  final RestMetrics restMetrics;
-  final SheetMusicLayout layout;
-
-  Offset get renderOffset => Offset(symbolX, staffLineCenterY) + marginOffset;
-  Offset get marginOffset =>
-      Offset(restMetrics.leftMargin, 0) / layout.canvasScale;
-
-  @override
-  bool isHit(Offset position) {
+  }) {
     throw UnimplementedError();
   }
 
   @override
-  void render(Canvas canvas) =>
-      canvas.drawPath(renderPath, Paint()..color = restMetrics.rest.color);
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) =>
+      canvas.drawPath(
+        _renderPath(layout, staffLineCenterY, symbolX),
+        Paint()..color = rest.color,
+      );
 
-  Path get renderPath => restMetrics.path.shift(renderOffset);
+  Offset _renderOffset(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
 
-  Rect get renderArea => renderPath.getBounds();
+  Offset _marginOffset(SheetMusicLayout layout) =>
+      Offset(leftMargin, 0) / layout.canvasScale;
+
+  Path _renderPath(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      path.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+
+  /// Returns the render area for the given position.
+  Rect renderArea(
+    SheetMusicLayout layout,
+    double staffLineCenterY,
+    double symbolX,
+  ) =>
+      _renderPath(layout, staffLineCenterY, symbolX).getBounds();
 }
