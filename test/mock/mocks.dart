@@ -5,5 +5,4 @@ export 'mock_measure_renderer.dart';
 export 'mock_musical_symbol.dart';
 export 'mock_musical_symbol_renderer.dart';
 export 'mock_sheet_music_layout.dart';
-export 'mock_sheet_music_metrics.dart';
 export 'mock_staff_renderer.dart';
