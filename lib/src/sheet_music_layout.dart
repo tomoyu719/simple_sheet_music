@@ -69,13 +69,13 @@ class SheetMusicLayout {
     var currentY = _upperPaddingOnCanvas;
     for (final staff in metrics.staffRenderers) {
       currentY += staff.upperHeight;
-      staff.render(
-        canvas,
-        size,
-        layout: this,
-        staffLineCenterY: currentY,
-        leftPadding: _leftPaddingOnCanvas,
-      );
+      staff
+        ..setPosition(
+          canvasScale: canvasScale,
+          staffLineCenterY: currentY,
+          leftPadding: _leftPaddingOnCanvas,
+        )
+        ..render(canvas, size);
       currentY += staff.lowerHeight;
     }
   }

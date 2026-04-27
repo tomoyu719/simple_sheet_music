@@ -1,4 +1,4 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 
@@ -16,6 +16,7 @@ void main() {
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      lineColor: Colors.black,
     );
     // Act
     final objectsWidth = measureRenderer.objectsWidth;
@@ -34,6 +35,7 @@ void main() {
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      lineColor: Colors.black,
     );
     // Act
     final upperHeight = measureRenderer.upperHeight;
@@ -55,6 +57,7 @@ void main() {
       musicalSymbols,
       metadata,
       isNewLine: false,
+      lineColor: Colors.black,
     );
     // Act
     final upperHeight = measureRenderer.upperHeight;
@@ -73,6 +76,7 @@ void main() {
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      lineColor: Colors.black,
     );
     // Act
     final lowerHeight = measureRenderer.lowerHeight;
@@ -97,6 +101,7 @@ void main() {
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      lineColor: Colors.black,
     );
     // Act
     final horizontalMarginSum = measureRenderer.horizontalMarginSum;

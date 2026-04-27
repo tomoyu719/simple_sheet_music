@@ -4,7 +4,6 @@ import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 class MockMusicalSymbolRenderer extends Fake implements MusicalSymbolRenderer {
   MockMusicalSymbolRenderer({
@@ -27,19 +26,15 @@ class MockMusicalSymbolRenderer extends Fake implements MusicalSymbolRenderer {
   final EdgeInsets margin;
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      false;
-
-  @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
+  void setPosition({
+    required double canvasScale,
     required double staffLineCenterY,
     required double symbolX,
   }) {}
+
+  @override
+  bool isHit(Offset position) => false;
+
+  @override
+  void render(Canvas canvas) {}
 }

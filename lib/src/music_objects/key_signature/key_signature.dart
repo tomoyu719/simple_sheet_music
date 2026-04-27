@@ -9,7 +9,6 @@ import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.da
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 class KeySignature implements MusicalSymbol {
   const KeySignature.cMajor({
@@ -197,6 +196,20 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   final GlyphPaths paths;
   final KeySignature keySignature;
 
+  // Position state
+  double _staffLineCenterY = 0;
+  double _symbolX = 0;
+
+  @override
+  void setPosition({
+    required double canvasScale,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
+    _staffLineCenterY = staffLineCenterY;
+    _symbolX = symbolX;
+  }
+
   // Metrics properties
 
   bool get hasParts => keySignatureType.hasParts;
@@ -272,13 +285,8 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
-    final renderOffset = Offset(symbolX, staffLineCenterY);
+  void render(Canvas canvas) {
+    final renderOffset = Offset(_symbolX, _staffLineCenterY);
     for (final part in keySignatureParts) {
       part.render(
         canvas,
@@ -289,18 +297,12 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   }
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  bool isHit(Offset position) {
     throw UnimplementedError();
   }
 
   /// Returns the render area for the given position.
-  Rect renderArea(double staffLineCenterY, double symbolX) =>
-      overallBbox.shift(Offset(symbolX, staffLineCenterY));
+  Rect get renderArea => overallBbox.shift(Offset(_symbolX, _staffLineCenterY));
 }
 
 class KeySignaturePart {

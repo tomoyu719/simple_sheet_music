@@ -6,7 +6,6 @@ import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.da
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/rest/rest_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
-import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// Represents a rest in sheet music.
 class Rest implements MusicalSymbol {
@@ -40,7 +39,7 @@ class Rest implements MusicalSymbol {
 
 /// Renders a rest in sheet music and provides its metrics.
 class RestRenderer implements MusicalSymbolRenderer {
-  const RestRenderer(
+  RestRenderer(
     this.rest,
     this.context,
     this.metadata,
@@ -51,6 +50,22 @@ class RestRenderer implements MusicalSymbolRenderer {
   final GlyphMetadata metadata;
   final GlyphPaths paths;
   final Rest rest;
+
+  // Position state
+  double _canvasScale = 1;
+  double _staffLineCenterY = 0;
+  double _symbolX = 0;
+
+  @override
+  void setPosition({
+    required double canvasScale,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
+    _canvasScale = canvasScale;
+    _staffLineCenterY = staffLineCenterY;
+    _symbolX = symbolX;
+  }
 
   // Metrics properties
 
@@ -79,49 +94,21 @@ class RestRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
-    throw UnimplementedError();
-  }
+  bool isHit(Offset position) => renderArea.contains(position);
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      canvas.drawPath(
-        _renderPath(layout, staffLineCenterY, symbolX),
+  void render(Canvas canvas) => canvas.drawPath(
+        _renderPath,
         Paint()..color = rest.color,
       );
 
-  Offset _renderOffset(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
+  Offset get _renderOffset =>
+      Offset(_symbolX, _staffLineCenterY) + _marginOffset;
 
-  Offset _marginOffset(SheetMusicLayout layout) =>
-      Offset(leftMargin, 0) / layout.canvasScale;
+  Offset get _marginOffset => Offset(leftMargin, 0) / _canvasScale;
 
-  Path _renderPath(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      path.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Path get _renderPath => path.shift(_renderOffset);
 
   /// Returns the render area for the given position.
-  Rect renderArea(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      _renderPath(layout, staffLineCenterY, symbolX).getBounds();
+  Rect get renderArea => _renderPath.getBounds();
 }
