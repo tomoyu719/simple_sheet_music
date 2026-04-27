@@ -14,7 +14,10 @@ abstract class MusicalSymbol {
   ///
   /// The [margin] parameter specifies the margin around the musical symbol.
   /// The [color] parameter specifies the color of the musical symbol.
-  const MusicalSymbol(this.color, this.margin);
+  const MusicalSymbol({
+    required this.color,
+    required this.margin,
+  });
 
   /// The margin around the musical symbol. Vertical margin is not used.
   final EdgeInsets margin;

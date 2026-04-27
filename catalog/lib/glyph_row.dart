@@ -55,7 +55,7 @@ class GlyphRow extends StatelessWidget {
                 SizedBox(
                   height: 80,
                   child: SimpleSheetMusic(
-                    measures: [bravuraMeasure],
+                    musicalSymbols: [bravuraMeasure],
                     fontType: FontType.bravura,
                     height: 80,
                     width: 120,
@@ -75,7 +75,7 @@ class GlyphRow extends StatelessWidget {
                 SizedBox(
                   height: 80,
                   child: SimpleSheetMusic(
-                    measures: [petalumaMeasure],
+                    musicalSymbols: [petalumaMeasure],
                     fontType: FontType.petaluma,
                     height: 80,
                     width: 120,

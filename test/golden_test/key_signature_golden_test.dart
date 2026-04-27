@@ -99,7 +99,7 @@ void main() {
 Widget _buildKeySignatureWidget(KeySignature keySignature) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           Clef.treble(),
           keySignature,
@@ -114,7 +114,7 @@ Widget _buildKeySignatureWidget(KeySignature keySignature) {
 Widget _buildKeySignatureWithClefWidget(KeySignature keySignature, Clef clef) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           clef,
           keySignature,

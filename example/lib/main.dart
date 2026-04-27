@@ -90,7 +90,7 @@ class SimpleSheetMusicDemoState extends State {
             child: SimpleSheetMusic(
               height: height,
               width: width,
-              measures: [measure1, measure2, measure3],
+              musicalSymbols: [measure1, measure2, measure3],
             ),
           ),
         ));

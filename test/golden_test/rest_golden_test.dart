@@ -68,7 +68,7 @@ void main() {
 Widget _buildRestWidget(RestType restType) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           Clef.treble(),
           Rest(restType),

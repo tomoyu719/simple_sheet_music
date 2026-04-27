@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/simple_sheet_music.dart';
+import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
@@ -24,19 +24,19 @@ void main() {
     ];
     final measure = Measure(musicalSymbols);
 
-    final symbolRenderers =
+    final measureRenderer =
         measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());
 
     expect(
-      (symbolRenderers[1] as MockMusicalSymbolRenderer).clefType,
+      (measureRenderer.symbolRenderers[1] as MockMusicalSymbolRenderer).clefType,
       ClefType.treble,
     );
     expect(
-      (symbolRenderers[3] as MockMusicalSymbolRenderer).clefType,
+      (measureRenderer.symbolRenderers[3] as MockMusicalSymbolRenderer).clefType,
       ClefType.bass,
     );
   });
-  test('Measure should return a list of musical symbol renderers', () {
+  test('Measure should return a MeasureRenderer', () {
     const initialClefType = ClefType.treble;
     const initialKeySignatureType = KeySignatureType.cMajor;
     const context = MusicalContext(initialClefType, initialKeySignatureType);
@@ -44,11 +44,11 @@ void main() {
     final musicalSymbols = [MockMusicalSymbol(), MockMusicalSymbol()];
     final measure = Measure(musicalSymbols);
 
-    final renderers =
+    final renderer =
         measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());
 
-    expect(renderers, isA<List<MusicalSymbolRenderer>>());
-    expect(renderers.length, musicalSymbols.length);
+    expect(renderer, isA<MeasureRenderer>());
+    expect(renderer.symbolRenderers.length, musicalSymbols.length);
   });
 
   test('Measure should return the last clef type', () {
