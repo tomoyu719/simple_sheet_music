@@ -12,10 +12,12 @@ void main() {
       MockMusicalSymbolRenderer(width: 20),
       MockMusicalSymbolRenderer(width: 15),
     ];
+    final mockMeasure = MockMeasure();
     final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      measure: mockMeasure,
     );
     // Act
     final objectsWidth = measureRenderer.objectsWidth;
@@ -30,10 +32,12 @@ void main() {
       MockMusicalSymbolRenderer(upperHeight: 10),
       MockMusicalSymbolRenderer(upperHeight: 7),
     ];
+    final mockMeasure = MockMeasure();
     final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      measure: mockMeasure,
     );
     // Act
     final upperHeight = measureRenderer.upperHeight;
@@ -51,10 +55,12 @@ void main() {
     ];
     const measureUpperHeight = 1.0;
     final metadata = MockGlyphMetadata(measureUpperHeight: measureUpperHeight);
+    final mockMeasure = MockMeasure();
     final measureRenderer = MeasureRenderer(
       musicalSymbols,
       metadata,
       isNewLine: false,
+      measure: mockMeasure,
     );
     // Act
     final upperHeight = measureRenderer.upperHeight;
@@ -69,10 +75,12 @@ void main() {
       MockMusicalSymbolRenderer(lowerHeight: 6),
       MockMusicalSymbolRenderer(lowerHeight: 4),
     ];
+    final mockMeasure = MockMeasure();
     final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      measure: mockMeasure,
     );
     // Act
     final lowerHeight = measureRenderer.lowerHeight;
@@ -93,10 +101,12 @@ void main() {
         margin: const EdgeInsets.only(left: 1, right: 2),
       ),
     ];
+    final mockMeasure = MockMeasure();
     final measureRenderer = MeasureRenderer(
       musicalSymbols,
       MockGlyphMetadata(),
       isNewLine: false,
+      measure: mockMeasure,
     );
     // Act
     final horizontalMarginSum = measureRenderer.horizontalMarginSum;

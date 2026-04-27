@@ -122,7 +122,7 @@ void main() {
 Widget _buildNoteWidget(NoteDuration duration) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           Clef.treble(),
           Note(Pitch.b4, noteDuration: duration),
@@ -137,7 +137,7 @@ Widget _buildNoteWidget(NoteDuration duration) {
 Widget _buildNoteWithAccidentalWidget(Accidental accidental) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           Clef.treble(),
           Note(Pitch.b4, noteDuration: NoteDuration.quarter, accidental: accidental),
@@ -152,7 +152,7 @@ Widget _buildNoteWithAccidentalWidget(Accidental accidental) {
 Widget _buildNoteAtPitchWidget(Pitch pitch) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      measures: [
+      musicalSymbols: [
         Measure([
           Clef.treble(),
           Note(pitch, noteDuration: NoteDuration.quarter),
