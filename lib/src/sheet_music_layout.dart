@@ -69,7 +69,7 @@ class SheetMusicLayout {
     var currentY = _upperPaddingOnCanvas;
     for (final staff in metrics.staffRenderers) {
       currentY += staff.upperHeight;
-      staff.render(
+      staff.renderWithSize(
         canvas,
         size,
         layout: this,
