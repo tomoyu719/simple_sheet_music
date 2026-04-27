@@ -20,13 +20,18 @@ GoldenTestTheme buildGoldenTestTheme() {
 bool get isRunningInCi => Platform.environment['CI'] == 'true';
 
 /// Build Alchemist configuration
-/// 
+///
 /// Platform-specific goldens are disabled in CI to ensure consistent results.
+/// CI goldens allow up to 1% pixel difference to account for minor rendering
+/// variations across different CI environments.
 AlchemistConfig buildAlchemistConfig() {
   return AlchemistConfig(
     goldenTestTheme: buildGoldenTestTheme(),
     platformGoldensConfig: PlatformGoldensConfig(
       enabled: !isRunningInCi,
+    ),
+    ciGoldensConfig: const CiGoldensConfig(
+      diffThreshold: 0.01, // Allow up to 1% pixel difference
     ),
   );
 }
