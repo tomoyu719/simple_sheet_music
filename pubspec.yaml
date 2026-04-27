@@ -1,6 +1,6 @@
 name: simple_sheet_music
 description: A Flutter package for rendering sheet music on canvas. This package provides a simple way to display sheet music in a Flutter application. It includes classes for rendering staffs, measures, clefs, notes, and other music objects.
-version: 1.0.2-dev
+version: 1.0.2-dev.4
 homepage: https://github.com/tomoyu719/simple_sheet_music
 
 environment:
@@ -16,6 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic_mono: any
+  alchemist: ^0.14.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -23,6 +24,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 
 flutter:
+  uses-material-design: true
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #

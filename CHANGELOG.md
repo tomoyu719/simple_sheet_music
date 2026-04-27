@@ -26,6 +26,10 @@
 * Convert SimpleSheetMusic to StatelessWidget
 * Remove xml package dependency
 
+## 1.0.2-dev.4
+* Add Visual Regression Testing with alchemist
+* Update Flutter version to 3.32.0 in CI workflows
+
 ## 1.0.2-dev
 * Add SMuFL code generator tools (tool/smufl_codegen)
 * Reorganize font source files by font name
