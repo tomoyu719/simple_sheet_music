@@ -26,6 +26,13 @@
 * Convert SimpleSheetMusic to StatelessWidget
 * Remove xml package dependency
 
+## 1.0.2-dev.5
+* Integrate Measure and Staff into MusicalSymbol hierarchy
+* Add Staff class implementing MusicalSymbol
+* MeasureRenderer and StaffRenderer now implement MusicalSymbolRenderer
+* API change: SimpleSheetMusic `measures` parameter renamed to `musicalSymbols`
+* Add CI golden test diff threshold configuration
+
 ## 1.0.2-dev.4
 * Add Visual Regression Testing with alchemist
 * Update Flutter version to 3.32.0 in CI workflows
