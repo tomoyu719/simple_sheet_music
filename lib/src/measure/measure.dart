@@ -1,18 +1,19 @@
 import 'dart:core';
 
+import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
+import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/key_signature.dart';
+import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
-import '../music_objects/key_signature/keysignature_type.dart';
-
 /// Represents a measure in sheet music.
-class Measure {
+class Measure implements MusicalSymbol {
   /// Creates a new instance of the [Measure] class.
   ///
   /// The [musicalSymbols] parameter is a list of musical symbols that make up the measure.
@@ -22,6 +23,8 @@ class Measure {
   const Measure(
     this.musicalSymbols, {
     this.isNewLine = false,
+    this.color = Colors.black,
+    this.margin = EdgeInsets.zero,
   }) : assert(musicalSymbols.length != 0);
 
   /// The list of musical symbols that make up the measure.
@@ -30,14 +33,21 @@ class Measure {
   /// Indicates whether the measure is a new line in the sheet music.
   final bool isNewLine;
 
-  /// Sets the context for the measure and returns a list of musical symbol renderers.
+  @override
+  final Color color;
+
+  @override
+  final EdgeInsets margin;
+
+  /// Sets the context for the measure and returns a MeasureRenderer.
   ///
   /// The [context] parameter is the musical context in which the measure is being rendered.
   /// The [metadata] parameter provides metadata for the glyphs used in the measure.
   /// The [paths] parameter provides the paths for the glyphs used in the measure.
   ///
-  /// Returns a list of [MusicalSymbolRenderer] objects representing the renderers of each musical symbol in the measure.
-  List<MusicalSymbolRenderer> setContext(
+  /// Returns a [MeasureRenderer] object representing the renderer for this measure.
+  @override
+  MeasureRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,
     GlyphPaths paths,
@@ -49,7 +59,7 @@ class Measure {
       symbolContext = symbolContext.update(symbol);
       result.add(symbolRenderer);
     }
-    return result;
+    return MeasureRenderer(result, metadata, isNewLine: isNewLine, measure: this);
   }
 
   ClefType? get lastClefType {

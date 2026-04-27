@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/constants.dart';
 import 'package:simple_sheet_music/src/extension/list_extension.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
+import 'package:simple_sheet_music/src/measure/measure.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// The renderer for a measure in sheet music.
 /// Combines metrics calculation and rendering functionality.
-class MeasureRenderer {
+class MeasureRenderer implements MusicalSymbolRenderer {
   const MeasureRenderer(
     this.symbolRenderers,
     this.metadata, {
     required this.isNewLine,
+    required this.measure,
   });
 
   /// The list of [MusicalSymbolRenderer] representing the renderers of each musical
@@ -26,6 +28,9 @@ class MeasureRenderer {
 
   /// Indicates whether a line break should occur in this measure.
   final bool isNewLine;
+
+  /// The measure associated with this renderer.
+  final Measure measure;
 
   // Metrics properties
 
@@ -40,6 +45,7 @@ class MeasureRenderer {
   double get _measureUpperHeight => metadata.measureUpperHeight;
 
   /// Returns the maximum height of the measure upper part.
+  @override
   double get upperHeight => max(_symbolMaximumUpperHeight, _measureUpperHeight);
 
   /// Gets the maximum lower height among all the musical symbols in the measure.
@@ -50,6 +56,7 @@ class MeasureRenderer {
   double get _measureLowerHeight => metadata.measureLowerHeight;
 
   /// Returns the maximum height of the measure lower part.
+  @override
   double get lowerHeight => max(_symbolMaximumLowerHeight, _measureLowerHeight);
 
   /// Gets the sum of the horizontal margins of all the musical symbols in the measure.
@@ -58,6 +65,12 @@ class MeasureRenderer {
 
   /// Gets the thickness of the staff lines in the measure.
   double get staffLineThickness => metadata.staffLineThickness;
+
+  @override
+  double get width => objectsWidth;
+
+  @override
+  EdgeInsets get margin => measure.margin;
 
   // Rendering methods
 
@@ -85,16 +98,30 @@ class MeasureRenderer {
     return null;
   }
 
-  /// Renders the measure on the given [canvas] with the specified [size].
-  void render(
-    Canvas canvas,
-    Size size, {
+  @override
+  bool isHit(
+    Offset position, {
     required SheetMusicLayout layout,
-    required double measureInitialX,
     required double staffLineCenterY,
+    required double symbolX,
   }) {
-    _renderStaffLine(canvas, layout, measureInitialX, staffLineCenterY);
-    var x = measureInitialX;
+    return hitTest(
+      position,
+      layout: layout,
+      measureInitialX: symbolX,
+      staffLineCenterY: staffLineCenterY,
+    ) != null;
+  }
+
+  @override
+  void render(
+    Canvas canvas, {
+    required SheetMusicLayout layout,
+    required double staffLineCenterY,
+    required double symbolX,
+  }) {
+    _renderStaffLine(canvas, layout, symbolX, staffLineCenterY);
+    var x = symbolX;
     for (final symbol in symbolRenderers) {
       symbol.render(
         canvas,
@@ -104,6 +131,22 @@ class MeasureRenderer {
       );
       x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
     }
+  }
+
+  /// Renders the measure on the given [canvas] with the specified [size].
+  void renderWithSize(
+    Canvas canvas,
+    Size size, {
+    required SheetMusicLayout layout,
+    required double measureInitialX,
+    required double staffLineCenterY,
+  }) {
+    render(
+      canvas,
+      layout: layout,
+      staffLineCenterY: staffLineCenterY,
+      symbolX: measureInitialX,
+    );
   }
 
   void _renderStaffLine(
@@ -134,5 +177,5 @@ class MeasureRenderer {
   }
 
   /// The width of the measure for a given scale.
-  double width(double scale) => objectsWidth + horizontalMarginSum / scale;
+  double widthWithScale(double scale) => objectsWidth + horizontalMarginSum / scale;
 }
