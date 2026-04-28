@@ -122,14 +122,6 @@ class SheetMusicLayout {
   double get _maximumStaffHorizontalMarginSum =>
       _maximumWidthStaff.horizontalMarginSum;
 
-  /// Gets the upper height of all the staffs in the sheet music.
-  double get _staffUpperHeight =>
-      staffRenderers.map((staff) => staff.upperHeight).max;
-
-  /// Gets the lower height of all the staffs in the sheet music.
-  double get _staffLowerHeight =>
-      staffRenderers.map((staff) => staff.lowerHeight).max;
-
   /// Gets the sum of the heights of all the staffs in the sheet music.
   double get _staffsHeightSum => staffRenderers.map((staff) => staff.height).sum;
 
