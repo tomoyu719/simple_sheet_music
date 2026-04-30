@@ -4,11 +4,10 @@
 /// It takes a list of `Staff` objects and other optional parameters to customize the appearance of the sheet music.
 library simple_sheet_music;
 
-export '/src/font_types.dart' show FontType;
-export '/src/measure/measure.dart' show Measure;
-export '/src/music_objects/clef/clef.dart' show Clef;
-export '/src/staff/staff.dart' show Staff;
-export '/src/simple_sheet_music.dart' show SimpleSheetMusic;
+export 'src/font_types.dart' show FontType;
+export 'src/measure/measure.dart' show Measure;
+export 'src/music_objects/barline/barline_type.dart' show BarlineType;
+export 'src/music_objects/clef/clef.dart' show Clef;
 export 'src/music_objects/key_signature/key_signature.dart' show KeySignature;
 export 'src/music_objects/notes/accidental.dart' show Accidental;
 export 'src/music_objects/notes/chord_note/chord_note.dart' show ChordNote;
@@ -20,3 +19,5 @@ export 'src/music_objects/notes/single_note/note.dart' show Note;
 // export 'src/music_objects/notes/stem_direction.dart' show StemDirection;
 export 'src/music_objects/rest/rest.dart' show Rest;
 export 'src/music_objects/rest/rest_type.dart' show RestType;
+export 'src/simple_sheet_music.dart' show SimpleSheetMusic;
+export 'src/staff/staff.dart' show Staff;

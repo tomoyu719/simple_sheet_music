@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
+import 'package:simple_sheet_music/src/music_objects/barline/barline.dart';
+import 'package:simple_sheet_music/src/music_objects/barline/barline_type.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
@@ -18,6 +20,8 @@ class Measure implements MusicalSymbol {
   ///
   /// The [musicalSymbols] parameter is a list of musical symbols that make up the measure.
   /// The [isNewLine] parameter indicates whether the measure is a new line in the sheet music.
+  /// The [startBarlineType] parameter specifies the barline type at the start of the measure.
+  /// The [endBarlineType] parameter specifies the barline type at the end of the measure.
   ///
   /// Throws an [AssertionError] if the [musicalSymbols] list is empty.
   const Measure(
@@ -25,6 +29,8 @@ class Measure implements MusicalSymbol {
     this.isNewLine = false,
     this.color = Colors.black,
     this.margin = EdgeInsets.zero,
+    this.startBarlineType = BarlineType.none,
+    this.endBarlineType = BarlineType.single,
   }) : assert(musicalSymbols.length != 0);
 
   /// The list of musical symbols that make up the measure.
@@ -38,6 +44,14 @@ class Measure implements MusicalSymbol {
 
   @override
   final EdgeInsets margin;
+
+  /// The barline type at the start of the measure.
+  /// Defaults to [BarlineType.none].
+  final BarlineType startBarlineType;
+
+  /// The barline type at the end of the measure.
+  /// Defaults to [BarlineType.single].
+  final BarlineType endBarlineType;
 
   /// Sets the context for the measure and returns a MeasureRenderer.
   ///
@@ -53,13 +67,31 @@ class Measure implements MusicalSymbol {
     GlyphPaths paths,
   ) {
     final result = <MusicalSymbolRenderer>[];
+
+    // Add start barline
+    final startBarline = Barline(barlineType: startBarlineType, color: color)
+        .setContext(context, metadata, paths);
+    result.add(startBarline);
+
+    // Add musical symbols
     var symbolContext = context;
     for (final symbol in musicalSymbols) {
       final symbolRenderer = symbol.setContext(symbolContext, metadata, paths);
       symbolContext = symbolContext.update(symbol);
       result.add(symbolRenderer);
     }
-    return MeasureRenderer(result, metadata, isNewLine: isNewLine, measure: this);
+
+    // Add end barline
+    final endBarline = Barline(barlineType: endBarlineType, color: color)
+        .setContext(context, metadata, paths);
+    result.add(endBarline);
+
+    return MeasureRenderer(
+      result,
+      metadata,
+      isNewLine: isNewLine,
+      measure: this,
+    );
   }
 
   ClefType? get lastClefType {

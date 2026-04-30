@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/constants.dart';
@@ -20,7 +19,7 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   });
 
   /// The list of [MusicalSymbolRenderer] representing the renderers of each musical
-  /// symbol in the measure.
+  /// symbol in the measure (including barlines).
   final List<MusicalSymbolRenderer> symbolRenderers;
 
   /// The [GlyphMetadata] object containing metadata for the measure.
@@ -84,6 +83,7 @@ class MeasureRenderer implements MusicalSymbolRenderer {
     required double staffLineCenterY,
   }) {
     var x = measureInitialX;
+
     for (final symbol in symbolRenderers) {
       if (symbol.isHit(
         position,
@@ -95,6 +95,7 @@ class MeasureRenderer implements MusicalSymbolRenderer {
       }
       x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
     }
+
     return null;
   }
 
@@ -106,11 +107,12 @@ class MeasureRenderer implements MusicalSymbolRenderer {
     required double symbolX,
   }) {
     return hitTest(
-      position,
-      layout: layout,
-      measureInitialX: symbolX,
-      staffLineCenterY: staffLineCenterY,
-    ) != null;
+          position,
+          layout: layout,
+          measureInitialX: symbolX,
+          staffLineCenterY: staffLineCenterY,
+        ) !=
+        null;
   }
 
   @override
@@ -120,8 +122,20 @@ class MeasureRenderer implements MusicalSymbolRenderer {
     required double staffLineCenterY,
     required double symbolX,
   }) {
-    _renderStaffLine(canvas, layout, symbolX, staffLineCenterY);
     var x = symbolX;
+
+    // Render staff lines (spanning the full measure including barlines)
+    final staffLineWidthWithMargin =
+        objectsWidth + horizontalMarginSum / layout.canvasScale;
+    _renderStaffLine(
+      canvas,
+      layout,
+      x,
+      staffLineCenterY,
+      staffLineWidthWithMargin,
+    );
+
+    // Render all symbols (including barlines)
     for (final symbol in symbolRenderers) {
       symbol.render(
         canvas,
@@ -152,12 +166,10 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   void _renderStaffLine(
     Canvas canvas,
     SheetMusicLayout layout,
-    double measureInitialX,
+    double staffLineStartX,
     double staffLineCenterY,
+    double staffLineWidth,
   ) {
-    final initX = measureInitialX;
-    final measureWidth =
-        objectsWidth + horizontalMarginSum / layout.canvasScale;
     final staffLineHeights = [
       staffLineCenterY - Constants.staffSpace * 2,
       staffLineCenterY - Constants.staffSpace,
@@ -167,8 +179,8 @@ class MeasureRenderer implements MusicalSymbolRenderer {
     ];
     for (final height in staffLineHeights) {
       canvas.drawLine(
-        Offset(initX, height),
-        Offset(initX + measureWidth, height),
+        Offset(staffLineStartX, height),
+        Offset(staffLineStartX + staffLineWidth, height),
         Paint()
           ..color = layout.lineColor
           ..strokeWidth = staffLineThickness,
@@ -177,5 +189,6 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   }
 
   /// The width of the measure for a given scale.
-  double widthWithScale(double scale) => objectsWidth + horizontalMarginSum / scale;
+  double widthWithScale(double scale) =>
+      objectsWidth + horizontalMarginSum / scale;
 }
