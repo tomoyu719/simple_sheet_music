@@ -28,6 +28,10 @@
 
 ## 1.0.2-dev.5
 * Integrate Measure and Staff into MusicalSymbol hierarchy
+
+## 1.0.2-dev.6
+* Add barline rendering support (single, double, final)
+* Add startBarlineType and endBarlineType parameters to Measure
 * Add Staff class implementing MusicalSymbol
 * MeasureRenderer and StaffRenderer now implement MusicalSymbolRenderer
 * API change: SimpleSheetMusic `measures` parameter renamed to `musicalSymbols`
