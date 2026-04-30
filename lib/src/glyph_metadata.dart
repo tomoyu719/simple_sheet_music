@@ -34,6 +34,17 @@ class GlyphMetadata {
   double get stemThickness =>
       (engravingDefaults['stemThickness'] as double) * Constants.staffSpace;
 
+  double get thinBarlineThickness =>
+      (engravingDefaults['thinBarlineThickness'] as double) *
+      Constants.staffSpace;
+
+  double get thickBarlineThickness =>
+      (engravingDefaults['thickBarlineThickness'] as double) *
+      Constants.staffSpace;
+
+  double get barlineSeparation =>
+      (engravingDefaults['barlineSeparation'] as double) * Constants.staffSpace;
+
   double get minStemLength {
     final cacheKey = '$_fontId:minStemLength';
     if (_cache[cacheKey] != null) {
