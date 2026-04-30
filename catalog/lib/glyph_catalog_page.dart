@@ -55,6 +55,11 @@ class GlyphCatalogPage extends StatelessWidget {
     GlyphDefinition('flag32ndDown', 'uniE245', Measure([Note(Pitch.a5, noteDuration: NoteDuration.thirtySecond)]), Measure([Note(Pitch.a5, noteDuration: NoteDuration.thirtySecond)])),
     GlyphDefinition('flag64thDown', 'uniE247', Measure([Note(Pitch.a5, noteDuration: NoteDuration.sixtyFourth)]), Measure([Note(Pitch.a5, noteDuration: NoteDuration.sixtyFourth)])),
     GlyphDefinition('flag128thDown', 'uniE249', Measure([Note(Pitch.a5, noteDuration: NoteDuration.hundredsTwentyEighth)]), Measure([Note(Pitch.a5, noteDuration: NoteDuration.hundredsTwentyEighth)])),
+
+    // Barlines
+    GlyphDefinition('barlineSingle', 'uniE030', Measure([Clef.treble()], endBarlineType: BarlineType.single), Measure([Clef.treble()], endBarlineType: BarlineType.single)),
+    GlyphDefinition('barlineDouble', 'uniE031', Measure([Clef.treble()], endBarlineType: BarlineType.double), Measure([Clef.treble()], endBarlineType: BarlineType.double)),
+    GlyphDefinition('barlineFinal', 'uniE032', Measure([Clef.treble()], endBarlineType: BarlineType.final_), Measure([Clef.treble()], endBarlineType: BarlineType.final_)),
   ];
 
   @override
