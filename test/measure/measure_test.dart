@@ -27,12 +27,15 @@ void main() {
     final measureRenderer =
         measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());
 
+    // index 0: startBarline, index 1: Clef.treble, index 2: MockSymbol, ...
     expect(
-      (measureRenderer.symbolRenderers[1] as MockMusicalSymbolRenderer).clefType,
+      (measureRenderer.symbolRenderers[2] as MockMusicalSymbolRenderer)
+          .clefType,
       ClefType.treble,
     );
     expect(
-      (measureRenderer.symbolRenderers[3] as MockMusicalSymbolRenderer).clefType,
+      (measureRenderer.symbolRenderers[4] as MockMusicalSymbolRenderer)
+          .clefType,
       ClefType.bass,
     );
   });
@@ -48,7 +51,21 @@ void main() {
         measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());
 
     expect(renderer, isA<MeasureRenderer>());
-    expect(renderer.symbolRenderers.length, musicalSymbols.length);
+  });
+
+  test('Measure should always include barline renderers in symbolRenderers', () {
+    const context = MusicalContext(ClefType.treble, KeySignatureType.cMajor);
+
+    final musicalSymbols = [MockMusicalSymbol(), MockMusicalSymbol()];
+    final measure = Measure(musicalSymbols,
+        startBarlineType: BarlineType.none, endBarlineType: BarlineType.none);
+
+    final renderer =
+        measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());
+
+    // symbolRenderers = startBarline + musicalSymbols + endBarline
+    // Even with BarlineType.none, barline renderers are added (with width 0)
+    expect(renderer.symbolRenderers.length, musicalSymbols.length + 2);
   });
 
   test('Measure should return the last clef type', () {
