@@ -1,15 +1,16 @@
-name: Visual Regression Test
+name: VRT Check
 
 on:
-  push:
-    tags:
-      - 'v*'  # リリースタグ作成時のみ実行
-  workflow_dispatch:  # 手動実行も可能
+  pull_request:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/golden_test/**'
 
 jobs:
-  golden-test:
+  check-visual-diff:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,17 +24,23 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Download Baseline
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: vrt-baseline.yml
+          branch: main
+          name: vrt-baseline
+          path: test/golden_test/goldens/ci/
+
       - name: Run Golden Tests
         run: flutter test --tags=golden
         env:
           CI: true
 
-      - name: Upload Golden Failures
+      - name: Upload Diff Images
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: golden-failures
-          path: |
-            test/failures/
-            test/golden_test/goldens/
+          name: vrt-diff
+          path: test/golden_test/failures/
           retention-days: 7

@@ -1,0 +1,38 @@
+name: Update VRT Baseline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'test/golden_test/**'
+  workflow_dispatch:
+
+jobs:
+  update-baseline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.0"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate Golden Images
+        run: flutter test --tags=golden --update-goldens
+        env:
+          CI: true
+
+      - name: Upload Baseline
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-baseline
+          path: test/golden_test/goldens/ci/
+          retention-days: 90
