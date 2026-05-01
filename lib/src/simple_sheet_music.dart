@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
-import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
+
 import 'package:simple_sheet_music/src/sheet_music_renderer.dart';
 
 import 'font_types.dart';
@@ -57,16 +57,13 @@ class SimpleSheetMusic extends StatelessWidget {
     final glyphPath = GlyphPaths(fontType.glyphs);
     final metadata = GlyphMetadata(fontType.metadataData);
     final targetSize = Size(width, height);
-    final metricsBuilder = SheetMusicMetrics(
-      musicalSymbols,
-      initialClefType,
-      initialKeySignatureType,
-      metadata,
-      glyphPath,
-    );
     final layout = SheetMusicLayout(
-      metricsBuilder,
-      lineColor,
+      musicalSymbols: musicalSymbols,
+      initialClefType: initialClefType,
+      initialKeySignatureType: initialKeySignatureType,
+      metadata: metadata,
+      paths: glyphPath,
+      lineColor: lineColor,
       widgetWidth: width,
       widgetHeight: height,
     );
