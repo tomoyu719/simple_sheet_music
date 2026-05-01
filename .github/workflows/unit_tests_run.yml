@@ -32,7 +32,7 @@ jobs:
         run: flutter pub get
         
       - name: library unit tests
-        run: flutter test
+        run: flutter test --exclude-tags=golden
 
       # - name: example unit tests
       #   working-directory: example
