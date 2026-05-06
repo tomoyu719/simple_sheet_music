@@ -17,6 +17,7 @@ void main() {
       measures,
       ClefType.treble,
       KeySignatureType.cMajor,
+      null,
       MockGlyphMetadata(),
       MockGlyphPath(),
     );
@@ -41,6 +42,7 @@ void main() {
       measures,
       ClefType.treble,
       KeySignatureType.cMajor,
+      null,
       MockGlyphMetadata(),
       MockGlyphPath(),
     );
@@ -66,6 +68,7 @@ void main() {
       measures,
       ClefType.treble,
       KeySignatureType.cMajor,
+      null,
       MockGlyphMetadata(),
       MockGlyphPath(),
     );

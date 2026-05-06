@@ -12,6 +12,8 @@ import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.da
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/key_signature.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
+import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature.dart';
+import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 /// Represents a measure in sheet music.
@@ -112,8 +114,18 @@ class Measure implements MusicalSymbol {
     return null;
   }
 
+  TimeSignatureType? get lastTimeSignatureType {
+    for (final symbol in musicalSymbols.reversed) {
+      if (symbol is TimeSignature) {
+        return symbol.timeSignatureType;
+      }
+    }
+    return null;
+  }
+
   MusicalContext updateContext(MusicalContext context) => context.updateWith(
         clefType: lastClefType,
         keySignatureType: lastKeySignatureType,
+        timeSignatureType: lastTimeSignatureType,
       );
 }
