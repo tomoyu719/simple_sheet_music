@@ -14,7 +14,7 @@ class GlyphDefinition {
 class GlyphCatalogPage extends StatelessWidget {
   const GlyphCatalogPage({super.key});
 
-  static final List<GlyphDefinition> glyphs = [
+  static final glyphs = <GlyphDefinition>[
     // Clefs
     GlyphDefinition('gClef', 'uniE050', Measure([const Clef.treble()]), Measure([const Clef.treble()])),
     GlyphDefinition('cClef', 'uniE05C', Measure([const Clef.alto()]), Measure([const Clef.alto()])),
