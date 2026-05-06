@@ -36,7 +36,7 @@ class SheetMusicMetrics {
       initialKeySignatureType,
       initialTimeSignatureType,
     );
-    
+
     for (final symbol in musicalSymbols) {
       if (symbol is Measure) {
         final measureRenderer = symbol.setContext(context, metadata, paths);

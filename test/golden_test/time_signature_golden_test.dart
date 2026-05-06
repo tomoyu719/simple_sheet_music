@@ -19,11 +19,13 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'common time (C)',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.commonTime()),
+            child: _buildMeasureWithTimeSignature(
+                const TimeSignature.commonTime()),
           ),
           GoldenTestScenario(
             name: 'cut time',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.cutTime()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.cutTime()),
           ),
         ],
       ),
@@ -40,19 +42,23 @@ void main() {
         children: [
           GoldenTestScenario(
             name: '4/4',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.fourFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.fourFour()),
           ),
           GoldenTestScenario(
             name: '3/4',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.threeFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.threeFour()),
           ),
           GoldenTestScenario(
             name: '2/4',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.twoFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.twoFour()),
           ),
           GoldenTestScenario(
             name: '6/8',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.sixEight()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.sixEight()),
           ),
         ],
       ),
@@ -69,11 +75,13 @@ void main() {
         children: [
           GoldenTestScenario(
             name: '9/8',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.nineEight()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.nineEight()),
           ),
           GoldenTestScenario(
             name: '12/8',
-            child: _buildMeasureWithTimeSignature(const TimeSignature.twelveEight()),
+            child: _buildMeasureWithTimeSignature(
+                const TimeSignature.twelveEight()),
           ),
           GoldenTestScenario(
             name: '5/4',
