@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-visual-diff:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - name: Checkout

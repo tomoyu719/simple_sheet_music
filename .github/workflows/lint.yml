@@ -1,0 +1,69 @@
+name: Lint
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-slim
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.0"
+          channel: "stable"
+          cache: true
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+            example/.dart_tool
+            catalog/.dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.lock', 'example/pubspec.lock', 'catalog/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # Root package
+      - name: Get dependencies (root)
+        run: flutter pub get
+
+      - name: Analyze (root)
+        run: dart analyze --fatal-infos
+
+      - name: Format check (root)
+        run: dart format --set-exit-if-changed .
+
+      # Example package
+      - name: Get dependencies (example)
+        working-directory: example
+        run: flutter pub get
+
+      - name: Analyze (example)
+        working-directory: example
+        run: dart analyze --fatal-infos
+
+      - name: Format check (example)
+        working-directory: example
+        run: dart format --set-exit-if-changed .
+
+      # Catalog package
+      - name: Get dependencies (catalog)
+        working-directory: catalog
+        run: flutter pub get
+
+      - name: Analyze (catalog)
+        working-directory: catalog
+        run: dart analyze --fatal-infos
+
+      - name: Format check (catalog)
+        working-directory: catalog
+        run: dart format --set-exit-if-changed .

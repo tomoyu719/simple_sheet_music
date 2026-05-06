@@ -166,7 +166,7 @@ class TimeSignatureRenderer implements MusicalSymbolRenderer {
   final GlyphPaths paths;
 
   /// Tracking space between digits (in staff space units).
-  static const double _digitTracking = 0.04;
+  static const _digitTracking = 0.04;
 
   TimeSignatureType get _type => timeSignature.timeSignatureType;
 

@@ -53,12 +53,12 @@ void main() {
     expect(renderer, isA<MeasureRenderer>());
   });
 
-  test('Measure should always include barline renderers in symbolRenderers', () {
+  test('Measure should always include barline renderers in symbolRenderers',
+      () {
     const context = MusicalContext(ClefType.treble, KeySignatureType.cMajor);
 
     final musicalSymbols = [MockMusicalSymbol(), MockMusicalSymbol()];
-    final measure = Measure(musicalSymbols,
-        startBarlineType: BarlineType.none, endBarlineType: BarlineType.none);
+    final measure = Measure(musicalSymbols, endBarlineType: BarlineType.none);
 
     final renderer =
         measure.setContext(context, MockGlyphMetadata(), MockGlyphPath());

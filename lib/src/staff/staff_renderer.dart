@@ -80,11 +80,12 @@ class StaffRenderer implements MusicalSymbolRenderer {
     required double symbolX,
   }) {
     return hitTest(
-      position,
-      layout: layout,
-      staffLineCenterY: staffLineCenterY,
-      leftPadding: symbolX,
-    ) != null;
+          position,
+          layout: layout,
+          staffLineCenterY: staffLineCenterY,
+          leftPadding: symbolX,
+        ) !=
+        null;
   }
 
   @override

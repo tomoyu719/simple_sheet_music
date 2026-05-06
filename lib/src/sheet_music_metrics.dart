@@ -3,9 +3,8 @@ import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/measure/measure.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
-
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
@@ -37,7 +36,7 @@ class SheetMusicMetrics {
       initialKeySignatureType,
       initialTimeSignatureType,
     );
-    
+
     for (final symbol in musicalSymbols) {
       if (symbol is Measure) {
         final measureRenderer = symbol.setContext(context, metadata, paths);

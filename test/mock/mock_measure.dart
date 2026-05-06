@@ -26,7 +26,8 @@ class MockMeasure extends Fake implements Measure {
     GlyphMetadata metadata,
     GlyphPaths paths,
   ) =>
-      MeasureRenderer([], MockGlyphMetadata(), isNewLine: isNewLine, measure: this);
+      MeasureRenderer([], MockGlyphMetadata(),
+          isNewLine: isNewLine, measure: this);
 
   @override
   MusicalContext updateContext(MusicalContext context) => context;

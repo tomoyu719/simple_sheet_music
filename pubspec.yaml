@@ -13,10 +13,10 @@ dependencies:
   svg_path_parser: ^1.1.2
 
 dev_dependencies:
+  alchemist: ^0.14.0
   flutter_test:
     sdk: flutter
   pedantic_mono: any
-  alchemist: ^0.14.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

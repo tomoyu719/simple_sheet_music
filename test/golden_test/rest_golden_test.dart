@@ -1,5 +1,4 @@
 @Tags(['golden'])
-
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -70,7 +69,7 @@ Widget _buildRestWidget(RestType restType) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
+          const Clef.treble(),
           Rest(restType),
         ]),
       ],

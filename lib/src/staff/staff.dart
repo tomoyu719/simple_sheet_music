@@ -43,7 +43,8 @@ class Staff implements MusicalSymbol {
     final measureRenderers = <dynamic>[];
     var currentContext = context;
     for (final measure in measures) {
-      final measureRenderer = measure.setContext(currentContext, metadata, paths);
+      final measureRenderer =
+          measure.setContext(currentContext, metadata, paths);
       currentContext = measure.updateContext(currentContext);
       measureRenderers.add(measureRenderer);
     }

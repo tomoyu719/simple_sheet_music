@@ -1,5 +1,4 @@
 @Tags(['golden'])
-
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,11 +19,13 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'common time (C)',
-            child: _buildMeasureWithTimeSignature(TimeSignature.commonTime()),
+            child: _buildMeasureWithTimeSignature(
+                const TimeSignature.commonTime()),
           ),
           GoldenTestScenario(
             name: 'cut time',
-            child: _buildMeasureWithTimeSignature(TimeSignature.cutTime()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.cutTime()),
           ),
         ],
       ),
@@ -41,19 +42,23 @@ void main() {
         children: [
           GoldenTestScenario(
             name: '4/4',
-            child: _buildMeasureWithTimeSignature(TimeSignature.fourFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.fourFour()),
           ),
           GoldenTestScenario(
             name: '3/4',
-            child: _buildMeasureWithTimeSignature(TimeSignature.threeFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.threeFour()),
           ),
           GoldenTestScenario(
             name: '2/4',
-            child: _buildMeasureWithTimeSignature(TimeSignature.twoFour()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.twoFour()),
           ),
           GoldenTestScenario(
             name: '6/8',
-            child: _buildMeasureWithTimeSignature(TimeSignature.sixEight()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.sixEight()),
           ),
         ],
       ),
@@ -70,11 +75,13 @@ void main() {
         children: [
           GoldenTestScenario(
             name: '9/8',
-            child: _buildMeasureWithTimeSignature(TimeSignature.nineEight()),
+            child:
+                _buildMeasureWithTimeSignature(const TimeSignature.nineEight()),
           ),
           GoldenTestScenario(
             name: '12/8',
-            child: _buildMeasureWithTimeSignature(TimeSignature.twelveEight()),
+            child: _buildMeasureWithTimeSignature(
+                const TimeSignature.twelveEight()),
           ),
           GoldenTestScenario(
             name: '5/4',
@@ -121,12 +128,12 @@ void main() {
           GoldenTestScenario(
             name: 'red common time',
             child: _buildMeasureWithTimeSignature(
-                TimeSignature.commonTime(color: Colors.red)),
+                const TimeSignature.commonTime(color: Colors.red)),
           ),
           GoldenTestScenario(
             name: 'blue 4/4',
             child: _buildMeasureWithTimeSignature(
-                TimeSignature.fourFour(color: Colors.blue)),
+                const TimeSignature.fourFour(color: Colors.blue)),
           ),
         ],
       ),
@@ -177,7 +184,7 @@ Widget _buildMeasureWithTimeSignature(TimeSignature timeSignature) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
+          const Clef.treble(),
           timeSignature,
         ]),
       ],
@@ -192,9 +199,9 @@ Widget _buildFullMeasure() {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
-          KeySignature.gMajor(),
-          TimeSignature.fourFour(),
+          const Clef.treble(),
+          const KeySignature.gMajor(),
+          const TimeSignature.fourFour(),
         ]),
       ],
       height: 150,
@@ -208,9 +215,9 @@ Widget _buildMeasureWithClefKeyTime() {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
-          KeySignature.dMajor(),
-          TimeSignature.commonTime(),
+          const Clef.treble(),
+          const KeySignature.dMajor(),
+          const TimeSignature.commonTime(),
         ]),
       ],
       height: 150,
@@ -224,8 +231,8 @@ Widget _buildMeasureWithClefTime() {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.bass(),
-          TimeSignature.threeFour(),
+          const Clef.bass(),
+          const TimeSignature.threeFour(),
         ]),
       ],
       height: 150,
