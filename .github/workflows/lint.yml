@@ -18,6 +18,19 @@ jobs:
         with:
           flutter-version: "3.32.0"
           channel: "stable"
+          cache: true
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+            example/.dart_tool
+            catalog/.dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.lock', 'example/pubspec.lock', 'catalog/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       # Root package
       - name: Get dependencies (root)
