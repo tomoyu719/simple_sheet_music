@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
+import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
 import 'package:simple_sheet_music/src/sheet_music_renderer.dart';
 
@@ -25,6 +26,7 @@ class SimpleSheetMusic extends StatelessWidget {
     required this.musicalSymbols,
     this.initialClefType = ClefType.treble,
     this.initialKeySignatureType = KeySignatureType.cMajor,
+    this.initialTimeSignatureType,
     this.height = 400.0,
     this.width = 400.0,
     this.lineColor = Colors.black54,
@@ -49,6 +51,9 @@ class SimpleSheetMusic extends StatelessWidget {
   /// The initial keySignature for the sheet music.
   final KeySignatureType initialKeySignatureType;
 
+  /// The initial timeSignature for the sheet music.
+  final TimeSignatureType? initialTimeSignatureType;
+
   /// The color of the staff lines.
   final Color lineColor;
 
@@ -61,6 +66,7 @@ class SimpleSheetMusic extends StatelessWidget {
       musicalSymbols,
       initialClefType,
       initialKeySignatureType,
+      initialTimeSignatureType,
       metadata,
       glyphPath,
     );

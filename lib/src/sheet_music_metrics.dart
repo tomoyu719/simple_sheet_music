@@ -7,6 +7,7 @@ import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.da
 
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
+import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 import 'package:simple_sheet_music/src/staff/staff.dart';
 import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
@@ -17,6 +18,7 @@ class SheetMusicMetrics {
     this.musicalSymbols,
     this.initialClefType,
     this.initialKeySignatureType,
+    this.initialTimeSignatureType,
     this.metadata,
     this.paths,
   );
@@ -30,7 +32,11 @@ class SheetMusicMetrics {
       return _measureRenderersCache!;
     }
     final result = <MeasureRenderer>[];
-    var context = MusicalContext(initialClefType, initialKeySignatureType);
+    var context = MusicalContext(
+      initialClefType,
+      initialKeySignatureType,
+      initialTimeSignatureType,
+    );
     
     for (final symbol in musicalSymbols) {
       if (symbol is Measure) {
@@ -76,6 +82,7 @@ class SheetMusicMetrics {
   final List<MusicalSymbol> musicalSymbols;
   final ClefType initialClefType;
   final KeySignatureType initialKeySignatureType;
+  final TimeSignatureType? initialTimeSignatureType;
   final GlyphMetadata metadata;
   final GlyphPaths paths;
 

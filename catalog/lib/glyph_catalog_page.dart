@@ -60,6 +60,14 @@ class GlyphCatalogPage extends StatelessWidget {
     GlyphDefinition('barlineSingle', 'uniE030', Measure([Clef.treble()], endBarlineType: BarlineType.single), Measure([Clef.treble()], endBarlineType: BarlineType.single)),
     GlyphDefinition('barlineDouble', 'uniE031', Measure([Clef.treble()], endBarlineType: BarlineType.double), Measure([Clef.treble()], endBarlineType: BarlineType.double)),
     GlyphDefinition('barlineFinal', 'uniE032', Measure([Clef.treble()], endBarlineType: BarlineType.final_), Measure([Clef.treble()], endBarlineType: BarlineType.final_)),
+
+    // Time Signatures
+    GlyphDefinition('timeSigCommon', 'uniE08A', Measure([Clef.treble(), TimeSignature.commonTime()]), Measure([Clef.treble(), TimeSignature.commonTime()])),
+    GlyphDefinition('timeSigCutCommon', 'uniE08B', Measure([Clef.treble(), TimeSignature.cutTime()]), Measure([Clef.treble(), TimeSignature.cutTime()])),
+    GlyphDefinition('timeSig4/4', 'uniE084', Measure([Clef.treble(), TimeSignature.fourFour()]), Measure([Clef.treble(), TimeSignature.fourFour()])),
+    GlyphDefinition('timeSig3/4', 'uniE083', Measure([Clef.treble(), TimeSignature.threeFour()]), Measure([Clef.treble(), TimeSignature.threeFour()])),
+    GlyphDefinition('timeSig6/8', 'uniE086', Measure([Clef.treble(), TimeSignature.sixEight()]), Measure([Clef.treble(), TimeSignature.sixEight()])),
+    GlyphDefinition('timeSig12/8', 'uniE081+uniE082', Measure([Clef.treble(), TimeSignature.twelveEight()]), Measure([Clef.treble(), TimeSignature.twelveEight()])),
   ];
 
   @override
