@@ -1,5 +1,4 @@
 @Tags(['golden'])
-
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,19 +19,19 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'treble clef',
-            child: _buildClefWidget(Clef.treble()),
+            child: _buildClefWidget(const Clef.treble()),
           ),
           GoldenTestScenario(
             name: 'bass clef',
-            child: _buildClefWidget(Clef.bass()),
+            child: _buildClefWidget(const Clef.bass()),
           ),
           GoldenTestScenario(
             name: 'alto clef',
-            child: _buildClefWidget(Clef.alto()),
+            child: _buildClefWidget(const Clef.alto()),
           ),
           GoldenTestScenario(
             name: 'tenor clef',
-            child: _buildClefWidget(Clef.tenor()),
+            child: _buildClefWidget(const Clef.tenor()),
           ),
         ],
       ),
@@ -49,11 +48,11 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'red treble clef',
-            child: _buildClefWidget(Clef.treble(color: Colors.red)),
+            child: _buildClefWidget(const Clef.treble(color: Colors.red)),
           ),
           GoldenTestScenario(
             name: 'blue bass clef',
-            child: _buildClefWidget(Clef.bass(color: Colors.blue)),
+            child: _buildClefWidget(const Clef.bass(color: Colors.blue)),
           ),
         ],
       ),

@@ -1,5 +1,4 @@
 @Tags(['golden'])
-
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,19 +19,19 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'G major (1#)',
-            child: _buildKeySignatureWidget(KeySignature.gMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.gMajor()),
           ),
           GoldenTestScenario(
             name: 'D major (2#)',
-            child: _buildKeySignatureWidget(KeySignature.dMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.dMajor()),
           ),
           GoldenTestScenario(
             name: 'A major (3#)',
-            child: _buildKeySignatureWidget(KeySignature.aMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.aMajor()),
           ),
           GoldenTestScenario(
             name: 'E major (4#)',
-            child: _buildKeySignatureWidget(KeySignature.eMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.eMajor()),
           ),
         ],
       ),
@@ -49,19 +48,19 @@ void main() {
         children: [
           GoldenTestScenario(
             name: 'F major (1b)',
-            child: _buildKeySignatureWidget(KeySignature.fMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.fMajor()),
           ),
           GoldenTestScenario(
             name: 'Bb major (2b)',
-            child: _buildKeySignatureWidget(KeySignature.bFlatMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.bFlatMajor()),
           ),
           GoldenTestScenario(
             name: 'Eb major (3b)',
-            child: _buildKeySignatureWidget(KeySignature.eFlatMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.eFlatMajor()),
           ),
           GoldenTestScenario(
             name: 'Ab major (4b)',
-            child: _buildKeySignatureWidget(KeySignature.aFlatMajor()),
+            child: _buildKeySignatureWidget(const KeySignature.aFlatMajor()),
           ),
         ],
       ),
@@ -79,15 +78,15 @@ void main() {
           GoldenTestScenario(
             name: 'D major treble',
             child: _buildKeySignatureWithClefWidget(
-              KeySignature.dMajor(),
-              Clef.treble(),
+              const KeySignature.dMajor(),
+              const Clef.treble(),
             ),
           ),
           GoldenTestScenario(
             name: 'D major bass',
             child: _buildKeySignatureWithClefWidget(
-              KeySignature.dMajor(),
-              Clef.bass(),
+              const KeySignature.dMajor(),
+              const Clef.bass(),
             ),
           ),
         ],
@@ -101,7 +100,7 @@ Widget _buildKeySignatureWidget(KeySignature keySignature) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
+          const Clef.treble(),
           keySignature,
         ]),
       ],

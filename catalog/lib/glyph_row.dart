@@ -45,7 +45,6 @@ class GlyphRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
             child: Column(
               children: [
                 const Text(
@@ -56,7 +55,6 @@ class GlyphRow extends StatelessWidget {
                   height: 80,
                   child: SimpleSheetMusic(
                     musicalSymbols: [bravuraMeasure],
-                    fontType: FontType.bravura,
                     height: 80,
                     width: 120,
                   ),
@@ -65,7 +63,6 @@ class GlyphRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
             child: Column(
               children: [
                 const Text(

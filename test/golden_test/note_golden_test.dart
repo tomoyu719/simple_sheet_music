@@ -1,5 +1,4 @@
 @Tags(['golden'])
-
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -124,7 +123,7 @@ Widget _buildNoteWidget(NoteDuration duration) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
+          const Clef.treble(),
           Note(Pitch.b4, noteDuration: duration),
         ]),
       ],
@@ -139,8 +138,8 @@ Widget _buildNoteWithAccidentalWidget(Accidental accidental) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
-          Note(Pitch.b4, noteDuration: NoteDuration.quarter, accidental: accidental),
+          const Clef.treble(),
+          Note(Pitch.b4, accidental: accidental),
         ]),
       ],
       height: 150,
@@ -154,8 +153,8 @@ Widget _buildNoteAtPitchWidget(Pitch pitch) {
     child: SimpleSheetMusic(
       musicalSymbols: [
         Measure([
-          Clef.treble(),
-          Note(pitch, noteDuration: NoteDuration.quarter),
+          const Clef.treble(),
+          Note(pitch),
         ]),
       ],
       height: 150,

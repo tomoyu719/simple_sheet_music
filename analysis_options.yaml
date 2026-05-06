@@ -10,3 +10,4 @@ linter:
     lines_longer_than_80_chars: false
     avoid_print: false
     flutter_style_todos: false
+    library_annotations: false
