@@ -1,3 +1,13 @@
+## 2.0.0-dev.1
+* **BREAKING CHANGE**: SimpleSheetMusic API changed
+  - Parameter renamed: `musicalSymbols` → `staffs`
+  - Type changed: `List<SheetMusicElement>` → `List<Staff>`
+* Introduce `SheetMusicElement` as new base class for all renderable elements
+* `MusicalSymbol` now extends `SheetMusicElement` (for notes, clefs, rests, etc.)
+* `Measure` and `Staff` now extend `SheetMusicElement` directly (structural containers)
+* `MeasureRenderer` and `StaffRenderer` no longer implement `MusicalSymbolRenderer`
+* Simplified `SheetMusicMetrics` implementation
+
 ## 0.0.1
 * initial release.
 
