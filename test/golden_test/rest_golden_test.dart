@@ -67,10 +67,12 @@ void main() {
 Widget _buildRestWidget(RestType restType) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.treble(),
-          Rest(restType),
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.treble(),
+            Rest(restType),
+          ]),
         ]),
       ],
       height: 150,

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:simple_sheet_music/simple_sheet_music.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
@@ -14,7 +15,7 @@ void main() {
       MockMeasure(),
     ];
     final sheetMusicMetrics = SheetMusicMetrics(
-      measures,
+      [Staff(measures)],
       ClefType.treble,
       KeySignatureType.cMajor,
       null,
@@ -39,7 +40,7 @@ void main() {
       MockMeasure(isNewLine: true),
     ];
     final sheetMusicMetrics = SheetMusicMetrics(
-      measures,
+      [Staff(measures)],
       ClefType.treble,
       KeySignatureType.cMajor,
       null,
@@ -65,7 +66,7 @@ void main() {
       MockMeasure(),
     ];
     final sheetMusicMetrics = SheetMusicMetrics(
-      measures,
+      [Staff(measures)],
       ClefType.treble,
       KeySignatureType.cMajor,
       null,

@@ -10,6 +10,7 @@ import 'package:simple_sheet_music/src/music_objects/clef/clef.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/sheet_music_element.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/key_signature.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature.dart';
@@ -17,7 +18,7 @@ import 'package:simple_sheet_music/src/music_objects/time_signature/time_signatu
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 /// Represents a measure in sheet music.
-class Measure implements MusicalSymbol {
+class Measure extends SheetMusicElement {
   /// Creates a new instance of the [Measure] class.
   ///
   /// The [musicalSymbols] parameter is a list of musical symbols that make up the measure.
@@ -41,10 +42,8 @@ class Measure implements MusicalSymbol {
   /// Indicates whether the measure is a new line in the sheet music.
   final bool isNewLine;
 
-  @override
   final Color color;
 
-  @override
   final EdgeInsets margin;
 
   /// The barline type at the start of the measure.
@@ -62,7 +61,6 @@ class Measure implements MusicalSymbol {
   /// The [paths] parameter provides the paths for the glyphs used in the measure.
   ///
   /// Returns a [MeasureRenderer] object representing the renderer for this measure.
-  @override
   MeasureRenderer setContext(
     MusicalContext context,
     GlyphMetadata metadata,

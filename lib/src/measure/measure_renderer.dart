@@ -10,7 +10,7 @@ import 'package:simple_sheet_music/src/sheet_music_layout.dart';
 
 /// The renderer for a measure in sheet music.
 /// Combines metrics calculation and rendering functionality.
-class MeasureRenderer implements MusicalSymbolRenderer {
+class MeasureRenderer {
   const MeasureRenderer(
     this.symbolRenderers,
     this.metadata, {
@@ -44,7 +44,6 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   double get _measureUpperHeight => metadata.measureUpperHeight;
 
   /// Returns the maximum height of the measure upper part.
-  @override
   double get upperHeight => max(_symbolMaximumUpperHeight, _measureUpperHeight);
 
   /// Gets the maximum lower height among all the musical symbols in the measure.
@@ -55,7 +54,6 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   double get _measureLowerHeight => metadata.measureLowerHeight;
 
   /// Returns the maximum height of the measure lower part.
-  @override
   double get lowerHeight => max(_symbolMaximumLowerHeight, _measureLowerHeight);
 
   /// Gets the sum of the horizontal margins of all the musical symbols in the measure.
@@ -65,10 +63,8 @@ class MeasureRenderer implements MusicalSymbolRenderer {
   /// Gets the thickness of the staff lines in the measure.
   double get staffLineThickness => metadata.staffLineThickness;
 
-  @override
   double get width => objectsWidth;
 
-  @override
   EdgeInsets get margin => measure.margin;
 
   // Rendering methods
@@ -99,7 +95,6 @@ class MeasureRenderer implements MusicalSymbolRenderer {
     return null;
   }
 
-  @override
   bool isHit(
     Offset position, {
     required SheetMusicLayout layout,
@@ -115,7 +110,6 @@ class MeasureRenderer implements MusicalSymbolRenderer {
         null;
   }
 
-  @override
   void render(
     Canvas canvas, {
     required SheetMusicLayout layout,

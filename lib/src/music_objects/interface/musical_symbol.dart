@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
 import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol_renderer.dart';
+import 'package:simple_sheet_music/src/music_objects/interface/sheet_music_element.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
 
 /// An abstract class representing a musical symbol.
@@ -9,7 +10,7 @@ import 'package:simple_sheet_music/src/musical_context.dart';
 /// This class serves as the base class for all musical symbols in the
 /// application. It provides common properties and methods that are shared
 /// among different types of musical symbols.
-abstract class MusicalSymbol {
+abstract class MusicalSymbol extends SheetMusicElement {
   /// Creates a new instance of the [MusicalSymbol] class.
   ///
   /// The [margin] parameter specifies the margin around the musical symbol.

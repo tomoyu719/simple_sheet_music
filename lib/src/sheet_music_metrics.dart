@@ -1,10 +1,8 @@
 import 'package:simple_sheet_music/src/extension/list_extension.dart';
 import 'package:simple_sheet_music/src/glyph_metadata.dart';
 import 'package:simple_sheet_music/src/glyph_path.dart';
-import 'package:simple_sheet_music/src/measure/measure.dart';
 import 'package:simple_sheet_music/src/measure/measure_renderer.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
-import 'package:simple_sheet_music/src/music_objects/interface/musical_symbol.dart';
 import 'package:simple_sheet_music/src/music_objects/key_signature/keysignature_type.dart';
 import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/musical_context.dart';
@@ -14,7 +12,7 @@ import 'package:simple_sheet_music/src/staff/staff_renderer.dart';
 /// Represents the metrics of a sheet music.
 class SheetMusicMetrics {
   SheetMusicMetrics(
-    this.musicalSymbols,
+    this.staffs,
     this.initialClefType,
     this.initialKeySignatureType,
     this.initialTimeSignatureType,
@@ -25,7 +23,6 @@ class SheetMusicMetrics {
   List<MeasureRenderer>? _measureRenderersCache;
 
   /// Gets the renderers of each measure in the sheet music.
-  /// Handles both Measure and Staff inputs.
   List<MeasureRenderer> get _measureRenderers {
     if (_measureRenderersCache != null) {
       return _measureRenderersCache!;
@@ -37,18 +34,11 @@ class SheetMusicMetrics {
       initialTimeSignatureType,
     );
 
-    for (final symbol in musicalSymbols) {
-      if (symbol is Measure) {
-        final measureRenderer = symbol.setContext(context, metadata, paths);
-        context = symbol.updateContext(context);
+    for (final staff in staffs) {
+      for (final measure in staff.measures) {
+        final measureRenderer = measure.setContext(context, metadata, paths);
+        context = measure.updateContext(context);
         result.add(measureRenderer);
-      } else if (symbol is Staff) {
-        // Staff contains multiple measures
-        for (final measure in symbol.measures) {
-          final measureRenderer = measure.setContext(context, metadata, paths);
-          context = measure.updateContext(context);
-          result.add(measureRenderer);
-        }
       }
     }
 
@@ -78,7 +68,7 @@ class SheetMusicMetrics {
     return _staffRenderersCache ??= staffs;
   }
 
-  final List<MusicalSymbol> musicalSymbols;
+  final List<Staff> staffs;
   final ClefType initialClefType;
   final KeySignatureType initialKeySignatureType;
   final TimeSignatureType? initialTimeSignatureType;
