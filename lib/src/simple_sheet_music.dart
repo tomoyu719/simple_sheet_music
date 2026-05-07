@@ -7,23 +7,23 @@ import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
 import 'package:simple_sheet_music/src/music_objects/time_signature/time_signature_type.dart';
 import 'package:simple_sheet_music/src/sheet_music_metrics.dart';
 import 'package:simple_sheet_music/src/sheet_music_renderer.dart';
+import 'package:simple_sheet_music/src/staff/staff.dart';
 
 import 'font_types.dart';
-import 'music_objects/interface/musical_symbol.dart';
 import 'music_objects/key_signature/keysignature_type.dart';
 import 'sheet_music_layout.dart';
 
 typedef OnTapMusicObjectCallback = void Function(
-  MusicalSymbol musicObject,
+  Staff staff,
   Offset offset,
 );
 
 /// The `SimpleSheetMusic` widget is used to display sheet music.
-/// It takes a list of `MusicalSymbol` objects (Measure, Staff, etc.), an initial clef, and other optional parameters to customize the appearance of the sheet music.
+/// It takes a list of `Staff` objects, an initial clef, and other optional parameters to customize the appearance of the sheet music.
 class SimpleSheetMusic extends StatelessWidget {
   const SimpleSheetMusic({
     super.key,
-    required this.musicalSymbols,
+    required this.staffs,
     this.initialClefType = ClefType.treble,
     this.initialKeySignatureType = KeySignatureType.cMajor,
     this.initialTimeSignatureType,
@@ -33,8 +33,8 @@ class SimpleSheetMusic extends StatelessWidget {
     this.fontType = FontType.bravura,
   });
 
-  /// The list of musical symbols to be displayed (Measure, Staff, etc.).
-  final List<MusicalSymbol> musicalSymbols;
+  /// The list of staffs to be displayed.
+  final List<Staff> staffs;
 
   /// Receive maximum width and height so as not to break the aspect ratio of the score.
   final double height;
@@ -63,7 +63,7 @@ class SimpleSheetMusic extends StatelessWidget {
     final metadata = GlyphMetadata(fontType.metadataData);
     final targetSize = Size(width, height);
     final metricsBuilder = SheetMusicMetrics(
-      musicalSymbols,
+      staffs,
       initialClefType,
       initialKeySignatureType,
       initialTimeSignatureType,

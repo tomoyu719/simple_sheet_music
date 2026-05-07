@@ -182,10 +182,12 @@ void main() {
 Widget _buildMeasureWithTimeSignature(TimeSignature timeSignature) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.treble(),
-          timeSignature,
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.treble(),
+            timeSignature,
+          ]),
         ]),
       ],
       height: 150,
@@ -197,11 +199,13 @@ Widget _buildMeasureWithTimeSignature(TimeSignature timeSignature) {
 Widget _buildFullMeasure() {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.treble(),
-          const KeySignature.gMajor(),
-          const TimeSignature.fourFour(),
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.treble(),
+            const KeySignature.gMajor(),
+            const TimeSignature.fourFour(),
+          ]),
         ]),
       ],
       height: 150,
@@ -213,11 +217,13 @@ Widget _buildFullMeasure() {
 Widget _buildMeasureWithClefKeyTime() {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.treble(),
-          const KeySignature.dMajor(),
-          const TimeSignature.commonTime(),
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.treble(),
+            const KeySignature.dMajor(),
+            const TimeSignature.commonTime(),
+          ]),
         ]),
       ],
       height: 150,
@@ -229,10 +235,12 @@ Widget _buildMeasureWithClefKeyTime() {
 Widget _buildMeasureWithClefTime() {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.bass(),
-          const TimeSignature.threeFour(),
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.bass(),
+            const TimeSignature.threeFour(),
+          ]),
         ]),
       ],
       height: 150,

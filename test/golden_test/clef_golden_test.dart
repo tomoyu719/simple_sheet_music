@@ -63,8 +63,8 @@ void main() {
 Widget _buildClefWidget(Clef clef) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([clef]),
+      staffs: [
+        Staff([Measure([clef])]),
       ],
       height: 150,
       width: 180,

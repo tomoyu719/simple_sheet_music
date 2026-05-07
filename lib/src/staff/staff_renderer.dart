@@ -7,7 +7,7 @@ import 'package:simple_sheet_music/src/staff/staff.dart';
 
 /// The renderer for a staff, which is responsible for rendering measures,
 /// handling hit tests, and providing metrics.
-class StaffRenderer implements MusicalSymbolRenderer {
+class StaffRenderer {
   const StaffRenderer(this.measureRenderers, {this.staff});
 
   final List<MeasureRenderer> measureRenderers;
@@ -18,17 +18,14 @@ class StaffRenderer implements MusicalSymbolRenderer {
   // Metrics properties
 
   /// The height of the upper part of the staff.
-  @override
   double get upperHeight =>
       measureRenderers.map((measure) => measure.upperHeight).max;
 
   /// The height of the lower part of the staff.
-  @override
   double get lowerHeight =>
       measureRenderers.map((measure) => measure.lowerHeight).max;
 
   /// The total width of the staff, including the width of its objects and margins.
-  @override
   double get width => _objectsWidth + horizontalMarginSum;
 
   /// The total width of the objects in the staff.
@@ -42,7 +39,6 @@ class StaffRenderer implements MusicalSymbolRenderer {
   /// The total height of the staff.
   double get height => upperHeight + lowerHeight;
 
-  @override
   EdgeInsets get margin => staff?.margin ?? EdgeInsets.zero;
 
   // Rendering methods
@@ -72,7 +68,6 @@ class StaffRenderer implements MusicalSymbolRenderer {
     return null;
   }
 
-  @override
   bool isHit(
     Offset position, {
     required SheetMusicLayout layout,
@@ -88,7 +83,6 @@ class StaffRenderer implements MusicalSymbolRenderer {
         null;
   }
 
-  @override
   void render(
     Canvas canvas, {
     required SheetMusicLayout layout,

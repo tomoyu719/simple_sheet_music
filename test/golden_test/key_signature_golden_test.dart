@@ -98,10 +98,12 @@ void main() {
 Widget _buildKeySignatureWidget(KeySignature keySignature) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          const Clef.treble(),
-          keySignature,
+      staffs: [
+        Staff([
+          Measure([
+            const Clef.treble(),
+            keySignature,
+          ]),
         ]),
       ],
       height: 150,
@@ -113,10 +115,12 @@ Widget _buildKeySignatureWidget(KeySignature keySignature) {
 Widget _buildKeySignatureWithClefWidget(KeySignature keySignature, Clef clef) {
   return GoldenTestWrapper(
     child: SimpleSheetMusic(
-      musicalSymbols: [
-        Measure([
-          clef,
-          keySignature,
+      staffs: [
+        Staff([
+          Measure([
+            clef,
+            keySignature,
+          ]),
         ]),
       ],
       height: 150,
