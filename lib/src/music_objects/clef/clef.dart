@@ -50,13 +50,26 @@ class Clef implements MusicalSymbol {
 
 /// Renders the clef symbol and provides its metrics.
 class ClefRenderer implements MusicalSymbolRenderer {
-  const ClefRenderer(
+  ClefRenderer(
     this.clef,
     this.paths,
   );
 
   final GlyphPaths paths;
   final Clef clef;
+
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
 
   // Metrics properties
 
@@ -102,46 +115,20 @@ class ClefRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  void render(Canvas canvas) {
     final p = Paint()..color = color;
-    canvas.drawPath(_renderPath(layout, staffLineCenterY, symbolX), p);
+    canvas.drawPath(_renderPath(), p);
   }
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
+  bool isHit(Offset position) => _renderArea().contains(position);
 
-  Offset _renderOffset(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
+  Offset get _renderOffset =>
+      Offset(_symbolX, _staffLineCenterY) + _marginOffset;
 
-  Offset _marginOffset(SheetMusicLayout layout) =>
-      Offset(marginLeft, 0) / layout.canvasScale;
+  Offset get _marginOffset => Offset(marginLeft, 0) / _layout.canvasScale;
 
-  Rect _renderArea(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Rect _renderArea() => bbox.shift(_renderOffset);
 
-  Path _renderPath(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      path.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Path _renderPath() => path.shift(_renderOffset);
 }

@@ -197,6 +197,20 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   final GlyphPaths paths;
   final KeySignature keySignature;
 
+  // ignore: unused_field
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
+
   // Metrics properties
 
   bool get hasParts => keySignatureType.hasParts;
@@ -272,13 +286,8 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
-    final renderOffset = Offset(symbolX, staffLineCenterY);
+  void render(Canvas canvas) {
+    final renderOffset = Offset(_symbolX, _staffLineCenterY);
     for (final part in keySignatureParts) {
       part.render(
         canvas,
@@ -289,18 +298,12 @@ class KeySignatureRenderer implements MusicalSymbolRenderer {
   }
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  bool isHit(Offset position) {
     throw UnimplementedError();
   }
 
   /// Returns the render area for the given position.
-  Rect renderArea(double staffLineCenterY, double symbolX) =>
-      overallBbox.shift(Offset(symbolX, staffLineCenterY));
+  Rect get renderArea => overallBbox.shift(Offset(_symbolX, _staffLineCenterY));
 }
 
 class KeySignaturePart {

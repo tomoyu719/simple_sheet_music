@@ -41,13 +41,26 @@ class Barline implements MusicalSymbol {
 ///
 /// This class is internal and not exported from the library.
 class BarlineRenderer implements MusicalSymbolRenderer {
-  const BarlineRenderer(
+  BarlineRenderer(
     this.barline,
     this.metadata,
   );
 
   final GlyphMetadata metadata;
   final Barline barline;
+
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
 
   /// The barline type.
   BarlineType get barlineType => barline.barlineType;
@@ -94,18 +107,13 @@ class BarlineRenderer implements MusicalSymbolRenderer {
   EdgeInsets get margin => barline.margin;
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  void render(Canvas canvas) {
     if (!shouldRender) {
       return;
     }
 
-    final x = symbolX + margin.left / layout.canvasScale;
-    final topY = staffLineCenterY - barlineHeight / 2;
+    final x = _symbolX + margin.left / _layout.canvasScale;
+    final topY = _staffLineCenterY - barlineHeight / 2;
 
     switch (barlineType) {
       case BarlineType.none:
@@ -139,18 +147,13 @@ class BarlineRenderer implements MusicalSymbolRenderer {
   }
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  bool isHit(Offset position) {
     if (!shouldRender) {
       return false;
     }
 
-    final x = symbolX + margin.left / layout.canvasScale;
-    final topY = staffLineCenterY - barlineHeight / 2;
+    final x = _symbolX + margin.left / _layout.canvasScale;
+    final topY = _staffLineCenterY - barlineHeight / 2;
     final hitArea = Rect.fromLTWH(x, topY, width, barlineHeight);
 
     return hitArea.contains(position);

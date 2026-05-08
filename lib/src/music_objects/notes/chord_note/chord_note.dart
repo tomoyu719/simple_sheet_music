@@ -77,6 +77,19 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
   final GlyphPaths path;
   final ChordNote note;
 
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
+
   List<ChordNotePart> get _noteParts => note.noteParts;
 
   List<ChordNoteHeadMetrics>? _noteHeadsCache;
@@ -437,27 +450,16 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
+  bool isHit(Offset position) => _renderArea.contains(position);
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
-    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+  void render(Canvas canvas) {
+    final renderOffset = _renderOffset;
     _renderNoteHead(canvas, renderOffset);
     _renderFlag(canvas, renderOffset);
     _renderAccidentals(canvas, renderOffset);
     _renderStem(canvas, renderOffset);
-    _renderLegerLine(canvas, layout, staffLineCenterY, symbolX);
+    _renderLegerLine(canvas);
   }
 
   void _renderNoteHead(Canvas canvas, Offset renderOffset) {
@@ -471,12 +473,7 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
     }
   }
 
-  Rect _renderArea(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      _bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Rect get _renderArea => _bbox.shift(_renderOffset);
 
   void _renderAccidentals(Canvas canvas, Offset renderOffset) {
     for (final accidental in accidentalMetricses) {
@@ -514,43 +511,33 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
     );
   }
 
-  Offset _renderOffset(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
+  Offset get _renderOffset =>
+      Offset(_symbolX, _staffLineCenterY) + _marginOffset;
 
-  Offset _marginOffset(SheetMusicLayout layout) =>
-      Offset(margin.left / layout.canvasScale, 0);
+  Offset get _marginOffset => Offset(margin.left / _layout.canvasScale, 0);
 
   double get _legerLineWidth => legerLineExtension * 2 + _noteHeadWidthForLeger;
 
   double get _legerLineThickness => legerLineThickness;
 
-  void _renderLegerLine(
-    Canvas canvas,
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) {
-    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+  void _renderLegerLine(Canvas canvas) {
+    final renderOffset = _renderOffset;
     final noteHeadRenderArea = noteHeadsBbox.shift(renderOffset);
     final noteHeadLeftX = noteHeadRenderArea.left;
     final noteHeadCenterX = noteHeadLeftX + _noteHeadWidthForLeger / 2;
 
     LegerLineRenderer(
-      layout.lineColor,
+      _layout.lineColor,
       uppestNotePosition,
-      staffLineCenterY: staffLineCenterY,
+      staffLineCenterY: _staffLineCenterY,
       noteCenterX: noteHeadCenterX,
       legerLineWidth: _legerLineWidth,
       legerLineThickness: _legerLineThickness,
     ).render(canvas);
     LegerLineRenderer(
-      layout.lineColor,
+      _layout.lineColor,
       lowestNotePosition,
-      staffLineCenterY: staffLineCenterY,
+      staffLineCenterY: _staffLineCenterY,
       noteCenterX: noteHeadCenterX,
       legerLineWidth: _legerLineWidth,
       legerLineThickness: _legerLineThickness,

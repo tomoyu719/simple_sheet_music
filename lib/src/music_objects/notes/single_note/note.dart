@@ -55,7 +55,7 @@ class Note implements MusicalSymbol {
 
 /// A class that renders a musical note symbol and provides its metrics.
 class NoteRenderer implements MusicalSymbolRenderer {
-  const NoteRenderer(
+  NoteRenderer(
     this.note,
     this.context,
     this.metadata,
@@ -73,6 +73,19 @@ class NoteRenderer implements MusicalSymbolRenderer {
 
   // The note object associated with these metrics.
   final Note note;
+
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
 
   // Metrics properties
 
@@ -306,27 +319,16 @@ class NoteRenderer implements MusicalSymbolRenderer {
   // Rendering methods
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
+  bool isHit(Offset position) => _renderArea.contains(position);
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
-    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+  void render(Canvas canvas) {
+    final renderOffset = _renderOffset;
     _renderNoteHead(canvas, renderOffset);
     _renderFlag(canvas, renderOffset);
     _renderAccidental(canvas, renderOffset);
     _renderStem(canvas, renderOffset);
-    _renderLegerLine(canvas, layout, staffLineCenterY, symbolX);
+    _renderLegerLine(canvas);
   }
 
   void _renderNoteHead(Canvas canvas, Offset renderOffset) {
@@ -372,43 +374,28 @@ class NoteRenderer implements MusicalSymbolRenderer {
   }
 
   /// Returns the render offset, which is the sum of the symbol X position and the staff line center Y position.
-  Offset _renderOffset(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
+  Offset get _renderOffset =>
+      Offset(_symbolX, _staffLineCenterY) + _marginOffset;
 
   /// Returns the margin offset, which is the left margin of the note divided by the canvas scale.
-  Offset _marginOffset(SheetMusicLayout layout) =>
-      Offset(margin.left / layout.canvasScale, 0);
+  Offset get _marginOffset => Offset(margin.left / _layout.canvasScale, 0);
 
   /// Returns the render area of the note, shifted by the render offset.
-  Rect _renderArea(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Rect get _renderArea => bbox.shift(_renderOffset);
 
   /// Returns the width of the leger line, which is twice the leger line extension plus the note head width.
   double get _legerLineWidth => legerLineExtension * 2 + noteHeadWidth;
 
   /// Renders the leger line.
-  void _renderLegerLine(
-    Canvas canvas,
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) {
-    final renderOffset = _renderOffset(layout, staffLineCenterY, symbolX);
+  void _renderLegerLine(Canvas canvas) {
+    final renderOffset = _renderOffset;
     final noteHeadLeftX = renderOffset.dx + this.noteHeadLeftX;
     final noteHeadCenterX = noteHeadLeftX + noteHeadWidth / 2;
 
     LegerLineRenderer(
-      layout.lineColor,
+      _layout.lineColor,
       stavePosition,
-      staffLineCenterY: staffLineCenterY,
+      staffLineCenterY: _staffLineCenterY,
       noteCenterX: noteHeadCenterX,
       legerLineWidth: _legerLineWidth,
       legerLineThickness: legerLineThickness,
