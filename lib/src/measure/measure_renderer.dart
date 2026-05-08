@@ -81,12 +81,11 @@ class MeasureRenderer {
     var x = measureInitialX;
 
     for (final symbol in symbolRenderers) {
-      if (symbol.isHit(
-        position,
-        layout: layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: x,
-      )) {
+      symbol
+        ..layout = layout
+        ..staffLineCenterY = staffLineCenterY
+        ..symbolX = x;
+      if (symbol.isHit(position)) {
         return symbol;
       }
       x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
@@ -131,12 +130,11 @@ class MeasureRenderer {
 
     // Render all symbols (including barlines)
     for (final symbol in symbolRenderers) {
-      symbol.render(
-        canvas,
-        layout: layout,
-        staffLineCenterY: staffLineCenterY,
-        symbolX: x,
-      );
+      symbol
+        ..layout = layout
+        ..staffLineCenterY = staffLineCenterY
+        ..symbolX = x
+        ..render(canvas);
       x += symbol.width + symbol.margin.horizontal / layout.canvasScale;
     }
   }

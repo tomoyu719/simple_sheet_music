@@ -165,6 +165,19 @@ class TimeSignatureRenderer implements MusicalSymbolRenderer {
   final TimeSignature timeSignature;
   final GlyphPaths paths;
 
+  late final SheetMusicLayout _layout;
+  late final double _staffLineCenterY;
+  late final double _symbolX;
+
+  @override
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
+
   /// Tracking space between digits (in staff space units).
   static const _digitTracking = 0.04;
 
@@ -279,46 +292,20 @@ class TimeSignatureRenderer implements MusicalSymbolRenderer {
   Color get _color => timeSignature.color;
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {
+  void render(Canvas canvas) {
     final paint = Paint()..color = _color;
-    canvas.drawPath(_renderPath(layout, staffLineCenterY, symbolX), paint);
+    canvas.drawPath(_renderPath(), paint);
   }
 
   @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      _renderArea(layout, staffLineCenterY, symbolX).contains(position);
+  bool isHit(Offset position) => _renderArea().contains(position);
 
-  Offset _renderOffset(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      Offset(symbolX, staffLineCenterY) + _marginOffset(layout);
+  Offset get _renderOffset =>
+      Offset(_symbolX, _staffLineCenterY) + _marginOffset;
 
-  Offset _marginOffset(SheetMusicLayout layout) =>
-      Offset(_marginLeft, 0) / layout.canvasScale;
+  Offset get _marginOffset => Offset(_marginLeft, 0) / _layout.canvasScale;
 
-  Rect _renderArea(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      bbox.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Rect _renderArea() => bbox.shift(_renderOffset);
 
-  Path _renderPath(
-    SheetMusicLayout layout,
-    double staffLineCenterY,
-    double symbolX,
-  ) =>
-      path.shift(_renderOffset(layout, staffLineCenterY, symbolX));
+  Path _renderPath() => path.shift(_renderOffset);
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_sheet_music/src/music_objects/clef/clef_type.dart';
@@ -26,20 +28,22 @@ class MockMusicalSymbolRenderer extends Fake implements MusicalSymbolRenderer {
   @override
   final EdgeInsets margin;
 
-  @override
-  bool isHit(
-    Offset position, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) =>
-      false;
+  late final SheetMusicLayout _layout;
+  late final double _staffLineCenterY;
+  late final double _symbolX;
 
   @override
-  void render(
-    Canvas canvas, {
-    required SheetMusicLayout layout,
-    required double staffLineCenterY,
-    required double symbolX,
-  }) {}
+  set layout(SheetMusicLayout value) => _layout = value;
+
+  @override
+  set staffLineCenterY(double value) => _staffLineCenterY = value;
+
+  @override
+  set symbolX(double value) => _symbolX = value;
+
+  @override
+  bool isHit(Offset position) => false;
+
+  @override
+  void render(Canvas canvas) {}
 }
