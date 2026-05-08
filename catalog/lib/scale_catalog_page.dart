@@ -261,7 +261,9 @@ class _ChromaticRow extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: SimpleSheetMusic(
                 staffs: [
-                  Staff([Measure([clef, ...chromaticNotes])]),
+                  Staff([
+                    Measure([clef, ...chromaticNotes])
+                  ]),
                 ],
                 height: 120,
                 width: sheetWidth,
@@ -316,7 +318,9 @@ class _DurationComparisonRow extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: SimpleSheetMusic(
                 staffs: [
-                  Staff([Measure([clef, ...notes])]),
+                  Staff([
+                    Measure([clef, ...notes])
+                  ]),
                 ],
                 height: 120,
                 width: sheetWidth,

@@ -56,7 +56,9 @@ class ScaleRow extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: SimpleSheetMusic(
                 staffs: [
-                  Staff([Measure([clef, ...notes])]),
+                  Staff([
+                    Measure([clef, ...notes])
+                  ]),
                 ],
                 height: 120,
                 width: sheetWidth,
