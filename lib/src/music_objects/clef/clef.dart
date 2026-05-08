@@ -58,9 +58,9 @@ class ClefRenderer implements MusicalSymbolRenderer {
   final GlyphPaths paths;
   final Clef clef;
 
-  late final SheetMusicLayout _layout;
-  late final double _staffLineCenterY;
-  late final double _symbolX;
+  late SheetMusicLayout _layout;
+  late double _staffLineCenterY;
+  late double _symbolX;
 
   @override
   set layout(SheetMusicLayout value) => _layout = value;
