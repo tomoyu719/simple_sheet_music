@@ -141,22 +141,6 @@ class MeasureRenderer {
     }
   }
 
-  /// Renders the measure on the given [canvas] with the specified [size].
-  void renderWithSize(
-    Canvas canvas,
-    Size size, {
-    required SheetMusicLayout layout,
-    required double measureInitialX,
-    required double staffLineCenterY,
-  }) {
-    render(
-      canvas,
-      layout: layout,
-      staffLineCenterY: staffLineCenterY,
-      symbolX: measureInitialX,
-    );
-  }
-
   void _renderStaffLine(
     Canvas canvas,
     SheetMusicLayout layout,

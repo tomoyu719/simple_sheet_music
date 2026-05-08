@@ -559,14 +559,3 @@ class ChordNoteRenderer implements MusicalSymbolRenderer {
 
   double get _noteHeadWidthForLeger => noteHeadsBbox.width;
 }
-
-/// Helper class for chord note head metrics.
-class ChordNoteHeadMetrics {
-  const ChordNoteHeadMetrics(this.noteHeadPath, this.part);
-
-  final Path noteHeadPath;
-  final ChordNotePart part;
-
-  Pitch get pitch => part.pitch;
-  Rect get noteHeadRect => noteHeadPath.getBounds();
-}
